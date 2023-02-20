@@ -1,3 +1,3 @@
 export interface wire {
-	value: number
+	value: boolean
 }
