@@ -2,9 +2,7 @@ import { useEffect, useState } from "react";
 
 import { wire } from "../models/wire";
 
-import  AND from "../gates/and";
-import  OR  from "../gates/or";
-import  XOR from "../gates/xor";
+import { AND } from "./gate"
 
 function Render() {
 	
