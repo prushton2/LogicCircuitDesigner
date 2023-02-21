@@ -4,17 +4,15 @@ import Draggable, {DraggableCore} from 'react-draggable'; // Both at the same ti
 
 import Wire from "./Wire"
 
-import { AND, OR, XOR } from "./gate"
+import { AND, OR, XOR } from "./Gate"
 import Switch from "./Switch";
 
 function Render() {
 
-	const [gates, setGates] = useState<JSX.Element[]>([]);
 	const [wires, setWires] = useState(JSON.parse("{}"))
-    const updateXarrow = useXarrow();
 
 	function wire(id: string, newValue: boolean) {
-		if(!!wires[id as keyof JSON] == newValue) {
+		if(!!wires[id] == newValue) {
 			return;
 		}
 		let newWires = structuredClone(wires);

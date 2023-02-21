@@ -19,7 +19,7 @@ function Switch({Y, id}: {Y: (id: string, o: boolean) => void, id: any}) {
 
 		<Draggable onDrag={updateXarrow} onStop={updateXarrow}>
 			<div id={`${id}.Y`} style={{position: "absolute", width: "90px", height: "90px", border: "1px solid red"}}>
-				<button onClick={() => {setValue(!value)}}>Toggle</button> <br /> {value ? "1":"0"}
+				<button onClick={() => {setValue(!value)}}>Toggle</button> <br /> ({id}) <br />{value ? "1":"0"}
 			</div>
 		</Draggable>
 

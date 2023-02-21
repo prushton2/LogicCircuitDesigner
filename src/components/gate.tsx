@@ -17,7 +17,7 @@ const Gate = ({A, B, Y, comp, label, id}: {A: boolean, B: boolean, Y: (id: strin
 	return (
 		<div style={{position: "absolute", border: "1px solid red", width: "90px", height: "90px"}}>
 			
-			{label} GATE <br />
+			{label} ({id}) <br />
 
 			<div id={`${id}.A`} style={{left: "0%", position: "absolute"}}>
 				A: {A ? "1":"0"}<br /> 
@@ -69,7 +69,7 @@ export const XOR = ({A, B, Y, id}: {A: boolean, B: boolean, Y: (id: string, Y: b
 	return (
 		<Draggable onDrag={updateXarrow} onStop={updateXarrow}>
 			<div>
-				<Gate id={id} A={A} B={B} Y={(id, v) => {Y(id, v)}} comp={(A, B) => { return ((A ? 1 : 0) + (B ? 1 : 0)) % 2 !== 0; }} label={"XOR"}/>
+				<Gate id={id} A={A} B={B} Y={(id, v) => {Y(id, v)}} comp={(A, B) => { return ((A?1:0) + (B?1:0)) %2 === 1 }} label={"XOR"}/>
 			</div>
 		</Draggable>
 	)
