@@ -1,21 +1,25 @@
-import { useEffect, useState } from "react";
+import React, { useEffect, useState } from "react";
 
 import { wire } from "../models/wire";
 import { pos } from "../models/pos";
 
-function Gate({A, B, Y, comp, label}: {A: wire, B: wire, Y: (Y: boolean) => void, comp: (A: boolean, B: boolean) => boolean, label: string}) {
+const Gate = ({A, B, Y, comp, label}: {A: wire, B: wire, Y: (Y: boolean) => void, comp: (A: boolean, B: boolean) => boolean, label: string}) => {
 	
 	const [pos, setPos] = useState({x: 0, y: 0} as pos);
 	const [following, setFollowing] = useState(false);
 
+	
+		
 	useEffect(() => {
+		console.log("change");
 		Y(comp(A.value, B.value));
-	}, [])
+	}, [A, B])
+
 
 	function FollowMouse(e: any) {
 		if(following) {
 			setPos({x: e.pageX - 45, y: e.pageY - 45} as pos);
-		}
+		}	
 	}
 	
 	return (
