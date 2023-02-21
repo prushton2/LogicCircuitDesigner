@@ -1,44 +1,77 @@
 import React, { useEffect, useState } from "react";
+import Xarrow, { useXarrow, Xwrapper } from "react-xarrows";
+import Draggable from "react-draggable";
 
 import { wire } from "../models/wire";
 import { pos } from "../models/pos";
 
-const Gate = ({A, B, Y, comp, label}: {A: wire, B: wire, Y: (Y: boolean) => void, comp: (A: boolean, B: boolean) => boolean, label: string}) => {
+const Gate = ({A, B, Y, comp, label, id}: {A: wire, B: wire, Y: (Y: boolean) => void, comp: (A: boolean, B: boolean) => boolean, label: string, id: any}) => {
 	
-	const [pos, setPos] = useState({x: 0, y: 0} as pos);
-	const [following, setFollowing] = useState(false);
+    const updateXarrow = useXarrow();
 
-	
-		
 	useEffect(() => {
-		console.log("change");
 		Y(comp(A.value, B.value));
 	}, [A, B])
 
 
-	function FollowMouse(e: any) {
-		if(following) {
-			setPos({x: e.pageX - 45, y: e.pageY - 45} as pos);
-		}	
-	}
 	
 	return (
-		<div style={{position: "absolute", top: `${pos.y}px`, left: `${pos.x}px`, width: "90px", height: "90px", border: "1px solid red"}}
-			onMouseDown={() => {setFollowing(true)}}
-			onMouseUp={() => {setFollowing(false)}}
-			onMouseMove={(e) => {FollowMouse(e)}}>
+		<div style={{position: "absolute", border: "1px solid red", width: "90px", height: "90px"}}>
 			
 			{label} GATE <br />
-			A: {A.value ? "1":"0"}<br /> B: {B.value ? "1":"0"} <br/> O: {comp(A.value, B.value) ? "1":"0"}
+
+			<div id={`${id}.A`} style={{left: "0%", position: "absolute"}}>
+				A: {A.value ? "1":"0"}<br /> 
+			</div>
+
+			<div id={`${id}.Y`} style={{right: "0%", top: "50%", position: "absolute"}}>
+				O: {comp(A.value, B.value) ? "1":"0"}
+			</div>
+
+			<div id={`${id}.B`} style={{left: "0%", bottom: "0%", position: "absolute"}}>
+				B: {B.value ? "1":"0"} <br/> 
+			</div>
+
 
 		</div>
 	)
 }
 
-export function AND({A, B, Y}: {A: wire, B: wire, Y: (Y: boolean) => void}) {
-	return <Gate A={A} B={B} Y={(o) => {Y(o)}} comp={(A, B) => { return A && B; }} label={"AND"}/>
+export const AND = ({A, B, Y, id}: {A: wire, B: wire, Y: (Y: boolean) => void, id: any}) => {
+	
+    const updateXarrow = useXarrow();
+	
+	return (
+		<Draggable onDrag={updateXarrow} onStop={updateXarrow}>
+			<div>
+				<Gate id={id} A={A} B={B} Y={(o) => {Y(o)}} comp={(A, B) => { return A && B; }} label={"AND"}/>
+			</div>
+		</Draggable>
+	)
 }
 
-export function OR({A, B, Y}: {A: wire, B: wire, Y: (Y: boolean) => void}) {
-	return <Gate A={A} B={B} Y={(o) => {Y(o)}} comp={(A, B) => { return A || B; }} label={"OR"}/>
+export const OR = ({A, B, Y, id}: {A: wire, B: wire, Y: (Y: boolean) => void, id: any}) => {
+	
+	const updateXarrow = useXarrow();
+	
+	return (
+		<Draggable onDrag={updateXarrow} onStop={updateXarrow}>
+			<div>
+				<Gate id={id} A={A} B={B} Y={(o) => {Y(o)}} comp={(A, B) => { return A || B; }} label={"OR"}/>
+			</div>
+		</Draggable>
+	)
+}
+
+export const XOR = ({A, B, Y, id}: {A: wire, B: wire, Y: (Y: boolean) => void, id: any}) => {
+	
+	const updateXarrow = useXarrow();
+	
+	return (
+		<Draggable onDrag={updateXarrow} onStop={updateXarrow}>
+			<div>
+				<Gate id={id} A={A} B={B} Y={(o) => {Y(o)}} comp={(A, B) => { return ((A ? 1 : 0) + (B ? 1 : 0)) % 2 !== 0; }} label={"XOR"}/>
+			</div>
+		</Draggable>
+	)
 }
