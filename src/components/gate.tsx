@@ -4,15 +4,52 @@ import Draggable from "react-draggable";
 
 import { pos } from "../models/pos";
 
-const Gate = ({A, B, Y, comp, label, id, onClick}: 
-	{
-		A: boolean, B: boolean, label: string, id: string, 
+import AND_png from "../images/AND.png"
+import OR_png  from "../images/OR.png"
+import XOR_png from "../images/XOR.png"
+import { transform } from "typescript";
 
-		Y: (id: string, Y: boolean) => void, 
-		comp: (A: boolean, B: boolean) => boolean,
-		onClick: (id: string) => void}) => {
+
+const Gate = ({A, B, Y, comp, label, id, onClick}: {
+	A: boolean, B: boolean, label: string, id: string, 
+
+	Y: (id: string, Y: boolean) => void, 
+	comp: (A: boolean, B: boolean) => boolean,
+	onClick: (id: string) => void}) => {
 	
-    const updateXarrow = useXarrow();
+	const [image, setImage] = useState(AND_png);
+	const [style, setStyle] = useState(JSON.parse("{}"));
+	const updateXarrow = useXarrow();
+
+
+	useEffect(() => {
+		switch(label) {
+			case "AND":
+				setImage(AND_png);
+				setStyle({
+					A_top: "42%",
+					B_top: "68%",
+					O_top: "56%",
+				})
+				break;
+			case "OR":
+				setImage(OR_png);
+				setStyle({
+					A_top: "42%",
+					B_top: "68%",
+					O_top: "56%",
+				})
+				break;
+			case "XOR":
+				setImage(XOR_png);
+				setStyle({
+					A_top: "42%",
+					B_top: "64%",
+					O_top: "53%",
+				})
+				break;
+		}
+	}, [])
 
 	useEffect(() => {
 		Y(id, comp(A, B));
@@ -27,16 +64,18 @@ const Gate = ({A, B, Y, comp, label, id, onClick}:
 				
 				{label} ({id}) <br />
 
-				<div id={`${id}.A`} style={{left: "0%", position: "absolute"}}>
-					<button onClick={(e) => onClick(`${id}.A`)}>A</button>: {A ? "1":"0"}<br /> 
+				<img src={image} style={{width: "90px", position: "absolute", transform: "translate(-50%, 10%)"}}/>
+
+				<div id={`${id}.A`} style={{left: "0%", top: style.A_top, position: "absolute", transform: "translate(0%, -50%)"}}>
+					<button onClick={(e) => onClick(`${id}.A`)} style={{marginLeft: "1.3em"}}>A</button><br /> 
 				</div>
 
-				<div id={`${id}.Y`} style={{right: "0%", top: "50%", position: "absolute"}}>
-					<button onClick={(e) => onClick(`${id}.Y`)}>O</button>: {comp(A, B) ? "1":"0"}
+				<div id={`${id}.Y`} style={{right: "0%", top: style.O_top, position: "absolute", transform: "translate(0%, -50%)"}}>
+					<button onClick={(e) => onClick(`${id}.Y`)} style={{marginRight: "1.3em"}}>O</button>
 				</div>
 
-				<div id={`${id}.B`} style={{left: "0%", bottom: "0%", position: "absolute"}}>
-					<button onClick={(e) => onClick(`${id}.B`)}>B</button>: {B ? "1":"0"} <br/> 
+				<div id={`${id}.B`} style={{left: "0%", top: style.B_top, position: "absolute", transform: "translate(0%, -50%)"}}>
+					<button onClick={(e) => onClick(`${id}.B`)} style={{marginLeft: "1.3em"}}>B</button> <br/> 
 				</div>
 
 

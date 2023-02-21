@@ -4,7 +4,7 @@ import Draggable from "react-draggable";
 
 import { pos } from "../models/pos";
 
-function Switch({Y, id}: {Y: (id: string, o: boolean) => void, id: any}) {
+export const Switch = ({Y, id}: {Y: (id: string, o: boolean) => void, id: any}) => {
 
 	const [value, setValue] = useState(false);
 
@@ -26,4 +26,17 @@ function Switch({Y, id}: {Y: (id: string, o: boolean) => void, id: any}) {
 	)
 }
 
-export default Switch;
+export const LED = ({A, id, onClick}: {A: boolean, id: string, onClick: (id: string) => void}) => {
+    const updateXarrow = useXarrow();
+	
+	return (
+		<Draggable onDrag={updateXarrow} onStop={updateXarrow}>
+			<div style={{width: "90px", height: "90px"}}>
+				LED ({id})
+				<div id={`${id}.A`} style={{left: "0%", top: "50%", position: "absolute", transform: "translate(0%, -50%)"}}>
+					<button onClick={(e) => onClick(`${id}.A`)} style={{marginLeft: "1.3em"}}>A</button> {A?1:0} <br /> 
+				</div>
+			</div>
+		</Draggable>
+	)
+}

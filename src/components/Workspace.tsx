@@ -4,7 +4,7 @@ import Draggable, {DraggableCore} from 'react-draggable'; // Both at the same ti
 
 import { AND, OR, XOR } from "./Gate"
 import Wire from "./Wire"
-import Switch from "./Switch";
+import { Switch, LED } from "./IO";
 
 import { gate } from "../models/gate";
 
@@ -43,6 +43,9 @@ function Render() {
 
 					<OR  id="O0"  A={ wires["A0"] } B={ wires["A1"] } Y={(id, Y) => {wire(id, Y)}} onClick={(id) => {console.log(id)}}/>
 
+					<LED id="L0"  A={ wires["X1"] } onClick={(id) => {console.log(id)}}/>
+					<LED id="L1"  A={ wires["O0"] } onClick={(id) => {console.log(id)}}/>
+
 
 					<Switch id = "S0" Y={(id, y) => {wire(id, y)}}/>
 					<Switch id = "S1" Y={(id, y) => {wire(id, y)}}/>
@@ -63,6 +66,9 @@ function Render() {
 
 					<Wire start="A0.Y" end="O0.A" wires={wires}/>
 					<Wire start="A1.Y" end="O0.B" wires={wires}/>
+
+					<Wire start="X1.Y" end="L0.A" wires={wires}/>
+					<Wire start="O0.Y" end="L1.A" wires={wires}/>
 
 				</Xwrapper>
 			</div>
