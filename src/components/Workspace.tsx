@@ -12,6 +12,7 @@ function Render() {
 
 	const [gates, setGates] = useState<gate[]>([]);
 
+	
 
 	let wires = JSON.parse("{}");
 	const [html, setHTML] = useState<JSX.Element>()
@@ -34,13 +35,13 @@ function Render() {
 			<div>
 				<Xwrapper>
 
-					<XOR  id="X0" A={ wires["S0"] } B={ wires["S1"] } Y={(id, Y) => {wire(id, Y)}} />
-					<XOR  id="X1" A={ wires["X0"] } B={ wires["S2"] } Y={(id, Y) => {wire(id, Y)}} />
+					<XOR  id="X0" A={ wires["S0"] } B={ wires["S1"] } Y={(id, Y) => {wire(id, Y)}} onClick={(id) => {console.log(id)}}/>
+					<XOR  id="X1" A={ wires["X0"] } B={ wires["S2"] } Y={(id, Y) => {wire(id, Y)}} onClick={(id) => {console.log(id)}}/>
 					
-					<AND id="A0"  A={ wires["S0"] } B={ wires["S1"] } Y={(id, Y) => {wire(id, Y)}} />
-					<AND id="A1"  A={ wires["X0"] } B={ wires["S2"] } Y={(id, Y) => {wire(id, Y)}} />
+					<AND id="A0"  A={ wires["S0"] } B={ wires["S1"] } Y={(id, Y) => {wire(id, Y)}} onClick={(id) => {console.log(id)}}/>
+					<AND id="A1"  A={ wires["X0"] } B={ wires["S2"] } Y={(id, Y) => {wire(id, Y)}} onClick={(id) => {console.log(id)}}/>
 
-					<OR  id="O0"  A={ wires["A0"] } B={ wires["A1"] } Y={(id, Y) => {wire(id, Y)}} />
+					<OR  id="O0"  A={ wires["A0"] } B={ wires["A1"] } Y={(id, Y) => {wire(id, Y)}} onClick={(id) => {console.log(id)}}/>
 
 
 					<Switch id = "S0" Y={(id, y) => {wire(id, y)}}/>

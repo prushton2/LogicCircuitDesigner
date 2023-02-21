@@ -1,3 +1,20 @@
+html {
+	background-color: #2b2a33;
+	color: white;
+}
+
+button {
+	color: white;
+	background-color: #4b4a53;
+	border: #4b4a53;
+}
+
+button:active {
+	color: white;
+	background-color: #3b3a43;
+	border: #3b3a33;
+}
+
 .App {
   text-align: center;
 }
