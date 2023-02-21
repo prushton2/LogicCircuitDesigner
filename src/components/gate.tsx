@@ -69,7 +69,7 @@ export const XOR = ({A, B, Y, id}: {A: boolean, B: boolean, Y: (id: string, Y: b
 	return (
 		<Draggable onDrag={updateXarrow} onStop={updateXarrow}>
 			<div>
-				<Gate id={id} A={A} B={B} Y={(id, v) => {Y(id, v)}} comp={(A, B) => { return ((A?1:0) + (B?1:0)) %2 === 1 }} label={"XOR"}/>
+				<Gate id={id} A={A} B={B} Y={(id, v) => {Y(id, v)}} comp={(A, B) => { return ((A?1:0) + (B?1:0)) %2 == 1 }} label={"XOR"}/>
 			</div>
 		</Draggable>
 	)
