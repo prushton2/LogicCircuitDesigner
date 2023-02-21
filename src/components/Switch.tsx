@@ -4,14 +4,14 @@ import Draggable from "react-draggable";
 
 import { pos } from "../models/pos";
 
-function Switch({Y, id}: {Y: (o: boolean) => void, id: any}) {
+function Switch({Y, id}: {Y: (id: string, o: boolean) => void, id: any}) {
 
 	const [value, setValue] = useState(false);
 
     const updateXarrow = useXarrow();
 
 	useEffect(() => {
-		Y(value);
+		Y(id, value);
 	}, [value])
 
 
