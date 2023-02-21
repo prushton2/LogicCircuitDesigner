@@ -2,12 +2,16 @@ import { useEffect, useState } from "react";
 import Xarrow, { useXarrow, Xwrapper } from "react-xarrows";
 import Draggable, {DraggableCore} from 'react-draggable'; // Both at the same time
 
-import Wire from "./Wire"
-
 import { AND, OR, XOR } from "./Gate"
+import Wire from "./Wire"
 import Switch from "./Switch";
 
+import { gate } from "../models/gate";
+
 function Render() {
+
+	const [gates, setGates] = useState<gate[]>([]);
+
 
 	let wires = JSON.parse("{}");
 	const [html, setHTML] = useState<JSX.Element>()
