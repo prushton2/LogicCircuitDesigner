@@ -43,7 +43,7 @@ const Gate = ({A, B, Y, comp, label, id, onClick}: {
 			case "XOR":
 				setImage(XOR_png);
 				setStyle({
-					A_top: "42%",
+					A_top: "43%",
 					B_top: "64%",
 					O_top: "53%",
 				})
@@ -58,7 +58,7 @@ const Gate = ({A, B, Y, comp, label, id, onClick}: {
 	return (
 
 
-		<Draggable onDrag={updateXarrow} onStop={updateXarrow}>
+		<Draggable grid={[10, 10]} onDrag={updateXarrow} onStop={updateXarrow}>
 
 			<div style={{position: "absolute", border: "0px solid red", width: "90px", height: "90px"}}>
 				
