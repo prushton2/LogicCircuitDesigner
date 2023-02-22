@@ -27,25 +27,25 @@ const Gate = ({A, B, Y, comp, label, id, onClick}: {
 			case "AND":
 				setImage(AND_png);
 				setStyle({
-					A_top: "42%",
-					B_top: "68%",
-					O_top: "56%",
+					A_top: "45px",
+					O_top: "65px",
+					B_top: "80px",
 				})
 				break;
 			case "OR":
 				setImage(OR_png);
 				setStyle({
-					A_top: "42%",
-					B_top: "68%",
-					O_top: "56%",
+					A_top: "40px",
+					O_top: "60px",
+					B_top: "80px",
 				})
 				break;
 			case "XOR":
 				setImage(XOR_png);
 				setStyle({
-					A_top: "43%",
-					B_top: "64%",
-					O_top: "53%",
+					A_top: "40px",
+					O_top: "55px",
+					B_top: "75px",
 				})
 				break;
 		}
@@ -58,7 +58,7 @@ const Gate = ({A, B, Y, comp, label, id, onClick}: {
 	return (
 
 
-		<Draggable grid={[10, 10]} onDrag={updateXarrow} onStop={updateXarrow}>
+		<Draggable grid={[5, 5]} onDrag={updateXarrow} onStop={updateXarrow}>
 
 			<div style={{position: "absolute", border: "0px solid red", width: "90px", height: "90px"}}>
 				
