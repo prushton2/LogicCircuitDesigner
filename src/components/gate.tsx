@@ -2,16 +2,13 @@ import React, { useEffect, useState } from "react";
 import Xarrow, { useXarrow, Xwrapper } from "react-xarrows";
 import Draggable from "react-draggable";
 
-import { pos } from "../models/pos";
-
 import AND_png from "../images/AND.png"
 import OR_png  from "../images/OR.png"
 import XOR_png from "../images/XOR.png"
-import { transform } from "typescript";
 
 
-const Gate = ({A, B, Y, comp, label, id, onClick}: {
-	A: boolean, B: boolean, label: string, id: string, 
+const Gate = ({A, B, Y, tr, comp, label, id, onClick}: {
+	A: string, B: string, label: string, id: string, tr: boolean,
 
 	Y: (id: string, Y: boolean) => void, 
 	comp: (A: boolean, B: boolean) => boolean,
@@ -54,7 +51,7 @@ const Gate = ({A, B, Y, comp, label, id, onClick}: {
 	useEffect(() => {
 		console.log(`Updated ${label} (${id}) to ${comp(A, B)}`);
 		Y(id, comp(A, B));
-	}, [A, B])
+	}, [A, B, tr])
 
 	return (
 
@@ -86,20 +83,20 @@ const Gate = ({A, B, Y, comp, label, id, onClick}: {
 	)
 }
 
-export const AND = ({A, B, Y, id, onClick}: {A: boolean, B: boolean, Y: (id: string, Y: boolean) => void, id: string, onClick: (id: string) => void}) => {	
+export const AND = ({A, B, Y, id, tr, onClick}: {A: string, B: string, Y: (id: string, Y: boolean) => void, tr: boolean, id: string, onClick: (id: string) => void}) => {	
 	return (
-		<Gate id={id} A={A} B={B} Y={(id, v) => {Y(id, v)}} comp={(A, B) => { return A && B; }} label={"AND"} onClick={(id) => onClick(id)}/>
+		<Gate id={id} A={A} B={B} tr={tr} Y={(id, v) => {Y(id, v)}} comp={(A, B) => { return A && B; }} label={"AND"} onClick={(id) => onClick(id)}/>
 	)
 }
 
-export const OR = ({A, B, Y, id, onClick}: {A: boolean, B: boolean, Y: (id: string, Y: boolean) => void, id: string, onClick: (id: string) => void}) => {
+export const OR = ({A, B, Y, id, tr, onClick}: {A: string, B: string, Y: (id: string, Y: boolean) => void, tr: boolean, id: string, onClick: (id: string) => void}) => {
 	return (
-		<Gate id={id} A={A} B={B} Y={(id, v) => {Y(id, v)}} comp={(A, B) => { return A || B; }} label={"OR"} onClick={(id) => onClick(id)}/>
+		<Gate id={id} A={A} B={B} tr={tr} Y={(id, v) => {Y(id, v)}} comp={(A, B) => { return A || B; }} label={"OR"} onClick={(id) => onClick(id)}/>
 	)
 }
 
-export const XOR = ({A, B, Y, id, onClick}: {A: boolean, B: boolean, Y: (id: string, Y: boolean) => void, id: string, onClick: (id: string) => void}) => {
+export const XOR = ({A, B, Y, id, tr, onClick}: {A: string, B: string, Y: (id: string, Y: boolean) => void, tr: boolean, id: string, onClick: (id: string) => void}) => {
 	return (
-		<Gate id={id} A={A} B={B} Y={(id, v) => {Y(id, v)}} comp={(A, B) => { return ((A?1:0) + (B?1:0)) %2 == 1 }} label={"XOR"} onClick={(id) => onClick(id)}/>
+		<Gate id={id} A={A} B={B} tr={tr} Y={(id, v) => {Y(id, v)}} comp={(A, B) => { return ((A?1:0) + (B?1:0)) %2 == 1 }} label={"XOR"} onClick={(id) => onClick(id)}/>
 	)
 }

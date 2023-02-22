@@ -8,9 +8,7 @@ import { Switch, LED } from "./IO";
 
 import { component, input } from "../models/component";
 
-function Render() {
-
-	let outputs = JSON.parse("{}");
+function Workspace() {
 
 	const [updated, setUpdated] = useState(false);
 	const [components, setComponents] = useState<component[]>([
@@ -33,12 +31,13 @@ function Render() {
 
 	const [componentHTML, setComponentHTML] = useState<JSX.Element[]>([]);
 
-	const out = (id: string, y: boolean) => {
-		outputs[id] = y;
-		setUpdated(!updated);
-		console.log(outputs);
-		console.log(updated);
+	function out(id: string, y: boolean) {
+
 	}
+
+	useEffect(() => {
+		console.log("Updated");
+	}, [updated])
 
 	useEffect(() => {
 		let newhtml: JSX.Element[] = [];
@@ -51,7 +50,7 @@ function Render() {
 					break;
 				
 				case "AND":
-					newhtml[i] = <AND key={i} id={i} A={outputs[`${c.inputs[0].name}`]} B={outputs[`${c.inputs[1].name}`]} Y={(id,y) => {out(id,y)}} onClick={(e) => console.log(e)}/>
+					newhtml[i] = <AND key={i} id={i} tr={updated} A={"0"} B={"1"} Y={(id,y) => {out(id,y)}} onClick={(e) => console.log(e)}/>
 					break;
 			}
 		}
@@ -68,4 +67,6 @@ function Render() {
 	</div> )
 }
 
-export default Render;
+
+export default Workspace;
+
