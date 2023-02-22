@@ -3,6 +3,6 @@ export interface component {
 	inputs: input[]
 }
 
-interface input {
+export interface input {
 	name: string
 }
