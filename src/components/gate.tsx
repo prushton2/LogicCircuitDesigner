@@ -52,6 +52,7 @@ const Gate = ({A, B, Y, comp, label, id, onClick}: {
 	}, [])
 
 	useEffect(() => {
+		console.log(`Updated ${label} (${id}) to ${comp(A, B)}`);
 		Y(id, comp(A, B));
 	}, [A, B])
 
@@ -71,7 +72,7 @@ const Gate = ({A, B, Y, comp, label, id, onClick}: {
 				</div>
 
 				<div id={`${id}.Y`} style={{right: "0%", top: style.O_top, position: "absolute", transform: "translate(0%, -50%)"}}>
-					<button onClick={(e) => onClick(`${id}.Y`)} style={{marginRight: "1.3em"}}>O</button>
+					{comp(A, B)?1:0}<button onClick={(e) => onClick(`${id}.Y`)} style={{marginRight: "1.3em"}}>O</button>
 				</div>
 
 				<div id={`${id}.B`} style={{left: "0%", top: style.B_top, position: "absolute", transform: "translate(0%, -50%)"}}>
