@@ -22,7 +22,7 @@ export default function Render() {
 	  }, []);
 
 	return (
-		<div id="mouse" style={{width: "1px", height: "1px", position: "absolute", top: `${pos.y+2}px`, left: `${pos.x+2}px`, border: "1px solid red"}}>
+		<div id="mouse" style={{width: "1px", height: "1px", position: "absolute", top: `${pos.y+2}px`, left: `${pos.x+2}px`, border: "0px solid red"}}>
 		</div>
 	)
 }

@@ -1,12 +1,11 @@
 import { useEffect, useState } from "react";
 import { WireContext, WireContent } from "./WireContext";
 
-import Xarrow, { useXarrow, Xwrapper } from "react-xarrows";
-import Draggable, {DraggableCore} from 'react-draggable'; // Both at the same time
+import { Xwrapper } from "react-xarrows";
 
 import MouseFollower from "./MouseFollower";
+import WireRenderer from "./WireRenderer";
 import { AND, OR, XOR } from "./Gate";
-import Wire from "./Wire";
 import { Switch, LED } from "./IO";
 
 import { component, input } from "../models/component";
@@ -18,11 +17,9 @@ function Workspace() {
 	const [components, setComponents] = useState<component[]>([]);
 
 	const [componentHTML, setComponentHTML] = useState<JSX.Element[]>([]);
-	const [wireHTML, setWireHTML] = useState<JSX.Element[]>([]);
 
 	const [connectIn, setConnectIn] = useState("");
 	const [connectOut, setConnectOut] = useState("");
-	const [tempWire, setTempWire] = useState(<a></a>);
 
 	function create(type: string) {
 		let inputs: input[] = []
@@ -49,24 +46,16 @@ function Workspace() {
 
 	function connect(side: string, id: string) {
 		switch(side) {
-			case "in": 
+			case "in":
 				setConnectIn(id);
 				break;
-			case "out": 
+				case "out": 
 				setConnectOut(id);
 				break;
 		}
 	}
 
 	useEffect(() => {
-
-		if(connectIn !== "") {
-			setTempWire(<Wire start={connectIn} end={"mouse"} />)
-		}
-		if(connectOut !== "") {
-			setTempWire(<Wire start={connectOut} end={"mouse"} />)
-		}
-
 		if(connectIn !== "" && connectOut != "") {
 			let input = parseInt(connectIn.split(".")[0])
 			let outputid = parseInt(connectOut.split(".")[0])
@@ -82,7 +71,6 @@ function Workspace() {
 			
 			setConnectIn("");
 			setConnectOut("");
-			setTempWire(<a></a>);
 		}
 	}, [connectIn, connectOut])
 
@@ -116,19 +104,7 @@ function Workspace() {
 		setComponentHTML(newhtml)
 	}, [components])
 
-	useEffect(() => {
-		let newhtml: JSX.Element[] = []
-		for(let i in components) {
-			let c = components[i];
-			for(let j in c.inputs) {
-				if(c.inputs[j].id === -1) {
-					continue;
-				}
-				newhtml.push(<Wire key={`${i}_${j}`} start={`${c.inputs[j].id}.Y`} end={`${i}.${alphabet[j]}`}/>)
-			}
-		}
-		setWireHTML(newhtml);
-	}, [components])
+	
 
 	return (
 	<div>
@@ -140,8 +116,7 @@ function Workspace() {
 		<Xwrapper>
 			<WireContext.Provider value={{wires, setWires} as WireContent}>
 				{componentHTML}
-				{wireHTML}
-				{tempWire}
+				<WireRenderer components={components} connectIn={connectIn} connectOut={connectOut}/>
 				<MouseFollower />
 			</WireContext.Provider>
 		</Xwrapper>
