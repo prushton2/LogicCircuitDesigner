@@ -46,10 +46,6 @@ function Workspace() {
 	}
 
 	function remove(n: number) {
-		if(n === -1) {
-			return;
-		}
-
 		let newComponents = structuredClone(components);
 		newComponents[n] = null;
 		setComponents(newComponents);
