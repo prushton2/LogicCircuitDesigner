@@ -15,12 +15,11 @@ const Render = ({components, connectIn, connectOut}: {components: component[], c
 		let newhtml: JSX.Element[] = []
 		for(let i in components) {
 			let c = components[i];
-			if(c === null) { continue; }
 
 			for(let j in c.inputs) {
-				if(c.inputs[j].id === -1) {
-					continue;
-				}
+				if(c.inputs[j].id === -1) { continue; }
+				// if(components[c.inputs[j].id].type === "deleted_gate") { continue; }
+
 				newhtml.push(<Wire key={`${i}_${j}`} start={`${c.inputs[j].id}.Y`} end={`${i}.${alphabet[j]}`}/>)
 			}
 		}

@@ -53,6 +53,17 @@ function Workspace() {
 		for(let i in newComponents[n].inputs) {
 			newComponents[n].inputs[i].id = -1;
 		}
+
+
+		for(let i in newComponents) {
+			let c = newComponents[i];
+			for(let j in c.inputs) {
+				if(newComponents[j].type !== "deleted_gate") { continue; }
+
+				newComponents[i].inputs[j].id = -1;
+			}
+		}
+
 		setComponents(newComponents);
 	}
 
