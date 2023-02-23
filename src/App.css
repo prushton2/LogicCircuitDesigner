@@ -15,6 +15,12 @@ button:active {
 	border: #3b3a33;
 }
 
+.invisButton {
+	color: white;
+	background-color: #2b2a33;
+	border: #2b2a33;
+}
+
 .App {
   text-align: center;
 }

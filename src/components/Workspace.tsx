@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import { WireContext, WireContent, ConfigContext, ConfigContent } from "./Context";
 
-import { Xwrapper } from "react-xarrows";
+import Xarrow, { useXarrow, Xwrapper } from "react-xarrows";
 
 import MouseFollower from "./MouseFollower";
 import WireRenderer from "./WireRenderer";
@@ -24,6 +24,8 @@ function Workspace() {
 	const [connectIn, setConnectIn] = useState("");
 	const [connectOut, setConnectOut] = useState("");
 
+	const updateXarrow = useXarrow();
+
 	function create(type: string) {
 		let inputs: input[] = []
 		switch(type) {
@@ -45,6 +47,7 @@ function Workspace() {
 			inputs: inputs
 		} as component)
 		setComponents(newcomps);
+		updateXarrow();
 	}
 
 	function remove(n: number) {
@@ -65,6 +68,7 @@ function Workspace() {
 		}
 
 		setComponents(newComponents);
+		updateXarrow();
 	}
 
 	function connect(side: string, id: string) {
@@ -143,8 +147,8 @@ function Workspace() {
 		<Xwrapper>
 			<ConfigContext.Provider value={{config, setConfig} as ConfigContent}>
 			<WireContext.Provider value={{wires, setWires} as WireContent}>
-				{componentHTML}
 				<WireRenderer components={components} connectIn={connectIn} connectOut={connectOut}/>
+				{componentHTML}
 				<MouseFollower />
 			</WireContext.Provider>
 			</ConfigContext.Provider>
