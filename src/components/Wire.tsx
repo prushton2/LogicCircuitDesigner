@@ -7,7 +7,7 @@ const Render = ({start, end}: {start: string, end: string}) => {
 	const {wires, setWires} = useContext(WireContext);
 
 	return (
-		<Xarrow path="grid" headSize={0} color={wires[parseInt(start.split(".")[0])] ? "red" : "white"} start={start.toString()} end={end.toString()} />
+		<Xarrow path="grid" headSize={0} startAnchor={"right"} endAnchor={"left"} color={wires[parseInt(start.split(".")[0])] ? "red" : "white"} start={start.toString()} end={end.toString()} />
 	)
 }
 
