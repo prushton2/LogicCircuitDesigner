@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { WireContext, WireContent } from "./WireContext";
+import { WireContext, WireContent, ConfigContext, ConfigContent } from "./Context";
 
 import { Xwrapper } from "react-xarrows";
 
@@ -12,7 +12,9 @@ import { component, input } from "../models/component";
 
 function Workspace() {
 
+	const [config, setConfig] = useState({});
 	const alphabet = "ABCDEFGHIJKLMNOPQRSTUVWXYZ".split("");
+	
 	const [wires, setWires] = useState<boolean[]>([]);
 	const [components, setComponents] = useState<component[]>([]);
 	const [componentHTML, setComponentHTML] = useState<JSX.Element[]>([]);
@@ -123,11 +125,13 @@ function Workspace() {
 		<button onClick={(e) => {create("XOR")}}>XOR</button>
 		<button onClick={(e) => {remove(toRemove)}}>Delete</button><input onChange={(e) => {setToRemove(parseInt(e.target.value))}}></input>
 		<Xwrapper>
+			<ConfigContext.Provider value={{config, setConfig} as ConfigContent}>
 			<WireContext.Provider value={{wires, setWires} as WireContent}>
 				{componentHTML}
 				<WireRenderer components={components} connectIn={connectIn} connectOut={connectOut}/>
 				<MouseFollower />
 			</WireContext.Provider>
+			</ConfigContext.Provider>
 		</Xwrapper>
 	</div> )
 }

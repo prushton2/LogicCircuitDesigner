@@ -1,6 +1,6 @@
 import { useContext, useEffect, useState } from "react";
 import Xarrow, { useXarrow, Xwrapper } from "react-xarrows";
-import { WireContext } from "./WireContext";
+import { WireContext } from "./Context";
 
 const Render = ({start, end}: {start: string, end: string}) => {
 	
