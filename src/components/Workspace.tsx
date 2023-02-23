@@ -82,19 +82,19 @@ function Workspace() {
 					break;
 				
 				case "LED":
-					newhtml[i] = <LED key={i} id={i} A={0} onClick={(id) => {connect("out", id)}}/>
+					newhtml[i] = <LED key={i} id={i} A={structuredClone(c.inputs[0].id)} onClick={(id) => {connect("out", id)}}/>
 					break;
 				
 				case "AND":
-					newhtml[i] = <AND key={i} id={i.toString()} A={0} B={0} onClick={(e) => connect(e.split(".")[1]=="Y"?"in":"out", e)}/>
+					newhtml[i] = <AND key={i} id={i.toString()} A={structuredClone(c.inputs[0].id)} B={structuredClone(c.inputs[1].id)} onClick={(e) => connect(e.split(".")[1]=="Y"?"in":"out", e)}/>
 					break;
 				
 				case "OR":
-					newhtml[i] = <OR  key={i} id={i.toString()} A={0} B={0} onClick={(e) => connect(e.split(".")[1]=="Y"?"in":"out", e)}/>
+					newhtml[i] = <OR  key={i} id={i.toString()} A={structuredClone(c.inputs[0].id)} B={structuredClone(c.inputs[1].id)} onClick={(e) => connect(e.split(".")[1]=="Y"?"in":"out", e)}/>
 					break;
 
 				case "XOR":
-					newhtml[i] = <XOR key={i} id={i.toString()} A={0} B={0} onClick={(e) => connect(e.split(".")[1]=="Y"?"in":"out", e)}/>
+					newhtml[i] = <XOR key={i} id={i.toString()} A={structuredClone(c.inputs[0].id)} B={structuredClone(c.inputs[1].id)} onClick={(e) => connect(e.split(".")[1]=="Y"?"in":"out", e)}/>
 					break;
 			}
 		}
