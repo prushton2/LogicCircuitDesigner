@@ -4,8 +4,9 @@ import { WireContext, WireContent } from "./WireContext";
 import Xarrow, { useXarrow, Xwrapper } from "react-xarrows";
 import Draggable, {DraggableCore} from 'react-draggable'; // Both at the same time
 
-import { AND, OR, XOR } from "./Gate"
-import Wire from "./Wire"
+import MouseFollower from "./MouseFollower";
+import { AND, OR, XOR } from "./Gate";
+import Wire from "./Wire";
 import { Switch, LED } from "./IO";
 
 import { component, input } from "../models/component";
@@ -21,6 +22,7 @@ function Workspace() {
 
 	const [connectIn, setConnectIn] = useState("");
 	const [connectOut, setConnectOut] = useState("");
+	const [tempWire, setTempWire] = useState(<a></a>);
 
 	function create(type: string) {
 		let inputs: input[] = []
@@ -57,6 +59,14 @@ function Workspace() {
 	}
 
 	useEffect(() => {
+
+		if(connectIn !== "") {
+			setTempWire(<Wire start={connectIn} end={"mouse"} />)
+		}
+		if(connectOut !== "") {
+			setTempWire(<Wire start={connectOut} end={"mouse"} />)
+		}
+
 		if(connectIn !== "" && connectOut != "") {
 			let input = parseInt(connectIn.split(".")[0])
 			let outputid = parseInt(connectOut.split(".")[0])
@@ -72,6 +82,7 @@ function Workspace() {
 			
 			setConnectIn("");
 			setConnectOut("");
+			setTempWire(<a></a>);
 		}
 	}, [connectIn, connectOut])
 
@@ -130,6 +141,8 @@ function Workspace() {
 			<WireContext.Provider value={{wires, setWires} as WireContent}>
 				{componentHTML}
 				{wireHTML}
+				{tempWire}
+				<MouseFollower />
 			</WireContext.Provider>
 		</Xwrapper>
 	</div> )
