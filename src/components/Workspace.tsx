@@ -15,8 +15,9 @@ function Workspace() {
 	const alphabet = "ABCDEFGHIJKLMNOPQRSTUVWXYZ".split("");
 	const [wires, setWires] = useState<boolean[]>([]);
 	const [components, setComponents] = useState<component[]>([]);
-
 	const [componentHTML, setComponentHTML] = useState<JSX.Element[]>([]);
+
+	const [toRemove, setToRemove] = useState(-1);
 
 	const [connectIn, setConnectIn] = useState("");
 	const [connectOut, setConnectOut] = useState("");
@@ -42,6 +43,16 @@ function Workspace() {
 			inputs: inputs
 		} as component)
 		setComponents(newcomps);
+	}
+
+	function remove(n: number) {
+		if(n === -1) {
+			return;
+		}
+
+		let newComponents = structuredClone(components);
+		newComponents[n] = null;
+		setComponents(newComponents);
 	}
 
 	function connect(side: string, id: string) {
@@ -79,6 +90,7 @@ function Workspace() {
 
 		for(let i in components) {
 			let c = components[i];
+			if(c === null) { continue; }
 			switch(c.type) {
 				case "SW":
 					newhtml[i] = <Switch key={i} id={i} onClick={(id) => {connect("in", id)}}/>
@@ -113,6 +125,7 @@ function Workspace() {
 		<button onClick={(e) => {create("AND")}}>AND</button>
 		<button onClick={(e) => {create("OR")}}>OR</button>
 		<button onClick={(e) => {create("XOR")}}>XOR</button>
+		<button onClick={(e) => {remove(toRemove)}}>Delete</button><input onChange={(e) => {setToRemove(parseInt(e.target.value))}}></input>
 		<Xwrapper>
 			<WireContext.Provider value={{wires, setWires} as WireContent}>
 				{componentHTML}
