@@ -2,7 +2,7 @@ import React, { useContext, useEffect, useState } from "react";
 import Xarrow, { useXarrow, Xwrapper } from "react-xarrows";
 import Draggable from "react-draggable";
 
-import { WireContext } from "./WireContext";
+import { ConfigContext, WireContext } from "./Context";
 
 import AND_png from "../images/AND.png"
 import OR_png  from "../images/OR.png"
@@ -15,9 +15,14 @@ const Gate = ({A, B, comp, label, id, onClick}: {
 	comp: (A: boolean, B: boolean) => boolean,
 	onClick: (id: string) => void}) => {
 	
+	const {wires, setWires} = useContext(WireContext);
+	const {config, setConfig} = useContext(ConfigContext);
+	
 	const [image, setImage] = useState(AND_png);
 	const [style, setStyle] = useState(JSON.parse("{}"));
-	const {wires, setWires} = useContext(WireContext);
+	
+	const [display, setDisplay] = useState("inline"); //for hiding the gate configuration
+
 	const updateXarrow = useXarrow();
 
 
@@ -62,6 +67,10 @@ const Gate = ({A, B, comp, label, id, onClick}: {
 		setWires(newWires);
 	}, [wires])
 
+	useEffect(() => {
+		setDisplay(config["displayMode" as keyof object] === "full" ? "inline": "none");
+	}, [config])
+
 	return (
 
 
@@ -69,20 +78,20 @@ const Gate = ({A, B, comp, label, id, onClick}: {
 
 			<div style={{position: "absolute", border: "0px solid red", width: "90px", height: "90px"}}>
 				
-				{label} ({id}) <br />
+				{display==="inline"?`${label} (${id})`:""} <br />
 
 				<img src={image} style={{width: "90px", position: "absolute", transform: "translate(-50%, 10%)"}}/>
 
 				<div id={`${id}.A`} style={{left: "0%", top: style.A_top, position: "absolute", transform: "translate(0%, -50%)"}}>
-					<button onClick={(e) => onClick(`${id}.A`)} style={{marginLeft: "1.3em"}}>A</button><br /> 
+					<button onClick={(e) => onClick(`${id}.A`)} style={{marginLeft: "1.3em", display: display}}>A</button><br /> 
 				</div>
 
 				<div id={`${id}.Y`} style={{right: "0%", top: style.O_top, position: "absolute", transform: "translate(0%, -50%)"}}>
-					{comp(wires[A], wires[B])?1:0}<button onClick={(e) => onClick(`${id}.Y`)} style={{marginRight: "1.3em"}}>Y</button>
+					<label style={{display: display}}>{comp(wires[A], wires[B])?1:0}</label><button onClick={(e) => onClick(`${id}.Y`)} style={{marginRight: "1.3em", display: display}}>Y</button>
 				</div>
 
 				<div id={`${id}.B`} style={{left: "0%", top: style.B_top, position: "absolute", transform: "translate(0%, -50%)"}}>
-					<button onClick={(e) => onClick(`${id}.B`)} style={{marginLeft: "1.3em"}}>B</button> <br/> 
+					<button onClick={(e) => onClick(`${id}.B`)} style={{marginLeft: "1.3em", display: display}}>B</button> <br/> 
 				</div>
 
 

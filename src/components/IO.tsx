@@ -3,7 +3,7 @@ import Xarrow, { useXarrow, Xwrapper } from "react-xarrows";
 import Draggable from "react-draggable";
 
 import { pos } from "../models/pos";
-import { WireContext } from "./WireContext";
+import { WireContext } from "./Context";
 
 export const Switch = ({id, onClick}: {id: any, onClick: (id: string) => void}) => {
 
