@@ -4,5 +4,5 @@ export interface component {
 }
 
 export interface input {
-	name: string
+	id: number
 }
