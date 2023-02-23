@@ -18,6 +18,7 @@ function Workspace() {
 	const [wires, setWires] = useState<boolean[]>([]);
 	const [components, setComponents] = useState<component[]>([]);
 	const [componentHTML, setComponentHTML] = useState<JSX.Element[]>([]);
+	const [deleteHTML, setDeleteHTML] = useState<JSX.Element[]>([]);
 
 	const [toRemove, setToRemove] = useState(-1);
 
@@ -51,12 +52,15 @@ function Workspace() {
 	}
 
 	function remove(n: number) {
+		console.log(n)
 		let newComponents = structuredClone(components);
+
 		newComponents[n].type = "deleted_gate";
 		for(let i in newComponents[n].inputs) {
 			newComponents[n].inputs[i].id = -1;
 		}
-
+		
+		console.log(newComponents);
 
 		for(let i in newComponents) {
 			let c = newComponents[i];
@@ -66,6 +70,7 @@ function Workspace() {
 				newComponents[i].inputs[j].id = -1;
 			}
 		}
+
 
 		setComponents(newComponents);
 		updateXarrow();
@@ -130,6 +135,16 @@ function Workspace() {
 			}
 		}
 		setComponentHTML(newhtml)
+
+
+		let newDeleteHTML: JSX.Element[] = [<option value={-1}>Delete Component</option>];
+
+		for(let i in components) {
+			if(components[i].type === "deleted_gate") { continue; }
+			newDeleteHTML.push(<option value={i}>Delete: ID: {i} ({components[i].type})</option>)
+		}
+		setDeleteHTML(newDeleteHTML);
+
 	}, [components])
 
 	
@@ -141,7 +156,12 @@ function Workspace() {
 		<button onClick={(e) => {create("AND")}}>AND</button>
 		<button onClick={(e) => {create("OR")}}>OR</button>
 		<button onClick={(e) => {create("XOR")}}>XOR</button>
-		<button onClick={(e) => {remove(toRemove)}}>Delete</button><input onChange={(e) => {setToRemove(parseInt(e.target.value))}}></input>
+
+		<select onChange={(e) => {remove(parseInt(e.target.value))}}>
+			{deleteHTML}
+		</select>
+
+		{/* <button onClick={(e) => {remove(toRemove)}}>Delete</button><input onChange={(e) => {setToRemove(parseInt(e.target.value))}}></input> */}
 		<button onClick={(e) => {setConfig({"displayMode": "full"})}}>Show</button>
 		<button onClick={(e) => {setConfig({"displayMode": "clean"})}}>Hide</button>
 		<Xwrapper>
