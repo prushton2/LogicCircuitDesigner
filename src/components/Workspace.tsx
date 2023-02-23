@@ -147,8 +147,8 @@ function Workspace() {
 		<Xwrapper>
 			<ConfigContext.Provider value={{config, setConfig} as ConfigContent}>
 			<WireContext.Provider value={{wires, setWires} as WireContent}>
-				{componentHTML}
 				<WireRenderer components={components} connectIn={connectIn} connectOut={connectOut}/>
+				{componentHTML}
 				<MouseFollower />
 			</WireContext.Provider>
 			</ConfigContext.Provider>
