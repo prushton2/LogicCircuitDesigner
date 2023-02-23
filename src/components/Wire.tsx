@@ -1,12 +1,13 @@
-import { useEffect, useState } from "react";
+import { useContext, useEffect, useState } from "react";
 import Xarrow, { useXarrow, Xwrapper } from "react-xarrows";
+import { WireContext } from "./WireContext";
 
-const Render = ({start, end}: {state: boolean, start: string, end: string}) => {
+const Render = ({start, end}: {start: string, end: string}) => {
 	
-	const [value, setValue] = useState(false);
+	const {wires, setWires} = useContext(WireContext);
 
 	return (
-		<Xarrow path="grid" headSize={0} color={value ? "red" : "white"} start={start} end={end} />
+		<Xarrow path="grid" headSize={0} color={wires[parseInt(start.split(".")[0])] ? "red" : "white"} start={start.toString()} end={end.toString()} />
 	)
 }
 
