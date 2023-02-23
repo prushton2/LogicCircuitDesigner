@@ -63,7 +63,11 @@ function Workspace() {
 			let outputPort = alphabet.indexOf(connectOut.split(".")[1]);
 
 			let newComponents = structuredClone(components);
-			newComponents[outputid].inputs[outputPort].id = input;
+			if (newComponents[outputid].inputs[outputPort].id === input) {
+				newComponents[outputid].inputs[outputPort].id = -1;
+			} else {
+				newComponents[outputid].inputs[outputPort].id = input;
+			}
 			setComponents(newComponents);
 			
 			setConnectIn("");
