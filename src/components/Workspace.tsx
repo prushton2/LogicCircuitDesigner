@@ -12,7 +12,7 @@ import { component, input } from "../models/component";
 
 function Workspace() {
 
-	const [config, setConfig] = useState({});
+	const [config, setConfig] = useState({"displayMode": "full"});
 	const alphabet = "ABCDEFGHIJKLMNOPQRSTUVWXYZ".split("");
 	
 	const [wires, setWires] = useState<boolean[]>([]);
@@ -124,6 +124,8 @@ function Workspace() {
 		<button onClick={(e) => {create("OR")}}>OR</button>
 		<button onClick={(e) => {create("XOR")}}>XOR</button>
 		<button onClick={(e) => {remove(toRemove)}}>Delete</button><input onChange={(e) => {setToRemove(parseInt(e.target.value))}}></input>
+		<button onClick={(e) => {setConfig({"displayMode": "full"})}}>Show</button>
+		<button onClick={(e) => {setConfig({"displayMode": "clean"})}}>Hide</button>
 		<Xwrapper>
 			<ConfigContext.Provider value={{config, setConfig} as ConfigContent}>
 			<WireContext.Provider value={{wires, setWires} as WireContent}>
