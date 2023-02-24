@@ -7,7 +7,7 @@ import Xarrow, { useXarrow, Xwrapper } from "react-xarrows";
 
 import MouseFollower from "./MouseFollower";
 import WireRenderer from "./WireRenderer";
-import { AND, OR, XOR, NOT } from "./Gate";
+import { AND, OR, XOR, NOT, NAND, NOR, XNOR } from "./Gate";
 import { Switch, LED } from "./IO";
 
 import { component, input } from "../models/component";
@@ -41,6 +41,9 @@ function Workspace() {
 			case "AND":
 			case  "OR":
 			case "XOR":
+			case "NAND":
+			case "NOR":
+			case "XNOR":
 				inputs = [{id: -1} as input, {id: -1} as input];
 				break;
 		}
@@ -138,6 +141,15 @@ function Workspace() {
 
 				case "NOT":
 					newhtml[i] = <NOT key={i} id={i.toString()} A={structuredClone(c.inputs[0].id)} onClick={(e) => connect(e.split(".")[1]=="Y"?"in":"out", e)}/>
+					break;
+				case "NAND":
+					newhtml[i] = <NAND key={i} id={i.toString()} A={structuredClone(c.inputs[0].id)} B={structuredClone(c.inputs[1].id)} onClick={(e) => connect(e.split(".")[1]=="Y"?"in":"out", e)}/>
+					break;
+				case "NOR":
+					newhtml[i] = <NOR key={i} id={i.toString()} A={structuredClone(c.inputs[0].id)} B={structuredClone(c.inputs[1].id)} onClick={(e) => connect(e.split(".")[1]=="Y"?"in":"out", e)}/>
+					break;
+				case "XNOR":
+					newhtml[i] = <XNOR key={i} id={i.toString()} A={structuredClone(c.inputs[0].id)} B={structuredClone(c.inputs[1].id)} onClick={(e) => connect(e.split(".")[1]=="Y"?"in":"out", e)}/>
 					break;
 			}
 		}
