@@ -66,14 +66,19 @@ function Workspace() {
 			newComponents[n].inputs[i].id = -1;
 		}
 		
-		console.log(newComponents);
+		// console.log(newComponents);
 
-		for(let i in newComponents) {
-			let c = newComponents[i];
-			for(let j in c.inputs) {
-				if(newComponents[j].type !== "deleted_gate") { continue; }
+		//remove references to deleted gates
+		for(let i in newComponents) { //for each component
+			let c = newComponents[i]; //cache component
+			for(let j in c.inputs) { //for each input in component
+				let input = c.inputs[j]; // cache input object
 
-				newComponents[i].inputs[j].id = -1;
+				if(input.id === -1) { continue; } //Skip if the reference is null
+
+				if(newComponents[input.id].type === "deleted_gate") { //check if the gate that the input references is dead
+					newComponents[i].inputs[j].id = -1; //if it is dead, then remove the reference to it
+				}
 			}
 		}
 
