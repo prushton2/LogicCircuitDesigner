@@ -1,3 +1,5 @@
+import "./Workspace.css"
+
 import { useEffect, useState } from "react";
 import { WireContext, WireContent, ConfigContext, ConfigContent } from "./Context";
 
@@ -5,14 +7,14 @@ import Xarrow, { useXarrow, Xwrapper } from "react-xarrows";
 
 import MouseFollower from "./MouseFollower";
 import WireRenderer from "./WireRenderer";
-import { AND, OR, XOR, NOT } from "./Gate";
+import { AND, OR, XOR, NOT, NAND, NOR, XNOR } from "./Gate";
 import { Switch, LED } from "./IO";
 
 import { component, input } from "../models/component";
 
 function Workspace() {
 
-	const [config, setConfig] = useState({"displayMode": "full"});
+	const [config, setConfig] = useState({"hideDetails": false, "hideWireStates": false});
 	const alphabet = "ABCDEFGHIJKLMNOPQRSTUVWXYZ".split("");
 	
 	const [wires, setWires] = useState<boolean[]>([]);
@@ -39,6 +41,9 @@ function Workspace() {
 			case "AND":
 			case  "OR":
 			case "XOR":
+			case "NAND":
+			case "NOR":
+			case "XNOR":
 				inputs = [{id: -1} as input, {id: -1} as input];
 				break;
 		}
@@ -61,14 +66,19 @@ function Workspace() {
 			newComponents[n].inputs[i].id = -1;
 		}
 		
-		console.log(newComponents);
+		// console.log(newComponents);
 
-		for(let i in newComponents) {
-			let c = newComponents[i];
-			for(let j in c.inputs) {
-				if(newComponents[j].type !== "deleted_gate") { continue; }
+		//remove references to deleted gates
+		for(let i in newComponents) { //for each component
+			let c = newComponents[i]; //cache component
+			for(let j in c.inputs) { //for each input in component
+				let input = c.inputs[j]; // cache input object
 
-				newComponents[i].inputs[j].id = -1;
+				if(input.id === -1) { continue; } //Skip if the reference is null
+
+				if(newComponents[input.id].type === "deleted_gate") { //check if the gate that the input references is dead
+					newComponents[i].inputs[j].id = -1; //if it is dead, then remove the reference to it
+				}
 			}
 		}
 
@@ -137,6 +147,15 @@ function Workspace() {
 				case "NOT":
 					newhtml[i] = <NOT key={i} id={i.toString()} A={structuredClone(c.inputs[0].id)} onClick={(e) => connect(e.split(".")[1]=="Y"?"in":"out", e)}/>
 					break;
+				case "NAND":
+					newhtml[i] = <NAND key={i} id={i.toString()} A={structuredClone(c.inputs[0].id)} B={structuredClone(c.inputs[1].id)} onClick={(e) => connect(e.split(".")[1]=="Y"?"in":"out", e)}/>
+					break;
+				case "NOR":
+					newhtml[i] = <NOR key={i} id={i.toString()} A={structuredClone(c.inputs[0].id)} B={structuredClone(c.inputs[1].id)} onClick={(e) => connect(e.split(".")[1]=="Y"?"in":"out", e)}/>
+					break;
+				case "XNOR":
+					newhtml[i] = <XNOR key={i} id={i.toString()} A={structuredClone(c.inputs[0].id)} B={structuredClone(c.inputs[1].id)} onClick={(e) => connect(e.split(".")[1]=="Y"?"in":"out", e)}/>
+					break;
 			}
 		}
 		setComponentHTML(newhtml)
@@ -152,24 +171,55 @@ function Workspace() {
 
 	}, [components])
 
-	
+	function toggleConfig(param: string) {
+		let newConfig = structuredClone(config);
+		newConfig[param] = !newConfig[param];
+		setConfig(newConfig);
+	}
 
 	return (
 	<div>
-		<button onClick={(e) => {create("SW")}}>SW</button>
-		<button onClick={(e) => {create("LED")}}>LED</button>
-		<button onClick={(e) => {create("AND")}}>AND</button>
-		<button onClick={(e) => {create("OR")}}>OR</button>
-		<button onClick={(e) => {create("XOR")}}>XOR</button>
-		<button onClick={(e) => {create("NOT")}}>NOT</button>
+
+		<table>
+		<tbody>
+			<tr>
+				<td>I/O</td>
+				<td><button className="interactBtn" onClick={(e) => {create("SW")}}>SW</button></td>
+				<td><button className="interactBtn" onClick={(e) => {create("LED")}}>LED</button></td>
+				<td><button className="interactBtn" onClick={(e) => {create("NOT")}}>NOT</button></td>
+
+			
+			</tr>
+			<tr>
+				<td>Gates</td>
+				<td><button className="interactBtn" onClick={(e) => {create("AND")}}>AND</button></td>
+				<td><button className="interactBtn" onClick={(e) => {create("OR")}}>OR</button></td>
+				<td><button className="interactBtn" onClick={(e) => {create("XOR")}}>XOR</button></td>
+			</tr>
+			<tr>
+				<td></td>
+				<td><button className="interactBtn" onClick={(e) => {create("NAND")}}>NAND</button></td>
+				<td><button className="interactBtn" onClick={(e) => {create("NOR")}}>NOR</button></td>
+				<td><button className="interactBtn" onClick={(e) => {create("XNOR")}}>XNOR</button></td>
+				<td></td>
+			</tr>
+			<tr>
+				<td>Config</td>
+				<td><button className="interactBtn" onClick={(e) => {toggleConfig("hideDetails")}}>Details</button></td>
+				<td><button className="interactBtn" onClick={(e) => {toggleConfig("hideWireStates")}}>Wires</button></td>
+			</tr>
+		</tbody>
+		</table>
+		<div style={{left: "3.3em", position: 'absolute'}}>
 
 		<select onChange={(e) => {remove(parseInt(e.target.value))}}>
 			{deleteHTML}
 		</select>
+		</div>
+
+		
 
 		{/* <button onClick={(e) => {remove(toRemove)}}>Delete</button><input onChange={(e) => {setToRemove(parseInt(e.target.value))}}></input> */}
-		<button onClick={(e) => {setConfig({"displayMode": "full"})}}>Show</button>
-		<button onClick={(e) => {setConfig({"displayMode": "clean"})}}>Hide</button>
 		<Xwrapper>
 			<ConfigContext.Provider value={{config, setConfig} as ConfigContent}>
 			<WireContext.Provider value={{wires, setWires} as WireContent}>

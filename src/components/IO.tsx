@@ -24,7 +24,7 @@ export const Switch = ({id, onClick}: {id: any, onClick: (id: string) => void}) 
 	}, [value])
 
 	useEffect(() => {
-		setDisplay(config["displayMode" as keyof object] === "full" ? "inline": "none");
+		setDisplay(!config["hideDetails" as keyof object] ? "inline": "none");
 	}, [config])
 
 	return (
@@ -58,7 +58,7 @@ export const LED = ({A, id, onClick}: {A: number, id: string, onClick: (id: stri
 	const updateXarrow = useXarrow();
 	
 	useEffect(() => {
-		setDisplay(config["displayMode" as keyof object] === "full" ? "inline": "none");
+		setDisplay(!config["hideDetails" as keyof object] ? "inline": "none");
 	}, [config])
 	return (
 		<Draggable grid={[5, 5]} onDrag={updateXarrow} onStop={updateXarrow}>

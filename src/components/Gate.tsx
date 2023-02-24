@@ -8,62 +8,30 @@ import AND_png from "../images/AND.png"
 import OR_png  from "../images/OR.png"
 import XOR_png from "../images/XOR.png"
 import NOT_png from "../images/NOT.png"
+import NAND_png from "../images/NAND.png"
+import NOR_png  from "../images/NOR.png"
+import XNOR_png from "../images/XNOR.png"
 
+interface buttonOffset {
+	A_top: string,
+	O_top: string,
+	B_top: string,
+}
 
-const Gate = ({A, B, comp, label, id, onClick}: {
-	A: number, B: number, label: string, id: string,
+const Gate = ({A, B, comp, label, image, style, id, onClick}: {
+	A: number, B: number, label: string, image: string, style: buttonOffset, id: string,
 
 	comp: (A: boolean, B: boolean) => boolean,
 	onClick: (id: string) => void}) => {
 	
 	const {wires, setWires} = useContext(WireContext);
 	const {config, setConfig} = useContext(ConfigContext);
-	
-	const [image, setImage] = useState(AND_png);
-	const [style, setStyle] = useState(JSON.parse("{}"));
-	
+		
 	const [display, setDisplay] = useState("inline"); //for hiding the gate configuration
 
 	const updateXarrow = useXarrow();
 
 
-	useEffect(() => {
-		switch(label) {
-			case "AND":
-				setImage(AND_png);
-				setStyle({
-					A_top: "45px",
-					O_top: "65px",
-					B_top: "80px",
-				})
-				break;
-			case "OR":
-				setImage(OR_png);
-				setStyle({
-					A_top: "40px",
-					O_top: "60px",
-					B_top: "80px",
-				})
-				break;
-			case "XOR":
-				setImage(XOR_png);
-				setStyle({
-					A_top: "40px",
-					O_top: "55px",
-					B_top: "75px",
-				})
-				break;
-			
-			case "NOT":
-				setImage(NOT_png);
-				setStyle({
-					A_top: "75px",
-					O_top: "75px",
-					B_top: "null",
-				})
-				break;
-		}
-	}, [])
 
 	useEffect(() => {
 		let newValue = comp(wires[A], wires[B]);
@@ -78,7 +46,7 @@ const Gate = ({A, B, comp, label, id, onClick}: {
 	}, [wires])
 
 	useEffect(() => {
-		setDisplay(config["displayMode" as keyof object] === "full" ? "inline": "none");
+		setDisplay(!config["hideDetails" as keyof object] ? "inline": "none");
 	}, [config])
 
 	return (
@@ -113,24 +81,77 @@ const Gate = ({A, B, comp, label, id, onClick}: {
 
 export const AND = ({A, B, id, onClick}: {A: number, B: number, id: string, onClick: (id: string) => void}) => {	
 	return (
-		<Gate id={id} A={A} B={B} comp={(A, B) => { return A && B; }} label={"AND"} onClick={(id) => onClick(id)}/>
+		<Gate id={id} A={A} B={B} comp={(A, B) => { return A && B; }} label={"AND"} image={AND_png} onClick={(id) => onClick(id)}
+		style={{
+			A_top: "45px",
+			O_top: "65px",
+			B_top: "80px"
+		} as buttonOffset}/>
 	)
 }
 
 export const OR = ({A, B, id, onClick}: {A: number, B: number, id: string, onClick: (id: string) => void}) => {
 	return (
-		<Gate id={id} A={A} B={B} comp={(A, B) => { return A || B; }} label={"OR"} onClick={(id) => onClick(id)}/>
+		<Gate id={id} A={A} B={B} comp={(A, B) => { return A || B; }} label={"OR"} image={OR_png} onClick={(id) => onClick(id)}
+		style={{
+			A_top: "40px",
+			O_top: "60px",
+			B_top: "80px",
+		} as buttonOffset}/>
 	)
 }
 
 export const XOR = ({A, B, id, onClick}: {A: number, B: number, id: string, onClick: (id: string) => void}) => {
 	return (
-		<Gate id={id} A={A} B={B} comp={(A, B) => { return ((A?1:0) + (B?1:0)) %2 == 1 }} label={"XOR"} onClick={(id) => onClick(id)}/>
+		<Gate id={id} A={A} B={B} comp={(A, B) => { return ( A !== B ) }} label={"XOR"} image={XOR_png} onClick={(id) => onClick(id)}
+		style={{
+			A_top: "40px",
+			O_top: "55px",
+			B_top: "75px",
+		} as buttonOffset}/>
 	)
 }
 
 export const NOT = ({A, id, onClick}: {A: number, id: string, onClick: (id: string) => void}) => {
 	return (
-		<Gate id={id} A={A} B={-1} comp={(A, B) => { return !A }} label={"NOT"} onClick={(id) => onClick(id)}/>
+		<Gate id={id} A={A} B={-1} comp={(A, B) => { return !A }} label={"NOT"} image={NOT_png} onClick={(id) => onClick(id)}
+		style={{
+			A_top: "75px",
+			O_top: "75px",
+			B_top: "null",
+		} as buttonOffset}/>
+	)
+}
+
+export const NAND = ({A, B, id, onClick}: {A: number, B: number, id: string, onClick: (id: string) => void}) => {
+	return (
+		<Gate id={id} A={A} B={B} comp={(A, B) => { return ( !(A&&B) ) }} label={"NAND"} image={NAND_png} onClick={(id) => onClick(id)}
+		style={{
+			A_top: "45px",
+			O_top: "60px",
+			B_top: "80px"
+		} as buttonOffset}/>
+	)
+}
+
+export const NOR = ({A, B, id, onClick}: {A: number, B: number, id: string, onClick: (id: string) => void}) => {
+	return (
+		<Gate id={id} A={A} B={B} comp={(A, B) => { return ( !(A||B)) }} label={"NOR"} image={NOR_png} onClick={(id) => onClick(id)}
+		style={{
+			A_top: "40px",
+			O_top: "55px",
+			B_top: "70px",
+		} as buttonOffset}/>
+	)
+}
+
+export const XNOR = ({A, B, id, onClick}: {A: number, B: number, id: string, onClick: (id: string) => void}) => {
+	return (
+		<Gate id={id} A={A} B={B} comp={(A, B) => { return (A === B) }} label={"XNOR"} image={XNOR_png} onClick={(id) => onClick(id)}
+		style={{
+			A_top: "40px",
+			O_top: "55px",
+			B_top: "65px",
+		} as buttonOffset}/>
 	)
 }
