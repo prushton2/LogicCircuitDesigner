@@ -128,7 +128,7 @@ export const NAND = ({A, B, id, onClick}: {A: number, B: number, id: string, onC
 		<Gate id={id} A={A} B={B} comp={(A, B) => { return ( !(A&&B) ) }} label={"NAND"} image={NAND_png} onClick={(id) => onClick(id)}
 		style={{
 			A_top: "45px",
-			O_top: "65px",
+			O_top: "60px",
 			B_top: "80px"
 		} as buttonOffset}/>
 	)
@@ -139,8 +139,8 @@ export const NOR = ({A, B, id, onClick}: {A: number, B: number, id: string, onCl
 		<Gate id={id} A={A} B={B} comp={(A, B) => { return ( !(A||B)) }} label={"NOR"} image={NOR_png} onClick={(id) => onClick(id)}
 		style={{
 			A_top: "40px",
-			O_top: "60px",
-			B_top: "80px",
+			O_top: "55px",
+			B_top: "70px",
 		} as buttonOffset}/>
 	)
 }
@@ -151,7 +151,7 @@ export const XNOR = ({A, B, id, onClick}: {A: number, B: number, id: string, onC
 		style={{
 			A_top: "40px",
 			O_top: "55px",
-			B_top: "75px",
+			B_top: "65px",
 		} as buttonOffset}/>
 	)
 }
