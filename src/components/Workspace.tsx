@@ -5,7 +5,7 @@ import Xarrow, { useXarrow, Xwrapper } from "react-xarrows";
 
 import MouseFollower from "./MouseFollower";
 import WireRenderer from "./WireRenderer";
-import { AND, OR, XOR } from "./Gate";
+import { AND, OR, XOR, NOT } from "./Gate";
 import { Switch, LED } from "./IO";
 
 import { component, input } from "../models/component";
@@ -33,6 +33,7 @@ function Workspace() {
 			case "SW":
 				break;
 			case "LED":
+			case "NOT":
 				inputs = [{id: -1} as input];
 				break;
 			case "AND":
@@ -132,6 +133,10 @@ function Workspace() {
 				case "XOR":
 					newhtml[i] = <XOR key={i} id={i.toString()} A={structuredClone(c.inputs[0].id)} B={structuredClone(c.inputs[1].id)} onClick={(e) => connect(e.split(".")[1]=="Y"?"in":"out", e)}/>
 					break;
+
+				case "NOT":
+					newhtml[i] = <NOT key={i} id={i.toString()} A={structuredClone(c.inputs[0].id)} onClick={(e) => connect(e.split(".")[1]=="Y"?"in":"out", e)}/>
+					break;
 			}
 		}
 		setComponentHTML(newhtml)
@@ -156,6 +161,7 @@ function Workspace() {
 		<button onClick={(e) => {create("AND")}}>AND</button>
 		<button onClick={(e) => {create("OR")}}>OR</button>
 		<button onClick={(e) => {create("XOR")}}>XOR</button>
+		<button onClick={(e) => {create("NOT")}}>NOT</button>
 
 		<select onChange={(e) => {remove(parseInt(e.target.value))}}>
 			{deleteHTML}
