@@ -78,7 +78,7 @@ const Gate = ({A, B, comp, label, id, onClick}: {
 	}, [wires])
 
 	useEffect(() => {
-		setDisplay(config["displayMode" as keyof object] === "full" ? "inline": "none");
+		setDisplay(!config["hideDetails" as keyof object] ? "inline": "none");
 	}, [config])
 
 	return (
@@ -132,5 +132,23 @@ export const XOR = ({A, B, id, onClick}: {A: number, B: number, id: string, onCl
 export const NOT = ({A, id, onClick}: {A: number, id: string, onClick: (id: string) => void}) => {
 	return (
 		<Gate id={id} A={A} B={-1} comp={(A, B) => { return !A }} label={"NOT"} onClick={(id) => onClick(id)}/>
+	)
+}
+
+export const NAND = ({A, B, id, onClick}: {A: number, B: number, id: string, onClick: (id: string) => void}) => {
+	return (
+		<Gate id={id} A={A} B={B} comp={(A, B) => { return ((A?1:0) + (B?1:0)) %2 == 1 }} label={"XOR"} onClick={(id) => onClick(id)}/>
+	)
+}
+
+export const NOR = ({A, B, id, onClick}: {A: number, B: number, id: string, onClick: (id: string) => void}) => {
+	return (
+		<Gate id={id} A={A} B={B} comp={(A, B) => { return ((A?1:0) + (B?1:0)) %2 == 1 }} label={"XOR"} onClick={(id) => onClick(id)}/>
+	)
+}
+
+export const XNOR = ({A, B, id, onClick}: {A: number, B: number, id: string, onClick: (id: string) => void}) => {
+	return (
+		<Gate id={id} A={A} B={B} comp={(A, B) => { return ((A?1:0) + (B?1:0)) %2 == 1 }} label={"XOR"} onClick={(id) => onClick(id)}/>
 	)
 }

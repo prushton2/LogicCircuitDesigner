@@ -1,3 +1,5 @@
+import "./Workspace.css"
+
 import { useEffect, useState } from "react";
 import { WireContext, WireContent, ConfigContext, ConfigContent } from "./Context";
 
@@ -12,7 +14,7 @@ import { component, input } from "../models/component";
 
 function Workspace() {
 
-	const [config, setConfig] = useState({"displayMode": "full"});
+	const [config, setConfig] = useState({"hideDetails": false, "hideWireStates": false});
 	const alphabet = "ABCDEFGHIJKLMNOPQRSTUVWXYZ".split("");
 	
 	const [wires, setWires] = useState<boolean[]>([]);
@@ -152,24 +154,55 @@ function Workspace() {
 
 	}, [components])
 
-	
+	function toggleConfig(param: string) {
+		let newConfig = structuredClone(config);
+		newConfig[param] = !newConfig[param];
+		setConfig(newConfig);
+	}
 
 	return (
 	<div>
-		<button onClick={(e) => {create("SW")}}>SW</button>
-		<button onClick={(e) => {create("LED")}}>LED</button>
-		<button onClick={(e) => {create("AND")}}>AND</button>
-		<button onClick={(e) => {create("OR")}}>OR</button>
-		<button onClick={(e) => {create("XOR")}}>XOR</button>
-		<button onClick={(e) => {create("NOT")}}>NOT</button>
+
+		<table>
+		<tbody>
+			<tr>
+				<td>I/O</td>
+				<td><button className="interactBtn" onClick={(e) => {create("SW")}}>SW</button></td>
+				<td><button className="interactBtn" onClick={(e) => {create("LED")}}>LED</button></td>
+				<td><button className="interactBtn" onClick={(e) => {create("NOT")}}>NOT</button></td>
+
+			
+			</tr>
+			<tr>
+				<td>Gates</td>
+				<td><button className="interactBtn" onClick={(e) => {create("AND")}}>AND</button></td>
+				<td><button className="interactBtn" onClick={(e) => {create("OR")}}>OR</button></td>
+				<td><button className="interactBtn" onClick={(e) => {create("XOR")}}>XOR</button></td>
+			</tr>
+			<tr>
+				<td></td>
+				<td><button className="interactBtn" onClick={(e) => {create("NAND")}}>NAND</button></td>
+				<td><button className="interactBtn" onClick={(e) => {create("NOR")}}>NOR</button></td>
+				<td><button className="interactBtn" onClick={(e) => {create("XNOR")}}>XNOR</button></td>
+				<td></td>
+			</tr>
+			<tr>
+				<td>Config</td>
+				<td><button className="interactBtn" onClick={(e) => {toggleConfig("hideDetails")}}>Details</button></td>
+				<td><button className="interactBtn" onClick={(e) => {toggleConfig("hideWireStates")}}>Wires</button></td>
+			</tr>
+		</tbody>
+		</table>
+		<div style={{left: "3.3em", position: 'absolute'}}>
 
 		<select onChange={(e) => {remove(parseInt(e.target.value))}}>
 			{deleteHTML}
 		</select>
+		</div>
+
+		
 
 		{/* <button onClick={(e) => {remove(toRemove)}}>Delete</button><input onChange={(e) => {setToRemove(parseInt(e.target.value))}}></input> */}
-		<button onClick={(e) => {setConfig({"displayMode": "full"})}}>Show</button>
-		<button onClick={(e) => {setConfig({"displayMode": "clean"})}}>Hide</button>
 		<Xwrapper>
 			<ConfigContext.Provider value={{config, setConfig} as ConfigContent}>
 			<WireContext.Provider value={{wires, setWires} as WireContent}>
