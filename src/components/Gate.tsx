@@ -57,8 +57,8 @@ const Gate = ({A, B, comp, label, id, onClick}: {
 			case "NOT":
 				setImage(NOT_png);
 				setStyle({
-					A_top: "60px",
-					O_top: "60px",
+					A_top: "75px",
+					O_top: "75px",
 					B_top: "null",
 				})
 				break;
