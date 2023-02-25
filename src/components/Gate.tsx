@@ -54,7 +54,7 @@ const Gate = ({A, B, comp, label, image, style, id, onClick}: {
 
 		<Draggable handle=".handle" grid={[5, 5]} onDrag={updateXarrow} onStop={updateXarrow}>
 
-			<div style={{position: "absolute", border: "0px solid red", width: "90px", height: "90px"}}>
+			<div style={{userSelect: "none", position: "absolute", border: "0px solid red", width: "90px", height: "90px"}} >
 				
 				{display==="inline"?`${label} (${id})`:""} <br />
 
