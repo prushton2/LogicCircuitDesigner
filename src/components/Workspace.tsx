@@ -66,8 +66,6 @@ function Workspace() {
 			newComponents[n].inputs[i].id = -1;
 		}
 		
-		// console.log(newComponents);
-
 		//remove references to deleted gates
 		for(let i in newComponents) { //for each component
 			let c = newComponents[i]; //cache component

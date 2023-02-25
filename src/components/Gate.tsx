@@ -52,13 +52,13 @@ const Gate = ({A, B, comp, label, image, style, id, onClick}: {
 	return (
 
 
-		<Draggable grid={[5, 5]} onDrag={updateXarrow} onStop={updateXarrow}>
+		<Draggable handle=".handle" grid={[5, 5]} onDrag={updateXarrow} onStop={updateXarrow}>
 
-			<div style={{position: "absolute", border: "0px solid red", width: "90px", height: "90px"}}>
+			<div style={{userSelect: "none", position: "absolute", border: "0px solid red", width: "90px", height: "90px"}} >
 				
 				{display==="inline"?`${label} (${id})`:""} <br />
 
-				<img src={image} style={{width: "90px", position: "absolute", transform: "translate(-50%, 10%)"}}/>
+				<img className="handle" src={image} style={{width: "90px", position: "absolute", transform: "translate(-50%, 10%)"}} onDragStart={(e) => {e.preventDefault()}}/>
 
 				<div id={`${id}.A`} style={{left: "0%", top: style.A_top, position: "absolute", transform: "translate(0%, -50%)"}}>
 					<button onClick={(e) => onClick(`${id}.A`)} style={{marginLeft: "1.3em", display: display}}>A</button><br /> 

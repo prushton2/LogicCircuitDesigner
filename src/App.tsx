@@ -6,10 +6,6 @@ import Workspace from "./components/Workspace"
 
 function App() {
 
-	useEffect(() => {
-		document.title="Logic Circuit Designer"
-	}, [])
-
 	return (
 		<div className="App">
 			<Workspace />
