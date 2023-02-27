@@ -13,7 +13,11 @@ const Wire = ({start, end}: {start: string, end: string}) => {
 		if(config["hideWireStates" as keyof object] || start === "mouse") {
 			setColor("white");
 		} else {
-			setColor(wires[parseInt(start.split(".")[0])][0] ? "red" : "white")
+			let index: number = parseInt(start.split(".")[0])
+			let binary: string = JSON.stringify(wires[index]).replaceAll("[", "").replaceAll("]", "").replaceAll("null", "").replaceAll(",", "").replaceAll("false", "0").replaceAll("true", "1");
+			let decimal: number = parseInt(binary, 2);
+			
+			setColor(decimal >= ((2**binary.length)/2) ? "red" : "white")
 		}
 	}, [wires, config])
 
