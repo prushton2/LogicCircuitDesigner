@@ -98,10 +98,12 @@ function Workspace() {
 	function connect(side: string, id: string) {
 		switch(side) {
 			case "in":
-				setConnectIn(id);
+				if(id === connectIn) {setConnectIn(""); return;}
+				else {setConnectIn(id)};
 				break;
 				case "out": 
-				setConnectOut(id);
+				if(id === connectOut) {setConnectOut(""); return;}
+				else {setConnectOut(id)};
 				break;
 		}
 	}
@@ -182,6 +184,23 @@ function Workspace() {
 		setDeleteHTML(newDeleteHTML);
 
 	}, [components])
+
+	useEffect(() => {
+		const handleKeyDown = (event: KeyboardEvent) => {
+			console.log('User pressed: ', event.key);
+		
+			if (event.key === 'Escape') {
+				setConnectIn("");
+				setConnectOut("");
+			}
+		};
+
+		document.addEventListener('keydown', handleKeyDown);
+
+		return () => {
+			document.removeEventListener('keydown', handleKeyDown);
+		};
+	}, [])
 
 	function toggleConfig(param: string) {
 		let newConfig = structuredClone(config);
