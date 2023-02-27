@@ -13,6 +13,7 @@ import { Switch, LED } from "./IO";
 import { BUS } from "./Components"
 
 import { component, input } from "../models/component";
+import ComponentRenderer from "./ComponentRenderer";
 
 function Workspace() {
 
@@ -21,10 +22,7 @@ function Workspace() {
 	
 	const [wires, setWires] = useState<boolean[][]>([[]]);
 	const [components, setComponents] = useState<component[]>([]);
-	const [componentHTML, setComponentHTML] = useState<JSX.Element[]>([]);
 	const [deleteHTML, setDeleteHTML] = useState<JSX.Element[]>([]);
-
-	const [toRemove, setToRemove] = useState(-1);
 
 	const [connectIn, setConnectIn] = useState("");
 	const [connectOut, setConnectOut] = useState("");
@@ -36,41 +34,19 @@ function Workspace() {
 		newWires.push([]);
 		setWires(newWires);
 
-
-		let inputs: input[] = []
-		switch(type) {
-			case "SW":
-				break;
-			case "BUS":
-				inputs = [{id: -1} as input, {id: -1} as input, {id: -1} as input, {id: -1} as input, {id: -1} as input, {id: -1} as input, {id: -1} as input, {id: -1} as input];
-				break;
-			case "LED":
-			case "NOT":
-				inputs = [{id: -1} as input];
-				break;
-			case "AND":
-			case  "OR":
-			case "XOR":
-			case "NAND":
-			case "NOR":
-			case "XNOR":
-				inputs = [{id: -1} as input, {id: -1} as input];
-				break;
-		}
-
 		let newcomps = structuredClone(components);
 		newcomps.push({
 			type: type,
-			inputs: inputs
+			init_x: 0,
+			init_y: 0,
+			inputs: []
 		} as component)
 		setComponents(newcomps);
 		updateXarrow();
 	}
 
 	function remove(n: number) {
-		console.log(n)
 		let newComponents = structuredClone(components);
-
 		newComponents[n].type = "deleted_gate";
 		for(let i in newComponents[n].inputs) {
 			newComponents[n].inputs[i].id = -1;
@@ -89,8 +65,6 @@ function Workspace() {
 				}
 			}
 		}
-
-
 		setComponents(newComponents);
 		updateXarrow();
 	}
@@ -128,64 +102,6 @@ function Workspace() {
 	}, [connectIn, connectOut])
 
 	useEffect(() => {
-		let newhtml: JSX.Element[] = [];
-
-		for(let i in components) {
-			let c = components[i];
-			if(c === null) { continue; }
-			switch(c.type) {
-				case "SW":
-					newhtml[i] = <Switch key={i} id={i} onClick={(id) => {connect("in", id)}}/>
-					break;
-				
-				case "LED":
-					newhtml[i] = <LED key={i} id={i} A={structuredClone(c.inputs[0].id)} onClick={(id) => {connect("out", id)}}/>
-					break;
-				
-				case "AND":
-					newhtml[i] = <AND key={i} id={i.toString()} A={structuredClone(c.inputs[0].id)} B={structuredClone(c.inputs[1].id)} onClick={(e) => connect(e.split(".")[1]=="Y"?"in":"out", e)}/>
-					break;
-				
-				case "OR":
-					newhtml[i] = <OR  key={i} id={i.toString()} A={structuredClone(c.inputs[0].id)} B={structuredClone(c.inputs[1].id)} onClick={(e) => connect(e.split(".")[1]=="Y"?"in":"out", e)}/>
-					break;
-
-				case "XOR":
-					newhtml[i] = <XOR key={i} id={i.toString()} A={structuredClone(c.inputs[0].id)} B={structuredClone(c.inputs[1].id)} onClick={(e) => connect(e.split(".")[1]=="Y"?"in":"out", e)}/>
-					break;
-
-				case "NOT":
-					newhtml[i] = <NOT key={i} id={i.toString()} A={structuredClone(c.inputs[0].id)} onClick={(e) => connect(e.split(".")[1]=="Y"?"in":"out", e)}/>
-					break;
-				case "NAND":
-					newhtml[i] = <NAND key={i} id={i.toString()} A={structuredClone(c.inputs[0].id)} B={structuredClone(c.inputs[1].id)} onClick={(e) => connect(e.split(".")[1]=="Y"?"in":"out", e)}/>
-					break;
-				case "NOR":
-					newhtml[i] = <NOR key={i} id={i.toString()} A={structuredClone(c.inputs[0].id)} B={structuredClone(c.inputs[1].id)} onClick={(e) => connect(e.split(".")[1]=="Y"?"in":"out", e)}/>
-					break;
-				case "XNOR":
-					newhtml[i] = <XNOR key={i} id={i.toString()} A={structuredClone(c.inputs[0].id)} B={structuredClone(c.inputs[1].id)} onClick={(e) => connect(e.split(".")[1]=="Y"?"in":"out", e)}/>
-					break;
-				
-				case "BUS":
-					newhtml[i] = <BUS key={i} id={i.toString()} A={structuredClone(c.inputs[0].id)} B={structuredClone(c.inputs[1].id)} C={structuredClone(c.inputs[2].id)} D={structuredClone(c.inputs[3].id)} E={structuredClone(c.inputs[4].id)} F={structuredClone(c.inputs[5].id)} G={structuredClone(c.inputs[6].id)} H={structuredClone(c.inputs[7].id)} onClick={(e) => connect(e.split(".")[1]=="Y"?"in":"out", e)}/>
-					break;
-			}
-		}
-		setComponentHTML(newhtml)
-
-
-		let newDeleteHTML: JSX.Element[] = [<option value={-1}>Delete Component</option>];
-
-		for(let i in components) {
-			if(components[i].type === "deleted_gate") { continue; }
-			newDeleteHTML.push(<option value={i}>Delete: ID: {i} ({components[i].type})</option>)
-		}
-		setDeleteHTML(newDeleteHTML);
-
-	}, [components])
-
-	useEffect(() => {
 		const handleKeyDown = (event: KeyboardEvent) => {		
 			if (event.key === 'Escape') {
 				setConnectIn("");
@@ -195,10 +111,18 @@ function Workspace() {
 
 		document.addEventListener('keydown', handleKeyDown);
 
-		return () => {
-			document.removeEventListener('keydown', handleKeyDown);
-		};
+		return () => { document.removeEventListener('keydown', handleKeyDown); };
 	}, [])
+
+	useEffect(() => {
+		let newDeleteHTML: JSX.Element[] = [<option value={-1}>Delete Component</option>];
+
+		for(let i in components) {
+			if(components[i].type === "deleted_gate") { continue; }
+			newDeleteHTML.push(<option value={i}>Delete: ID: {i} ({components[i].type})</option>)
+		}
+		setDeleteHTML(newDeleteHTML);
+	}, [components])
 
 	function toggleConfig(param: string) {
 		let newConfig = structuredClone(config);
@@ -206,11 +130,24 @@ function Workspace() {
 		setConfig(newConfig);
 	}
 
+	function save() {
+
+	}
+
+	function load() {
+
+	}
+
 	return (
 	<div>
 
 		<table>
 		<tbody>
+			<tr>
+				<td>Save</td>
+				<td><button className="interactBtn" onClick={(e) => {load()}}>Save</button></td>
+				<td><button className="interactBtn" onClick={(e) => {save()}}>Load</button></td>
+			</tr>
 			<tr>
 				<td>I/O</td>
 				<td><button className="interactBtn" onClick={(e) => {create("SW")}}>SW</button></td>
@@ -256,7 +193,7 @@ function Workspace() {
 			<ConfigContext.Provider value={{config, setConfig} as ConfigContent}>
 			<WireContext.Provider value={{wires, setWires} as WireContent}>
 				<WireRenderer components={components} connectIn={connectIn} connectOut={connectOut}/>
-				{componentHTML}
+				<ComponentRenderer components={components} connect={(side, id) => connect(side, id)} />
 				<MouseFollower />
 			</WireContext.Provider>
 			</ConfigContext.Provider>
