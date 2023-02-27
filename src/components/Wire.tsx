@@ -2,7 +2,7 @@ import { useContext, useEffect, useState } from "react";
 import Xarrow, { useXarrow, Xwrapper } from "react-xarrows";
 import { ConfigContext, WireContext } from "./Context";
 
-const Render = ({start, end}: {start: string, end: string}) => {
+const Wire = ({start, end}: {start: string, end: string}) => {
 	
 	const {wires, setWires} = useContext(WireContext);
 	const {config, setConfig} = useContext(ConfigContext);
@@ -22,4 +22,4 @@ const Render = ({start, end}: {start: string, end: string}) => {
 	)
 }
 
-export default Render;
+export default Wire;

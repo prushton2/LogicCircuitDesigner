@@ -4,7 +4,7 @@ import Wire from "./Wire";
 
 import { component } from "../models/component";
 
-const Render = ({components, connectIn, connectOut}: {components: component[], connectIn: string, connectOut: string}) => {
+const WireRenderer = ({components, connectIn, connectOut}: {components: component[], connectIn: string, connectOut: string}) => {
 
 	const alphabet = "ABCDEFGHIJKLMNOPQRSTUVWXYZ".split("");
 	const [wireHTML, setWireHTML] = useState<JSX.Element[]>([]);
@@ -46,4 +46,4 @@ const Render = ({components, connectIn, connectOut}: {components: component[], c
 	);
 }
 
-export default Render;
+export default WireRenderer;

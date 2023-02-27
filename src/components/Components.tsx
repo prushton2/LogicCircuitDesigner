@@ -70,7 +70,7 @@ export function BUS({id,A,B,C,D,E,F,G,H,onClick}: {id: string, A: number, B: num
 					</div>
 
 					<div id={`${id}.Y`} style={{right: "0%", top: "200px", position: "absolute", transform: "translate(0%, -50%)"}}>
-						<button onClick={(e) => onClick(`${id}.Y`)} style={{marginRight: "1.3em", display: display}}>Y</button>
+						<button onClick={(e) => onClick(`${id}.Y`)} style={{marginRight: ".3em", display: display}}>Y</button>Y{'\u00A0'}
 					</div>
 
 				</div>
