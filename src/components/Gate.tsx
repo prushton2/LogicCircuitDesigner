@@ -34,7 +34,10 @@ const Gate = ({A, B, comp, label, image, style, id, onClick}: {
 
 
 	useEffect(() => {
-		let newValue: boolean[] = wires[A].map((v, i) => {return comp(wires[A][i], wires[B][i])})
+		let newValue: boolean[];
+		try {
+			newValue = wires[A].map((v, i) => {return comp(wires[A][i], wires[B][i])})
+		} catch { return }
 
 		if(wires[id as keyof []] === newValue) {
 			return;
