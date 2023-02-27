@@ -54,12 +54,30 @@ export const LED = ({A, id, onClick}: {A: number, id: string, onClick: (id: stri
 
 	const [display, setDisplay] = useState("inline"); //for hiding the gate configuration
 	const [name, setName] = useState(id);
+	const [value, setValue] = useState("0");
 
 	const updateXarrow = useXarrow();
 	
 	useEffect(() => {
 		setDisplay(!config["hideDetails" as keyof object] ? "inline": "none");
 	}, [config])
+
+	useEffect(() => {
+		try {
+			setValue(
+				JSON.stringify(wires[A as keyof []])
+				.replaceAll("[", "")
+				.replaceAll("]", "")
+				.replaceAll(",", "")
+				.replaceAll("true", "1")
+				.replaceAll("false", "0")
+				.replaceAll("null", "")
+			) 
+		} catch {
+			setValue("Z");
+		}
+	}, [wires])
+
 	return (
 		<Draggable grid={[5, 5]} onDrag={updateXarrow} onStop={updateXarrow}>
 			<div style={{position: "absolute", width: "50px", height: "70px", border: "0px solid red"}}>
@@ -68,7 +86,7 @@ export const LED = ({A, id, onClick}: {A: number, id: string, onClick: (id: stri
 				<input style={{ height: "20px", width: "20px", display: display}} onChange={(e) => {setName(e.target.value)}}></input>
 				<label style={{display: display}}> ({id}) </label><br />
 				
-				<label className="invisButton" style={{width: "50px", height: "50px", position: 'absolute', top: "20px", left: "0px", border: "0px solid red"}}>{name}</label> <br />
+				<label className="invisButton" style={{width: "50px", height: "50px", position: 'absolute', top: "20px", left: "0px", border: "0px solid red"}}>{name}<br />{value}</label> <br />
 
 				<div id={`${id}.A`} style={{left: "0px", top: "30px", width: "30%", height: "30%", position: 'absolute', transform: "translate(0%, -50%)", border: "0px solid red"}}>
 					<button onClick={(e) => onClick(`${id}.A`)} style={{marginRight: "1.3em", display: display}}>A</button> <br /> 
