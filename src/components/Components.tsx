@@ -3,6 +3,8 @@ import { WireContext, ConfigContext } from "./Context";
 import Draggable from "react-draggable";
 import { useXarrow } from "react-xarrows";
 
+//Dynamic inputs (oh god)
+
 export function BUS({id,A,B,C,D,E,F,G,H,onClick}: {id: string, A: number, B: number, C: number, D: number, E: number, F: number, G: number, H: number, onClick: (id: string) => void}) {
 
 	const {wires, setWires} = useContext(WireContext);
@@ -12,10 +14,8 @@ export function BUS({id,A,B,C,D,E,F,G,H,onClick}: {id: string, A: number, B: num
 
 	const updateXarrow = useXarrow();
 	
-	const alphabet = "ABCDEFGHIJKLMNOPQRSTUVWXYZ".split("");
 	
 	useEffect(() => {
-		console.log(wires[id as keyof []]);
 		let inputs = [H,G,F,E,D,C,B,A];
 		let bus = [];
 
@@ -30,8 +30,6 @@ export function BUS({id,A,B,C,D,E,F,G,H,onClick}: {id: string, A: number, B: num
 		if(JSON.stringify(wires[id as keyof []]) === JSON.stringify(bus)) {
 			return;
 		}
-
-		console.log("changed");
 
 		let newWires = structuredClone(wires)
 		newWires[id as keyof []] = structuredClone(bus);
@@ -81,3 +79,6 @@ export function BUS({id,A,B,C,D,E,F,G,H,onClick}: {id: string, A: number, B: num
 	);
 }
 
+export function MUX({}: {}) {
+
+}
