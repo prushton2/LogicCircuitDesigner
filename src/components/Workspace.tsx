@@ -7,8 +7,10 @@ import Xarrow, { useXarrow, Xwrapper } from "react-xarrows";
 
 import MouseFollower from "./MouseFollower";
 import WireRenderer from "./WireRenderer";
+
 import { AND, OR, XOR, NOT, NAND, NOR, XNOR } from "./Gate";
 import { Switch, LED } from "./IO";
+import { BUS } from "./Components"
 
 import { component, input } from "../models/component";
 
@@ -34,13 +36,13 @@ function Workspace() {
 		newWires.push([]);
 		setWires(newWires);
 
-		
+
 		let inputs: input[] = []
 		switch(type) {
 			case "SW":
 				break;
 			case "BUS":
-				inputs = [];
+				inputs = [{id: -1} as input, {id: -1} as input, {id: -1} as input, {id: -1} as input, {id: -1} as input, {id: -1} as input, {id: -1} as input, {id: -1} as input];
 				break;
 			case "LED":
 			case "NOT":
@@ -162,6 +164,10 @@ function Workspace() {
 				case "XNOR":
 					newhtml[i] = <XNOR key={i} id={i.toString()} A={structuredClone(c.inputs[0].id)} B={structuredClone(c.inputs[1].id)} onClick={(e) => connect(e.split(".")[1]=="Y"?"in":"out", e)}/>
 					break;
+				
+				case "BUS":
+					newhtml[i] = <BUS key={i} id={i.toString()} A={structuredClone(c.inputs[0].id)} B={structuredClone(c.inputs[1].id)} C={structuredClone(c.inputs[2].id)} D={structuredClone(c.inputs[3].id)} E={structuredClone(c.inputs[4].id)} F={structuredClone(c.inputs[5].id)} G={structuredClone(c.inputs[6].id)} H={structuredClone(c.inputs[7].id)} onClick={(e) => connect(e.split(".")[1]=="Y"?"in":"out", e)}/>
+					break;
 			}
 		}
 		setComponentHTML(newhtml)
@@ -229,7 +235,6 @@ function Workspace() {
 
 		
 
-		{/* <button onClick={(e) => {remove(toRemove)}}>Delete</button><input onChange={(e) => {setToRemove(parseInt(e.target.value))}}></input> */}
 		<Xwrapper>
 			<ConfigContext.Provider value={{config, setConfig} as ConfigContent}>
 			<WireContext.Provider value={{wires, setWires} as WireContent}>
