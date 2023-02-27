@@ -186,9 +186,7 @@ function Workspace() {
 	}, [components])
 
 	useEffect(() => {
-		const handleKeyDown = (event: KeyboardEvent) => {
-			console.log('User pressed: ', event.key);
-		
+		const handleKeyDown = (event: KeyboardEvent) => {		
 			if (event.key === 'Escape') {
 				setConnectIn("");
 				setConnectOut("");
