@@ -17,7 +17,7 @@ function Workspace() {
 	const [config, setConfig] = useState({"hideDetails": false, "hideWireStates": false});
 	const alphabet = "ABCDEFGHIJKLMNOPQRSTUVWXYZ".split("");
 	
-	const [wires, setWires] = useState<boolean[][]>([]);
+	const [wires, setWires] = useState<boolean[][]>([[]]);
 	const [components, setComponents] = useState<component[]>([]);
 	const [componentHTML, setComponentHTML] = useState<JSX.Element[]>([]);
 	const [deleteHTML, setDeleteHTML] = useState<JSX.Element[]>([]);
@@ -30,6 +30,11 @@ function Workspace() {
 	const updateXarrow = useXarrow();
 
 	function create(type: string) {
+		let newWires = structuredClone(wires);
+		newWires.push([]);
+		setWires(newWires);
+
+		
 		let inputs: input[] = []
 		switch(type) {
 			case "SW":

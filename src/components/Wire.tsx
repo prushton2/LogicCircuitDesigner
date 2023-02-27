@@ -10,10 +10,10 @@ const Render = ({start, end}: {start: string, end: string}) => {
 	const [color, setColor] = useState("white");
 
 	useEffect(() => {
-		if(config["hideWireStates" as keyof object]) {
+		if(config["hideWireStates" as keyof object] || start === "mouse") {
 			setColor("white");
 		} else {
-			setColor(wires[parseInt(start.split(".")[0])] ? "red" : "white")
+			setColor(wires[parseInt(start.split(".")[0])][0] ? "red" : "white")
 		}
 	}, [wires, config])
 
