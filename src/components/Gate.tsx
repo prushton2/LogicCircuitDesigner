@@ -37,9 +37,9 @@ const Gate = ({A, B, comp, label, image, style, id, onClick}: {
 		let newValue: boolean[];
 		try {
 			newValue = wires[A].map((v, i) => {return comp(wires[A][i], wires[B][i])})
-		} catch { return }
-
-		if(wires[id as keyof []] === newValue) {
+		} catch { return; }
+		
+		if(JSON.stringify(wires[id as keyof []]) === JSON.stringify(newValue)) {
 			return;
 		}
 
