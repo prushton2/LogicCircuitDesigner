@@ -19,7 +19,7 @@ export const Switch = ({id, onClick}: {id: any, onClick: (id: string) => void}) 
 
 	useEffect(() => {
 		let newWires = structuredClone(wires);
-		newWires[id] = value;
+		newWires[id][0] = value;
 		setWires(newWires);
 	}, [value])
 

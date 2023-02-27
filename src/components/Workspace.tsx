@@ -17,7 +17,7 @@ function Workspace() {
 	const [config, setConfig] = useState({"hideDetails": false, "hideWireStates": false});
 	const alphabet = "ABCDEFGHIJKLMNOPQRSTUVWXYZ".split("");
 	
-	const [wires, setWires] = useState<boolean[]>([]);
+	const [wires, setWires] = useState<boolean[][]>([]);
 	const [components, setComponents] = useState<component[]>([]);
 	const [componentHTML, setComponentHTML] = useState<JSX.Element[]>([]);
 	const [deleteHTML, setDeleteHTML] = useState<JSX.Element[]>([]);
@@ -33,6 +33,9 @@ function Workspace() {
 		let inputs: input[] = []
 		switch(type) {
 			case "SW":
+				break;
+			case "BUS":
+				inputs = [];
 				break;
 			case "LED":
 			case "NOT":
@@ -200,6 +203,10 @@ function Workspace() {
 				<td><button className="interactBtn" onClick={(e) => {create("NOR")}}>NOR</button></td>
 				<td><button className="interactBtn" onClick={(e) => {create("XNOR")}}>XNOR</button></td>
 				<td></td>
+			</tr>
+			<tr>
+				<td>Busses</td>
+				<td><button className="interactBtn" onClick={(e) => {create("BUS")}}>BUS</button></td>
 			</tr>
 			<tr>
 				<td>Config</td>
