@@ -88,10 +88,14 @@ function Workspace() {
 			let outputPort = alphabet.indexOf(connectOut.split(".")[1]);
 
 			let newComponents = structuredClone(components);
-			if (newComponents[outputid].inputs[outputPort].id === input) {
-				newComponents[outputid].inputs[outputPort].id = -1;
-			} else {
-				newComponents[outputid].inputs[outputPort].id = input;
+			try {
+				if (newComponents[outputid].inputs[outputPort].id === input) {
+					newComponents[outputid].inputs[outputPort].id = -1;
+				} else {
+					newComponents[outputid].inputs[outputPort] = {id: input} as input;
+				}
+			} catch {
+				newComponents[outputid].inputs[outputPort] = {id: input} as input;
 			}
 			setComponents(newComponents);
 			

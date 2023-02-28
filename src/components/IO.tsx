@@ -5,6 +5,7 @@ import Xarrow, { useXarrow, Xwrapper } from "react-xarrows";
 import Draggable from "react-draggable";
 
 import { ConfigContext, WireContext } from "./Context";
+import { input } from "../models/component";
 
 export const Switch = ({id, onClick}: {id: any, onClick: (id: string) => void}) => {
 
@@ -47,7 +48,7 @@ export const Switch = ({id, onClick}: {id: any, onClick: (id: string) => void}) 
 	)
 }
 
-export const LED = ({A, id, onClick}: {A: number, id: string, onClick: (id: string) => void}) => {
+export const LED = ({I, id, onClick}: {I: input[], id: string, onClick: (id: string) => void}) => {
     
 	const {wires, setWires} = useContext(WireContext);
 	const {config, setConfig} = useContext(ConfigContext);
@@ -65,7 +66,7 @@ export const LED = ({A, id, onClick}: {A: number, id: string, onClick: (id: stri
 	useEffect(() => {
 		try {
 			setValue(
-				JSON.stringify(wires[A as keyof []])
+				JSON.stringify(wires[I[0].id as keyof []])
 				.replaceAll("[", "")
 				.replaceAll("]", "")
 				.replaceAll(",", "")

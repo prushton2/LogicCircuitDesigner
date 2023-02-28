@@ -21,13 +21,18 @@ const ComponentRenderer = ({components, connect}: {components: component[], conn
 					break;
 				
 				case "LED":
-					newhtml[i] = <LED key={i} id={i} A={c.inputs[0].id} onClick={(id) => {connect("out", id)}}/>
+					newhtml[i] = <LED key={i} id={i} I={c.inputs} onClick={(id) => {connect("out", id)}}/>
 					break;
 				
 				case "AND":
+				case "OR":
+				case "XOR":
+				case "NAND":
+				case "NOR":
+				case "XNOR":
+				case "NOT":
 					newhtml[i] = <Gate key={i} I={c.inputs} id={i.toString()} type={c.type} onClick={(e) => connect(e.split(".")[1]=="Y"?"in":"out", e)}/>
 					break;
-				
 				
 				case "BUS":
 					newhtml[i] = <BUS key={i} id={i.toString()} A={c.inputs[0].id} B={c.inputs[1].id} C={c.inputs[2].id} D={c.inputs[3].id} E={c.inputs[4].id} F={c.inputs[5].id} G={c.inputs[6].id} H={c.inputs[7].id} onClick={(e) => connect(e.split(".")[1]=="Y"?"in":"out", e)}/>
@@ -35,9 +40,6 @@ const ComponentRenderer = ({components, connect}: {components: component[], conn
 			}
 		}
 		setComponentHTML(newhtml)
-
-
-
 
 	}, [components])
 
