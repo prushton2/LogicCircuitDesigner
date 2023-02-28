@@ -8,7 +8,6 @@ import Xarrow, { useXarrow, Xwrapper } from "react-xarrows";
 import MouseFollower from "./MouseFollower";
 import WireRenderer from "./WireRenderer";
 
-import { AND, OR, XOR, NOT, NAND, NOR, XNOR } from "./Gate";
 import { Switch, LED } from "./IO";
 import { BUS } from "./Components"
 
