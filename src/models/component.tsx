@@ -1,7 +1,8 @@
+import { pos } from "./pos"
+
 export interface component {
 	type: string,
-	init_x: number,
-	init_y: number,
+	init_pos: pos,
 	inputs: input[]
 }
 

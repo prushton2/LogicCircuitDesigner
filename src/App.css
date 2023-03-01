@@ -32,6 +32,14 @@ select:hover {
 	color: white;
 	background-color: #2b2a33;
 	border: #2b2a33;
+	
+}
+
+.textInput {
+	color: white;
+	/* background-color: #4b4a53; */
+	/* border: #4b4a53; */
+
 }
 
 .App {

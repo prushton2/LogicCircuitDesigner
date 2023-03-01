@@ -2,10 +2,11 @@ import { useContext, useEffect, useState } from "react";
 import { WireContext, ConfigContext } from "./Context";
 import Draggable from "react-draggable";
 import { useXarrow } from "react-xarrows";
+import { pos } from "../models/pos";
 
 //Dynamic inputs (oh god)
 
-export function BUS({id,A,B,C,D,E,F,G,H,onClick}: {id: string, A: number, B: number, C: number, D: number, E: number, F: number, G: number, H: number, onClick: (id: string) => void}) {
+export function BUS({id,pos,A,B,C,D,E,F,G,H,onClick, setPos}: {id: string, pos: pos, A: number, B: number, C: number, D: number, E: number, F: number, G: number, H: number, onClick: (id: string) => void, setPos: (pos: pos, id: string) => void}) {
 
 	const {wires, setWires} = useContext(WireContext);
 	const {config, setConfig} = useContext(ConfigContext);
@@ -40,9 +41,14 @@ export function BUS({id,A,B,C,D,E,F,G,H,onClick}: {id: string, A: number, B: num
 		setDisplay(!config["hideDetails" as keyof object] ? "inline": "none");
 	}, [config])
 
+	const savePos = (e: any, element: any) => {
+		setPos({x: element.x, y: element.y} as pos, id);
+		updateXarrow();
+	}
+
 	return (
 		<div>
-			<Draggable grid={[5,5]} onDrag={updateXarrow} onStop={updateXarrow}>
+			<Draggable grid={[5,5]} onDrag={updateXarrow} onStop={savePos}>
 				<div style={{width: "90px", height: "400px", border: "5px solid white"}}>
 					<div id={`${id}.A`} style={{left: "0%", top: "25px", position: "absolute", transform: "translate(0%, -50%)"}}>
 						{'\u00A0'}A<button onClick={(e) => onClick(`${id}.A`)} style={{marginLeft: ".3em", display: display}}>A</button><br /> 

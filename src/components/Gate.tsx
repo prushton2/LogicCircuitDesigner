@@ -4,6 +4,7 @@ import Draggable from "react-draggable";
 
 import { input } from "../models/component";
 import { ConfigContext, WireContext } from "./Context";
+import { pos } from "../models/pos";
 
 import AND_png from "../images/AND.png"
 import OR_png  from "../images/OR.png"
@@ -19,11 +20,12 @@ interface buttonOffset {
 	B_top: string,
 }
 
-const BaseGate = ({I, comp, label, image, style, id, onClick}: { //the skeleton for a logic gate. Everything minus the image and logic.
-	I: input[], label: string, image: string, style: buttonOffset, id: string,
+const BaseGate = ({I, pos, comp, label, image, style, id, onClick, setPos}: { //the skeleton for a logic gate. Everything minus the image and logic.
+	I: input[], pos: pos, label: string, image: string, style: buttonOffset, id: string,
 
 	comp: (A: boolean, B: boolean) => boolean,
-	onClick: (id: string) => void}) => {
+	onClick: (id: string) => void,
+	setPos: (pos: pos, id: string) => void}) => {
 	
 	const {wires, setWires} = useContext(WireContext);
 	const {config, setConfig} = useContext(ConfigContext);
@@ -32,7 +34,10 @@ const BaseGate = ({I, comp, label, image, style, id, onClick}: { //the skeleton 
 
 	const updateXarrow = useXarrow();
 
-
+	const savePos = (e: any, element: any) => {
+		setPos({x: element.x, y: element.y} as pos, id);
+		updateXarrow();
+	}
 
 	useEffect(() => {
 		let newValue: boolean[];
@@ -56,7 +61,7 @@ const BaseGate = ({I, comp, label, image, style, id, onClick}: { //the skeleton 
 	return (
 
 
-		<Draggable grid={[5, 5]} onDrag={updateXarrow} onStop={updateXarrow}>
+		<Draggable grid={[5, 5]} onDrag={updateXarrow} onStop={savePos}>
 
 			<div style={{userSelect: "none", position: "absolute", border: "0px solid red", width: "90px", height: "90px"}} >
 				
@@ -83,7 +88,7 @@ const BaseGate = ({I, comp, label, image, style, id, onClick}: { //the skeleton 
 	)
 }
 
-export const Gate = ({I, id, type, onClick}: {I: input[], id: string, type: string, onClick: (id: string) => void}) => {
+export const Gate = ({I, id, pos, type, onClick, setPos}: {I: input[], pos: pos, id: string, type: string, onClick: (id: string) => void, setPos: (pos: pos, id: string) => void}) => {
 	let style = {} as buttonOffset;
 	let image = OR_png;
 	let compare = (A: boolean, B: boolean) => {return A && B}
@@ -132,5 +137,5 @@ export const Gate = ({I, id, type, onClick}: {I: input[], id: string, type: stri
 			return <div>Incorrect Gate Type</div>
 	}
 
-	return <BaseGate id={id} I={I} comp={compare} label={type} image={image} onClick={(id) => onClick(id)} style={style}/>
+	return <BaseGate id={id} I={I} pos={pos} comp={compare} label={type} image={image} onClick={(id) => onClick(id)} style={style} setPos={(pos, id) => {setPos(pos, id)}}/>
 }

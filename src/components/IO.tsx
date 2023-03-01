@@ -6,8 +6,9 @@ import Draggable from "react-draggable";
 
 import { ConfigContext, WireContext } from "./Context";
 import { input } from "../models/component";
+import { pos } from "../models/pos";
 
-export const Switch = ({id, onClick}: {id: any, onClick: (id: string) => void}) => {
+export const SW = ({id, pos, onClick, setPos}: {id: any, pos: pos, onClick: (id: string) => void, setPos: (pos: pos, id: string) => void}) => {
 
 	const [value, setValue] = useState(false);
 	const {wires, setWires} = useContext(WireContext);
@@ -17,6 +18,11 @@ export const Switch = ({id, onClick}: {id: any, onClick: (id: string) => void}) 
 	const [name, setName] = useState(id);
 
 	const updateXarrow = useXarrow();
+
+	const savePos = (e: any, element: any) => {
+		setPos({x: element.x, y: element.y} as pos, id);
+		updateXarrow();
+	}
 
 	useEffect(() => {
 		let newWires = structuredClone(wires);
@@ -30,7 +36,7 @@ export const Switch = ({id, onClick}: {id: any, onClick: (id: string) => void}) 
 
 	return (
 
-		<Draggable grid={[5, 5]} onDrag={updateXarrow} onStop={updateXarrow}>
+		<Draggable grid={[5, 5]} onDrag={updateXarrow} onStop={savePos}>
 			<div style={{position: "absolute", width: "50px", height: "70px", border: "0px solid red"}}>
 				
 				
@@ -48,7 +54,7 @@ export const Switch = ({id, onClick}: {id: any, onClick: (id: string) => void}) 
 	)
 }
 
-export const LED = ({I, id, onClick}: {I: input[], id: string, onClick: (id: string) => void}) => {
+export const LED = ({I, id, pos, onClick, setPos}: {I: input[], id: string, pos: pos ,onClick: (id: string) => void, setPos: (pos: pos, id: string) => void}) => {
     
 	const {wires, setWires} = useContext(WireContext);
 	const {config, setConfig} = useContext(ConfigContext);
@@ -59,6 +65,11 @@ export const LED = ({I, id, onClick}: {I: input[], id: string, onClick: (id: str
 
 	const updateXarrow = useXarrow();
 	
+	const savePos = (e: any, element: any) => {
+		setPos({x: element.x, y: element.y} as pos, id);
+		updateXarrow();
+	}
+
 	useEffect(() => {
 		setDisplay(!config["hideDetails" as keyof object] ? "inline": "none");
 	}, [config])
@@ -80,7 +91,7 @@ export const LED = ({I, id, onClick}: {I: input[], id: string, onClick: (id: str
 	}, [wires])
 
 	return (
-		<Draggable grid={[5, 5]} onDrag={updateXarrow} onStop={updateXarrow}>
+		<Draggable grid={[5, 5]} onDrag={updateXarrow} onStop={savePos}>
 			<div style={{position: "absolute", width: "50px", height: "70px", border: "0px solid red"}}>
 				
 				
