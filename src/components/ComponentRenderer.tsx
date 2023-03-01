@@ -39,7 +39,7 @@ const ComponentRenderer = ({components, positions, connect, setPos}: {components
 					break;
 				
 				case "BUS":
-					newhtml[i] = <BUS  key={i} pos={pos} id={i} A={c.inputs[0].id} B={c.inputs[1].id} C={c.inputs[2].id} D={c.inputs[3].id} E={c.inputs[4].id} F={c.inputs[5].id} G={c.inputs[6].id} H={c.inputs[7].id} onClick={(e) => connect(e.split(".")[1]=="Y"?"in":"out", e)} setPos={(pos, id) => {setPos(pos, id)}}/>
+					newhtml[i] = <BUS  key={i} pos={pos} id={i} I={c.inputs} onClick={(e) => connect(e.split(".")[1]=="Y"?"in":"out", e)} setPos={(pos, id) => {setPos(pos, id)}}/>
 					break;
 			}
 		}

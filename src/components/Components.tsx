@@ -3,10 +3,9 @@ import { WireContext, ConfigContext } from "./Context";
 import Draggable from "react-draggable";
 import { useXarrow } from "react-xarrows";
 import { pos } from "../models/pos";
+import { input } from "../models/component";
 
-//Dynamic inputs (oh god)
-
-export function BUS({id,pos,A,B,C,D,E,F,G,H,onClick, setPos}: {id: string, pos: pos, A: number, B: number, C: number, D: number, E: number, F: number, G: number, H: number, onClick: (id: string) => void, setPos: (pos: pos, id: string) => void}) {
+export function BUS({id, pos, I, onClick, setPos}: {id: string, pos: pos, I: input[], onClick: (id: string) => void, setPos: (pos: pos, id: string) => void}) {
 
 	const {wires, setWires} = useContext(WireContext);
 	const {config, setConfig} = useContext(ConfigContext);
@@ -17,15 +16,16 @@ export function BUS({id,pos,A,B,C,D,E,F,G,H,onClick, setPos}: {id: string, pos: 
 	
 	
 	useEffect(() => {
-		let inputs = [H,G,F,E,D,C,B,A];
 		let bus = [];
 
 		for(let i = 0; i<8; i++) {
-			if(inputs[i] === -1) {
-				continue;
-			}
-
-			bus[i] = wires[inputs[i]][0];
+			try {
+				if(I[i].id === -1) {
+					continue;
+				}
+	
+				bus[i] = wires[I[i].id][0];
+			} catch {}
 		}
 	
 		if(JSON.stringify(wires[id as keyof []]) === JSON.stringify(bus)) {
