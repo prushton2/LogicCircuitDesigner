@@ -36,7 +36,7 @@ export const SW = ({id, pos, onClick, setPos}: {id: any, pos: pos, onClick: (id:
 
 	return (
 
-		<Draggable grid={[5, 5]} onDrag={updateXarrow} onStop={savePos}>
+		<Draggable grid={[5, 5]} defaultPosition={{x: pos.x, y: pos.y}} onDrag={updateXarrow} onStop={savePos}>
 			<div style={{position: "absolute", width: "50px", height: "70px", border: "0px solid red"}}>
 				
 				
@@ -91,7 +91,7 @@ export const LED = ({I, id, pos, onClick, setPos}: {I: input[], id: string, pos:
 	}, [wires])
 
 	return (
-		<Draggable grid={[5, 5]} onDrag={updateXarrow} onStop={savePos}>
+		<Draggable grid={[5, 5]} defaultPosition={{x: pos.x, y: pos.y}} onDrag={updateXarrow} onStop={savePos}>
 			<div style={{position: "absolute", width: "50px", height: "70px", border: "0px solid red"}}>
 				
 				

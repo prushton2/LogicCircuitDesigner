@@ -16,7 +16,8 @@ const ComponentRenderer = ({components, positions, connect, setPos}: {components
 
 		for(let i in components) {
 			let c = components[i];
-			let pos = positions[i];
+			let pos = positions[i] === undefined ? {x:0,y:0} as pos : positions[i];
+			
 			if(c === null) { continue; }
 			switch(c.type) {
 				case "SW":

@@ -166,6 +166,10 @@ function Workspace() {
 			return;
 		}
 
+		let newComponents = comps as component[];
+		let newPoses = poses as pos[];
+		setComponents(newComponents);
+		setPositions(newPoses);
 	}
 
 
