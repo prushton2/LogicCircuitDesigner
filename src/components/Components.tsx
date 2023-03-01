@@ -48,7 +48,7 @@ export function BUS({id,pos,A,B,C,D,E,F,G,H,onClick, setPos}: {id: string, pos: 
 
 	return (
 		<div>
-			<Draggable grid={[5,5]} defaultPosition={{x: pos.x, y: pos.y}} onDrag={updateXarrow} onStop={savePos}>
+			<Draggable grid={[5,5]} defaultPosition={{x: pos.x, y: pos.y}} onDrag={savePos} onStop={savePos}>
 				<div style={{width: "90px", height: "400px", border: "5px solid white"}}>
 					<div id={`${id}.A`} style={{left: "0%", top: "25px", position: "absolute", transform: "translate(0%, -50%)"}}>
 						{'\u00A0'}A<button onClick={(e) => onClick(`${id}.A`)} style={{marginLeft: ".3em", display: display}}>A</button><br /> 

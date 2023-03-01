@@ -61,7 +61,7 @@ const BaseGate = ({I, pos, comp, label, image, style, id, onClick, setPos}: { //
 	return (
 
 
-		<Draggable grid={[5, 5]} defaultPosition={{x: pos.x, y: pos.y}} onDrag={updateXarrow} onStop={savePos}>
+		<Draggable grid={[5, 5]} defaultPosition={{x: pos.x, y: pos.y}} onDrag={savePos} onStop={savePos}>
 
 			<div style={{userSelect: "none", position: "absolute", border: "0px solid red", width: "90px", height: "90px"}} >
 				
@@ -106,7 +106,7 @@ export const Gate = ({I, id, pos, type, onClick, setPos}: {I: input[], pos: pos,
 			compare = (A: boolean, B: boolean) => {return A || B}
 			break;
 		case "XOR":
-			style = {A_top: "45px",O_top: "65px",B_top: "80px"} as buttonOffset,
+			style = {A_top: "40px",O_top: "60px",B_top: "75px"} as buttonOffset,
 			image = XOR_png,
 			compare = (A: boolean, B: boolean) => {return A !== B}
 			break;

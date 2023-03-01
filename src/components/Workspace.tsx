@@ -143,7 +143,8 @@ function Workspace() {
 	function save() {
 		let fileContent = JSON.stringify({
 			components: components,
-			positions: positions
+			positions: positions,
+			wires: wires
 		})
 
 		const blob = new Blob([fileContent], { type: "text/plain" });
@@ -158,18 +159,21 @@ function Workspace() {
 
 	function load() {
 		let parsedFile = JSON.parse(file);
-		let comps, poses;
+		let comps, poses, wrs;
 		try {
 			comps = parsedFile.components;
 			poses = parsedFile.positions;
+			wrs = parsedFile.wires;
 		} catch {
 			return;
 		}
 
 		let newComponents = comps as component[];
 		let newPoses = poses as pos[];
+		let newWires = wrs as boolean[][];
 		setComponents(newComponents);
 		setPositions(newPoses);
+		setWires(newWires);
 	}
 
 
