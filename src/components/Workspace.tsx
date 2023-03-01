@@ -7,22 +7,23 @@ import Xarrow, { useXarrow, Xwrapper } from "react-xarrows";
 
 import MouseFollower from "./MouseFollower";
 import WireRenderer from "./WireRenderer";
-import { AND, OR, XOR, NOT, NAND, NOR, XNOR } from "./Gate";
-import { Switch, LED } from "./IO";
 
 import { component, input } from "../models/component";
+import ComponentRenderer from "./ComponentRenderer";
+import { pos } from "../models/pos";
 
 function Workspace() {
 
-	const [config, setConfig] = useState({"hideDetails": false, "hideWireStates": false});
 	const alphabet = "ABCDEFGHIJKLMNOPQRSTUVWXYZ".split("");
-	
-	const [wires, setWires] = useState<boolean[]>([]);
-	const [components, setComponents] = useState<component[]>([]);
-	const [componentHTML, setComponentHTML] = useState<JSX.Element[]>([]);
-	const [deleteHTML, setDeleteHTML] = useState<JSX.Element[]>([]);
+	const [config, setConfig] = useState({"hideDetails": false, "hideWireStates": false});
+	const [file, setFile] = useState<string>("");
+	const [justLoaded, setJustLoaded] = useState<boolean>(false);
 
-	const [toRemove, setToRemove] = useState(-1);
+
+	const [wires, setWires] = useState<boolean[][]>([[]]);
+	const [components, setComponents] = useState<component[]>([]);
+	const [positions, setPositions] = useState<pos[]>([]);
+	const [deleteHTML, setDeleteHTML] = useState<JSX.Element[]>([]);
 
 	const [connectIn, setConnectIn] = useState("");
 	const [connectOut, setConnectOut] = useState("");
@@ -30,37 +31,22 @@ function Workspace() {
 	const updateXarrow = useXarrow();
 
 	function create(type: string) {
-		let inputs: input[] = []
-		switch(type) {
-			case "SW":
-				break;
-			case "LED":
-			case "NOT":
-				inputs = [{id: -1} as input];
-				break;
-			case "AND":
-			case  "OR":
-			case "XOR":
-			case "NAND":
-			case "NOR":
-			case "XNOR":
-				inputs = [{id: -1} as input, {id: -1} as input];
-				break;
-		}
+		let newWires = structuredClone(wires);
+		newWires.push([]);
+		setWires(newWires);
 
 		let newcomps = structuredClone(components);
 		newcomps.push({
 			type: type,
-			inputs: inputs
+			init_pos: {x:0,y:0} as pos,
+			inputs: []
 		} as component)
 		setComponents(newcomps);
 		updateXarrow();
 	}
 
 	function remove(n: number) {
-		console.log(n)
 		let newComponents = structuredClone(components);
-
 		newComponents[n].type = "deleted_gate";
 		for(let i in newComponents[n].inputs) {
 			newComponents[n].inputs[i].id = -1;
@@ -79,8 +65,6 @@ function Workspace() {
 				}
 			}
 		}
-
-
 		setComponents(newComponents);
 		updateXarrow();
 	}
@@ -88,12 +72,20 @@ function Workspace() {
 	function connect(side: string, id: string) {
 		switch(side) {
 			case "in":
-				setConnectIn(id);
+				if(id === connectIn) {setConnectIn(""); return;}
+				else {setConnectIn(id)};
 				break;
 				case "out": 
-				setConnectOut(id);
+				if(id === connectOut) {setConnectOut(""); return;}
+				else {setConnectOut(id)};
 				break;
 		}
+	}
+
+	function setPos(pos: pos, id: string) {
+		let newPositions = structuredClone(positions);
+		newPositions[id] = pos;
+		setPositions(newPositions);
 	}
 
 	useEffect(() => {
@@ -103,10 +95,14 @@ function Workspace() {
 			let outputPort = alphabet.indexOf(connectOut.split(".")[1]);
 
 			let newComponents = structuredClone(components);
-			if (newComponents[outputid].inputs[outputPort].id === input) {
-				newComponents[outputid].inputs[outputPort].id = -1;
-			} else {
-				newComponents[outputid].inputs[outputPort].id = input;
+			try {
+				if (newComponents[outputid].inputs[outputPort].id === input) {
+					newComponents[outputid].inputs[outputPort].id = -1;
+				} else {
+					newComponents[outputid].inputs[outputPort] = {id: input} as input;
+				}
+			} catch {
+				newComponents[outputid].inputs[outputPort] = {id: input} as input;
 			}
 			setComponents(newComponents);
 			
@@ -116,49 +112,19 @@ function Workspace() {
 	}, [connectIn, connectOut])
 
 	useEffect(() => {
-		let newhtml: JSX.Element[] = [];
-
-		for(let i in components) {
-			let c = components[i];
-			if(c === null) { continue; }
-			switch(c.type) {
-				case "SW":
-					newhtml[i] = <Switch key={i} id={i} onClick={(id) => {connect("in", id)}}/>
-					break;
-				
-				case "LED":
-					newhtml[i] = <LED key={i} id={i} A={structuredClone(c.inputs[0].id)} onClick={(id) => {connect("out", id)}}/>
-					break;
-				
-				case "AND":
-					newhtml[i] = <AND key={i} id={i.toString()} A={structuredClone(c.inputs[0].id)} B={structuredClone(c.inputs[1].id)} onClick={(e) => connect(e.split(".")[1]=="Y"?"in":"out", e)}/>
-					break;
-				
-				case "OR":
-					newhtml[i] = <OR  key={i} id={i.toString()} A={structuredClone(c.inputs[0].id)} B={structuredClone(c.inputs[1].id)} onClick={(e) => connect(e.split(".")[1]=="Y"?"in":"out", e)}/>
-					break;
-
-				case "XOR":
-					newhtml[i] = <XOR key={i} id={i.toString()} A={structuredClone(c.inputs[0].id)} B={structuredClone(c.inputs[1].id)} onClick={(e) => connect(e.split(".")[1]=="Y"?"in":"out", e)}/>
-					break;
-
-				case "NOT":
-					newhtml[i] = <NOT key={i} id={i.toString()} A={structuredClone(c.inputs[0].id)} onClick={(e) => connect(e.split(".")[1]=="Y"?"in":"out", e)}/>
-					break;
-				case "NAND":
-					newhtml[i] = <NAND key={i} id={i.toString()} A={structuredClone(c.inputs[0].id)} B={structuredClone(c.inputs[1].id)} onClick={(e) => connect(e.split(".")[1]=="Y"?"in":"out", e)}/>
-					break;
-				case "NOR":
-					newhtml[i] = <NOR key={i} id={i.toString()} A={structuredClone(c.inputs[0].id)} B={structuredClone(c.inputs[1].id)} onClick={(e) => connect(e.split(".")[1]=="Y"?"in":"out", e)}/>
-					break;
-				case "XNOR":
-					newhtml[i] = <XNOR key={i} id={i.toString()} A={structuredClone(c.inputs[0].id)} B={structuredClone(c.inputs[1].id)} onClick={(e) => connect(e.split(".")[1]=="Y"?"in":"out", e)}/>
-					break;
+		const handleKeyDown = (event: KeyboardEvent) => {		
+			if (event.key === 'Escape') {
+				setConnectIn("");
+				setConnectOut("");
 			}
-		}
-		setComponentHTML(newhtml)
+		};
 
+		document.addEventListener('keydown', handleKeyDown);
 
+		return () => { document.removeEventListener('keydown', handleKeyDown); };
+	}, [])
+
+	useEffect(() => {
 		let newDeleteHTML: JSX.Element[] = [<option value={-1}>Delete Component</option>];
 
 		for(let i in components) {
@@ -166,7 +132,6 @@ function Workspace() {
 			newDeleteHTML.push(<option value={i}>Delete: ID: {i} ({components[i].type})</option>)
 		}
 		setDeleteHTML(newDeleteHTML);
-
 	}, [components])
 
 	function toggleConfig(param: string) {
@@ -175,18 +140,74 @@ function Workspace() {
 		setConfig(newConfig);
 	}
 
+	function save() {
+		let fileContent = JSON.stringify({
+			components: components,
+			positions: positions,
+			wires: wires
+		})
+
+		const blob = new Blob([fileContent], { type: "text/plain" });
+		const url = URL.createObjectURL(blob);
+
+		const link = document.createElement("a");
+		link.download = "circuit.lcf";
+		link.href = url;
+
+		link.click();
+	}
+
+	function load() {
+		let parsedFile = JSON.parse(file);
+		let comps, poses, wrs;
+		try {
+			comps = parsedFile.components;
+			poses = parsedFile.positions;
+			wrs = parsedFile.wires;
+		} catch {
+			return;
+		}
+
+		let newComponents = comps as component[];
+		let newPoses = poses as pos[];
+		let newWires = wrs as boolean[][];
+		setComponents(newComponents);
+		setPositions(newPoses);
+		setWires(newWires);
+	}
+
+
+	function handleFile(e: any) {
+		e.preventDefault()
+		const reader = new FileReader()
+		reader.onload = async (e: any) => { 
+			const text = (e.target.result)
+			setFile(text);
+		};
+		reader.readAsText(e.target.files[0])
+	}
+
+
 	return (
 	<div>
-
 		<table>
 		<tbody>
+			<tr>
+				<td>Save</td>
+				<td><button className="interactBtn" onClick={(e) => {save()}}>Save</button></td>
+				<td><button className="interactBtn" onClick={(e) => {load()}}>Load</button></td>
+				<td>
+					<label className="textInput" onChange={(e) => {handleFile(e)}} htmlFor="formId">
+						<input name="" type="file" id="formId" hidden />
+						Upload
+					</label>
+				</td>
+			</tr>
 			<tr>
 				<td>I/O</td>
 				<td><button className="interactBtn" onClick={(e) => {create("SW")}}>SW</button></td>
 				<td><button className="interactBtn" onClick={(e) => {create("LED")}}>LED</button></td>
 				<td><button className="interactBtn" onClick={(e) => {create("NOT")}}>NOT</button></td>
-
-			
 			</tr>
 			<tr>
 				<td>Gates</td>
@@ -199,7 +220,11 @@ function Workspace() {
 				<td><button className="interactBtn" onClick={(e) => {create("NAND")}}>NAND</button></td>
 				<td><button className="interactBtn" onClick={(e) => {create("NOR")}}>NOR</button></td>
 				<td><button className="interactBtn" onClick={(e) => {create("XNOR")}}>XNOR</button></td>
-				<td></td>
+				{/* <td></td> */}
+			</tr>
+			<tr>
+				<td>Busses</td>
+				<td><button className="interactBtn" onClick={(e) => {create("BUS")}}>BUS</button></td>
 			</tr>
 			<tr>
 				<td>Config</td>
@@ -217,12 +242,11 @@ function Workspace() {
 
 		
 
-		{/* <button onClick={(e) => {remove(toRemove)}}>Delete</button><input onChange={(e) => {setToRemove(parseInt(e.target.value))}}></input> */}
 		<Xwrapper>
 			<ConfigContext.Provider value={{config, setConfig} as ConfigContent}>
 			<WireContext.Provider value={{wires, setWires} as WireContent}>
 				<WireRenderer components={components} connectIn={connectIn} connectOut={connectOut}/>
-				{componentHTML}
+				<ComponentRenderer components={components} positions={positions} connect={(side, id) => connect(side, id)} setPos={(pos, id) => {setPos(pos, id)}}/>
 				<MouseFollower />
 			</WireContext.Provider>
 			</ConfigContext.Provider>

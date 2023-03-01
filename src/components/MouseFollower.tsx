@@ -2,14 +2,14 @@ import { useEffect, useState } from "react";
 import Xarrow, { useXarrow, Xwrapper } from "react-xarrows";
 
 
-export default function Render() {
+export default function MouseFollower() {
 
 	const [pos, setPos] = useState({"x": 0, "y": 0});
 	const updateXarrow = useXarrow();
 
 	useEffect(() => {
-		const updateMousePosition = (ev: any) => {
-		  setPos({ "x": ev.clientX, "y": ev.clientY });
+		const updateMousePosition = (e: MouseEvent) => {
+		  setPos({ "x": e.pageX, "y": e.pageY});
 		};
 
 		updateXarrow();
