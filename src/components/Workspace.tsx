@@ -8,19 +8,21 @@ import Xarrow, { useXarrow, Xwrapper } from "react-xarrows";
 import MouseFollower from "./MouseFollower";
 import WireRenderer from "./WireRenderer";
 
-import { Switch, LED } from "./IO";
-import { BUS } from "./Components"
-
 import { component, input } from "../models/component";
 import ComponentRenderer from "./ComponentRenderer";
+import { pos } from "../models/pos";
 
 function Workspace() {
 
-	const [config, setConfig] = useState({"hideDetails": false, "hideWireStates": false});
 	const alphabet = "ABCDEFGHIJKLMNOPQRSTUVWXYZ".split("");
-	
+	const [config, setConfig] = useState({"hideDetails": false, "hideWireStates": false});
+	const [file, setFile] = useState<string>("");
+	const [justLoaded, setJustLoaded] = useState<boolean>(false);
+
+
 	const [wires, setWires] = useState<boolean[][]>([[]]);
 	const [components, setComponents] = useState<component[]>([]);
+	const [positions, setPositions] = useState<pos[]>([]);
 	const [deleteHTML, setDeleteHTML] = useState<JSX.Element[]>([]);
 
 	const [connectIn, setConnectIn] = useState("");
@@ -36,8 +38,7 @@ function Workspace() {
 		let newcomps = structuredClone(components);
 		newcomps.push({
 			type: type,
-			init_x: 0,
-			init_y: 0,
+			init_pos: {x:0,y:0} as pos,
 			inputs: []
 		} as component)
 		setComponents(newcomps);
@@ -79,6 +80,12 @@ function Workspace() {
 				else {setConnectOut(id)};
 				break;
 		}
+	}
+
+	function setPos(pos: pos, id: string) {
+		let newPositions = structuredClone(positions);
+		newPositions[id] = pos;
+		setPositions(newPositions);
 	}
 
 	useEffect(() => {
@@ -134,30 +141,65 @@ function Workspace() {
 	}
 
 	function save() {
+		let fileContent = JSON.stringify({
+			components: components,
+			positions: positions
+		})
 
+		const blob = new Blob([fileContent], { type: "text/plain" });
+		const url = URL.createObjectURL(blob);
+
+		const link = document.createElement("a");
+		link.download = "circuit.lcd";
+		link.href = url;
+
+		link.click();
 	}
 
 	function load() {
+		let parsedFile = JSON.parse(file);
+		let comps, poses;
+		try {
+			comps = parsedFile.components;
+			poses = parsedFile.positions;
+		} catch {
+			return;
+		}
 
 	}
 
+
+	function handleFile(e: any) {
+		e.preventDefault()
+		const reader = new FileReader()
+		reader.onload = async (e: any) => { 
+			const text = (e.target.result)
+			setFile(text);
+		};
+		reader.readAsText(e.target.files[0])
+	}
+
+
 	return (
 	<div>
-
 		<table>
 		<tbody>
 			<tr>
 				<td>Save</td>
-				<td><button className="interactBtn" onClick={(e) => {load()}}>Save</button></td>
-				<td><button className="interactBtn" onClick={(e) => {save()}}>Load</button></td>
+				<td><button className="interactBtn" onClick={(e) => {save()}}>Save</button></td>
+				<td><button className="interactBtn" onClick={(e) => {load()}}>Load</button></td>
+				<td>
+					<label className="textInput" onChange={(e) => {handleFile(e)}} htmlFor="formId">
+						<input name="" type="file" id="formId" hidden />
+						Upload
+					</label>
+				</td>
 			</tr>
 			<tr>
 				<td>I/O</td>
 				<td><button className="interactBtn" onClick={(e) => {create("SW")}}>SW</button></td>
 				<td><button className="interactBtn" onClick={(e) => {create("LED")}}>LED</button></td>
 				<td><button className="interactBtn" onClick={(e) => {create("NOT")}}>NOT</button></td>
-
-			
 			</tr>
 			<tr>
 				<td>Gates</td>
@@ -170,7 +212,7 @@ function Workspace() {
 				<td><button className="interactBtn" onClick={(e) => {create("NAND")}}>NAND</button></td>
 				<td><button className="interactBtn" onClick={(e) => {create("NOR")}}>NOR</button></td>
 				<td><button className="interactBtn" onClick={(e) => {create("XNOR")}}>XNOR</button></td>
-				<td></td>
+				{/* <td></td> */}
 			</tr>
 			<tr>
 				<td>Busses</td>
@@ -196,7 +238,7 @@ function Workspace() {
 			<ConfigContext.Provider value={{config, setConfig} as ConfigContent}>
 			<WireContext.Provider value={{wires, setWires} as WireContent}>
 				<WireRenderer components={components} connectIn={connectIn} connectOut={connectOut}/>
-				<ComponentRenderer components={components} connect={(side, id) => connect(side, id)} />
+				<ComponentRenderer components={components} positions={positions} connect={(side, id) => connect(side, id)} setPos={(pos, id) => {setPos(pos, id)}}/>
 				<MouseFollower />
 			</WireContext.Provider>
 			</ConfigContext.Provider>

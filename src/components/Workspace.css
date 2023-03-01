@@ -1,3 +1,7 @@
 .interactBtn {
 	width: 5em;
 }
+
+table td {
+	text-align: left;
+}
