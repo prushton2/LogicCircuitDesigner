@@ -151,7 +151,7 @@ function Workspace() {
 		const url = URL.createObjectURL(blob);
 
 		const link = document.createElement("a");
-		link.download = "circuit.lcd";
+		link.download = "circuit.lcf";
 		link.href = url;
 
 		link.click();
