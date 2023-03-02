@@ -16,7 +16,7 @@ const ComponentRenderer = ({components, positions, connect, setPos}: {components
 
 		for(let i in components) {
 			let c = components[i];
-			let pos = !positions[i] ? {x:0,y:0} as pos : positions[i];
+			let pos = !c.init_pos ? {x:0,y:0} as pos : c.init_pos;
 			
 			if(c === null) { continue; }
 			switch(c.type) {
