@@ -155,9 +155,9 @@ function Workspace() {
 
 		link.click();
 	}
-
-	function load() {
-		let parsedFile = JSON.parse(file);
+	
+	function loadLCF(lcf: string) {
+		let parsedFile = JSON.parse(lcf);
 		let comps, wrs;
 		try {
 			comps = parsedFile.components;
@@ -172,15 +172,14 @@ function Workspace() {
 		setWires(newWires);
 	}
 
-
 	function handleFile(e: any) {
-		e.preventDefault()
-		const reader = new FileReader()
+		e.preventDefault();
+		const reader = new FileReader();
 		reader.onload = async (e: any) => { 
-			const text = (e.target.result)
-			setFile(text);
+			const text = (e.target.result);
+			loadLCF(text);
 		};
-		reader.readAsText(e.target.files[0])
+		reader.readAsText(e.target.files[0]);
 	}
 
 
@@ -191,11 +190,10 @@ function Workspace() {
 			<tr>
 				<td>Save</td>
 				<td><button className="interactBtn" onClick={(e) => {save()}}>Save</button></td>
-				<td><button className="interactBtn" onClick={(e) => {load()}}>Load</button></td>
 				<td>
-					<label className="textInput" onChange={(e) => {handleFile(e)}} htmlFor="formId">
-						<input name="" type="file" id="formId" hidden />
-						Upload
+					<label htmlFor="contained-button-file">
+						<input type="file" id="contained-button-file" onChange={(e) => {handleFile(e)}} hidden/>
+						<button className="interactBtn" onClick={(e) => {document.getElementById("contained-button-file")?.click()}}>Upload</button>
 					</label>
 				</td>
 			</tr>

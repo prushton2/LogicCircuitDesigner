@@ -5,3 +5,11 @@
 table td {
 	text-align: left;
 }
+
+.textInput {
+	color: white;
+	background-color: #4b4a53;
+	border: #4b4a53;
+	width: 5em;
+
+}
