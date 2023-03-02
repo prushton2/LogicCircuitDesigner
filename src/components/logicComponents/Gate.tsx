@@ -31,12 +31,18 @@ const BaseGate = ({I, pos, comp, label, image, style, id, onClick, setPos}: { //
 	const [display, setDisplay] = useState("inline"); //for hiding the gate configuration
 
 	useEffect(() => {
-		let newValue: boolean[];
+		let newValue: (boolean | undefined)[];
 		try {
-			newValue = wires[I[0].id].map((v, i) => {return comp(wires[I[0].id][i], wires[I[1].id][i])})
+			newValue = wires[I[0].id].map((v, i) => {
+				if(wires[I[0].id][i] == undefined || wires[I[1].id][i] == undefined) {return undefined}
+				return comp(wires[I[0].id][i], wires[I[1].id][i])
+			})
 		} catch {
 			if(I.length === 1) {
-				newValue = wires[I[0].id].map((v, i) => {return comp(wires[I[0].id][i], false)})
+				newValue = wires[I[0].id].map((v, i) => {
+					if(wires[I[0].id][i] == undefined) {return undefined}
+					return comp(wires[I[0].id][i], false)
+				})
 			} else {
 				return;
 			}

@@ -16,13 +16,9 @@ function Workspace() {
 
 	const alphabet = "ABCDEFGHIJKLMNOPQRSTUVWXYZ".split("");
 	const [config, setConfig] = useState({"hideDetails": false, "hideWireStates": false});
-	const [file, setFile] = useState<string>("");
-	const [justLoaded, setJustLoaded] = useState<boolean>(false);
-
 
 	const [wires, setWires] = useState<boolean[][]>([[]]);
 	const [components, setComponents] = useState<component[]>([]);
-	const [positions, setPositions] = useState<pos[]>([]);
 	const [deleteHTML, setDeleteHTML] = useState<JSX.Element[]>([]);
 
 	const [connectIn, setConnectIn] = useState("");
@@ -157,6 +153,7 @@ function Workspace() {
 	}
 	
 	function loadLCF(lcf: string) {
+		setComponents([]);
 		let parsedFile = JSON.parse(lcf);
 		let comps, wrs;
 		try {
@@ -240,7 +237,7 @@ function Workspace() {
 			<ConfigContext.Provider value={{config, setConfig} as ConfigContent}>
 			<WireContext.Provider value={{wires, setWires} as WireContent}>
 				<WireRenderer components={components} connectIn={connectIn} connectOut={connectOut}/>
-				<ComponentRenderer components={components} positions={positions} connect={(side, id) => connect(side, id)} setPos={(pos, id) => {setPos(pos, id)}}/>
+				<ComponentRenderer components={components} connect={(side, id) => connect(side, id)} setPos={(pos, id) => {setPos(pos, id)}}/>
 				<MouseFollower />
 			</WireContext.Provider>
 			</ConfigContext.Provider>

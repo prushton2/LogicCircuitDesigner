@@ -7,7 +7,7 @@ import { Gate } from "./logicComponents/Gate";
 import { SW, LED } from "./logicComponents/IO";
 import { BUS } from "./logicComponents/Busses"
 
-const ComponentRenderer = ({components, positions, connect, setPos}: {components: component[], positions: pos[], connect: (side: string, id: string) => void, setPos: (pos: pos, id: string) => void}) => {
+const ComponentRenderer = ({components, connect, setPos}: {components: component[], connect: (side: string, id: string) => void, setPos: (pos: pos, id: string) => void}) => {
 
 	const [componentHTML, setComponentHTML] = useState<JSX.Element[]>([]);
 
