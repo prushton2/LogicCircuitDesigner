@@ -1,28 +1,19 @@
-import "../App.css"
+import "../../App.css"
 
-import { useState,useEffect, useContext } from "react";
-import Xarrow, { useXarrow, Xwrapper } from "react-xarrows";
-import Draggable from "react-draggable";
+import { useState, useEffect, useContext } from "react";
 
-import { ConfigContext, WireContext } from "./Context";
-import { input } from "../models/component";
-import { pos } from "../models/pos";
+import Component from "./Component";
+import { WireContext } from "../Context";
+import { input } from "../../models/component";
+import { pos } from "../../models/pos";
 
 export const SW = ({id, pos, onClick, setPos}: {id: any, pos: pos, onClick: (id: string) => void, setPos: (pos: pos, id: string) => void}) => {
 
 	const [value, setValue] = useState(false);
 	const {wires, setWires} = useContext(WireContext);
-	const {config, setConfig} = useContext(ConfigContext);
 	
 	const [display, setDisplay] = useState("inline"); //for hiding the gate configuration
 	const [name, setName] = useState(id);
-
-	const updateXarrow = useXarrow();
-
-	const savePos = (e: any, element: any) => {
-		setPos({x: element.x, y: element.y} as pos, id);
-		updateXarrow();
-	}
 
 	useEffect(() => {
 		let newWires = structuredClone(wires);
@@ -30,13 +21,9 @@ export const SW = ({id, pos, onClick, setPos}: {id: any, pos: pos, onClick: (id:
 		setWires(newWires);
 	}, [value])
 
-	useEffect(() => {
-		setDisplay(!config["hideDetails" as keyof object] ? "inline": "none");
-	}, [config])
-
 	return (
 
-		<Draggable grid={[5, 5]} defaultPosition={{x: pos.x, y: pos.y}} onDrag={updateXarrow} onStop={savePos}>
+		<Component defaultPos={pos} newPos={(pos) => setPos(pos, id)} setDisplay={(v, d) => setDisplay(d)}>
 			<div style={{position: "absolute", width: "50px", height: "70px", border: "0px solid red"}}>
 				
 				
@@ -49,7 +36,7 @@ export const SW = ({id, pos, onClick, setPos}: {id: any, pos: pos, onClick: (id:
 					<button onClick={(e) => onClick(`${id}.Y`)} style={{marginRight: "1.3em", display: display}}>Y</button> <br /> 
 				</div>
 			</div>
-		</Draggable>
+		</Component>
 
 	)
 }
@@ -57,22 +44,10 @@ export const SW = ({id, pos, onClick, setPos}: {id: any, pos: pos, onClick: (id:
 export const LED = ({I, id, pos, onClick, setPos}: {I: input[], id: string, pos: pos ,onClick: (id: string) => void, setPos: (pos: pos, id: string) => void}) => {
     
 	const {wires, setWires} = useContext(WireContext);
-	const {config, setConfig} = useContext(ConfigContext);
 
 	const [display, setDisplay] = useState("inline"); //for hiding the gate configuration
 	const [name, setName] = useState(id);
 	const [value, setValue] = useState("0");
-
-	const updateXarrow = useXarrow();
-	
-	const savePos = (e: any, element: any) => {
-		setPos({x: element.x, y: element.y} as pos, id);
-		updateXarrow();
-	}
-
-	useEffect(() => {
-		setDisplay(!config["hideDetails" as keyof object] ? "inline": "none");
-	}, [config])
 
 	useEffect(() => {
 		try {
@@ -91,7 +66,7 @@ export const LED = ({I, id, pos, onClick, setPos}: {I: input[], id: string, pos:
 	}, [wires])
 
 	return (
-		<Draggable grid={[5, 5]} defaultPosition={{x: pos.x, y: pos.y}} onDrag={updateXarrow} onStop={savePos}>
+		<Component defaultPos={pos} newPos={(pos) => setPos(pos, id)} setDisplay={(v, d) => setDisplay(d)}>
 			<div style={{position: "absolute", width: "50px", height: "70px", border: "0px solid red"}}>
 				
 				
@@ -104,6 +79,6 @@ export const LED = ({I, id, pos, onClick, setPos}: {I: input[], id: string, pos:
 					<button onClick={(e) => onClick(`${id}.A`)} style={{marginRight: "1.3em", display: display}}>A</button> <br /> 
 				</div>
 			</div>
-		</Draggable>
+		</Component>
 	)
 }
