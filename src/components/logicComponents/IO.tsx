@@ -4,9 +4,9 @@ import { useState,useEffect, useContext } from "react";
 import Xarrow, { useXarrow, Xwrapper } from "react-xarrows";
 import Draggable from "react-draggable";
 
-import { ConfigContext, WireContext } from "./Context";
-import { input } from "../models/component";
-import { pos } from "../models/pos";
+import { ConfigContext, WireContext } from "../Context";
+import { input } from "../../models/component";
+import { pos } from "../../models/pos";
 
 export const SW = ({id, pos, onClick, setPos}: {id: any, pos: pos, onClick: (id: string) => void, setPos: (pos: pos, id: string) => void}) => {
 

@@ -2,9 +2,9 @@ import React, { useContext, useEffect, useState } from "react";
 import Xarrow, { useXarrow, Xwrapper } from "react-xarrows";
 import Draggable from "react-draggable";
 
-import { input } from "../models/component";
-import { ConfigContext, WireContext } from "./Context";
-import { pos } from "../models/pos";
+import { input } from "../../models/component";
+import { ConfigContext, WireContext } from "../Context";
+import { pos } from "../../models/pos";
 
 import AND_png from "../images/AND.png"
 import OR_png  from "../images/OR.png"

@@ -1,9 +1,9 @@
 import { useContext, useEffect, useState } from "react";
-import { WireContext, ConfigContext } from "./Context";
+import { WireContext, ConfigContext } from "../Context";
 import Draggable from "react-draggable";
 import { useXarrow } from "react-xarrows";
-import { pos } from "../models/pos";
-import { input } from "../models/component";
+import { pos } from "../../models/pos";
+import { input } from "../../models/component";
 
 export function BUS({id, pos, I, onClick, setPos}: {id: string, pos: pos, I: input[], onClick: (id: string) => void, setPos: (pos: pos, id: string) => void}) {
 
