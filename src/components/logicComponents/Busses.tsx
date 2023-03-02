@@ -20,7 +20,7 @@ export function BUS({id, pos, I, onClick, setPos}: {id: string, pos: pos, I: inp
 					continue;
 				}
 	
-				bus[i] = wires[I[i].id][0];
+				bus[8-i] = wires[I[i].id][0];
 			} catch {}
 		}
 	
