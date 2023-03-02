@@ -34,7 +34,13 @@ const BaseGate = ({I, pos, comp, label, image, style, id, onClick, setPos}: { //
 		let newValue: boolean[];
 		try {
 			newValue = wires[I[0].id].map((v, i) => {return comp(wires[I[0].id][i], wires[I[1].id][i])})
-		} catch { return; }
+		} catch {
+			if(I.length === 1) {
+				newValue = wires[I[0].id].map((v, i) => {return comp(wires[I[0].id][i], false)})
+			} else {
+				return;
+			}
+		}
 		
 		if(JSON.stringify(wires[id as keyof []]) === JSON.stringify(newValue)) {
 			return;
