@@ -1,19 +1,15 @@
 import { useContext, useEffect, useState } from "react";
-import { WireContext, ConfigContext } from "../Context";
-import Draggable from "react-draggable";
-import { useXarrow } from "react-xarrows";
+
+import Component from "./Component";
+import { WireContext } from "../Context";
 import { pos } from "../../models/pos";
 import { input } from "../../models/component";
 
 export function BUS({id, pos, I, onClick, setPos}: {id: string, pos: pos, I: input[], onClick: (id: string) => void, setPos: (pos: pos, id: string) => void}) {
 
 	const {wires, setWires} = useContext(WireContext);
-	const {config, setConfig} = useContext(ConfigContext);
 
-	const [display, setDisplay] = useState("inline"); //for hiding the gate configuration
-
-	const updateXarrow = useXarrow();
-	
+	const [display, setDisplay] = useState("inline"); //for hiding the gate configuration	
 	
 	useEffect(() => {
 		let bus = [];
@@ -37,18 +33,9 @@ export function BUS({id, pos, I, onClick, setPos}: {id: string, pos: pos, I: inp
 		setWires(newWires);
 	}, [wires])
 
-	useEffect(() => {
-		setDisplay(!config["hideDetails" as keyof object] ? "inline": "none");
-	}, [config])
-
-	const savePos = (e: any, element: any) => {
-		setPos({x: element.x, y: element.y} as pos, id);
-		updateXarrow();
-	}
-
 	return (
 		<div>
-			<Draggable grid={[5,5]} defaultPosition={{x: pos.x, y: pos.y}} onDrag={updateXarrow} onStop={savePos}>
+			<Component defaultPos={pos} newPos={(pos) => setPos(pos, id)} setDisplay={(v, d) => setDisplay(d)}>
 				<div style={{width: "90px", height: "400px", border: "5px solid white"}}>
 					<div id={`${id}.A`} style={{left: "0%", top: "25px", position: "absolute", transform: "translate(0%, -50%)"}}>
 						{'\u00A0'}A<button onClick={(e) => onClick(`${id}.A`)} style={{marginLeft: ".3em", display: display}}>A</button><br /> 
@@ -80,7 +67,7 @@ export function BUS({id, pos, I, onClick, setPos}: {id: string, pos: pos, I: inp
 					</div>
 
 				</div>
-			</Draggable>
+			</Component>
 		</div>
 	);
 }

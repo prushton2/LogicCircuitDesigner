@@ -8,7 +8,7 @@ import { pos } from "../../models/pos";
 
 
 
-export default function Component({innerHTML, defaultPos, newPos, setDisplay}:{innerHTML: JSX.Element[], defaultPos: pos, newPos: (pos: pos) => void, setDisplay: (hideDetails: boolean, display: string) => void}) {
+const Component = ({children, defaultPos, newPos, setDisplay}: {children: JSX.Element, defaultPos: pos, newPos: (pos: pos) => void, setDisplay: (hideDetails: boolean, display: string) => void}) => {
 
 	const {config, setConfig} = useContext(ConfigContext);
 
@@ -26,8 +26,10 @@ export default function Component({innerHTML, defaultPos, newPos, setDisplay}:{i
 	return (
 		<div>
 			<Draggable grid={[5,5]} defaultPosition={{x: defaultPos.x, y: defaultPos.y}} onDrag={updateXarrow} onStop={savePos}>
-				{innerHTML}
+				{children}
 			</Draggable>
 		</div>
 	)
 }
+
+export default Component;

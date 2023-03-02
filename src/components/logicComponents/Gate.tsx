@@ -1,18 +1,17 @@
 import React, { useContext, useEffect, useState } from "react";
-import Xarrow, { useXarrow, Xwrapper } from "react-xarrows";
-import Draggable from "react-draggable";
 
+import Component from "./Component"
 import { input } from "../../models/component";
-import { ConfigContext, WireContext } from "../Context";
+import { WireContext } from "../Context";
 import { pos } from "../../models/pos";
 
-import AND_png from "../images/AND.png"
-import OR_png  from "../images/OR.png"
-import XOR_png from "../images/XOR.png"
-import NOT_png from "../images/NOT.png"
-import NAND_png from "../images/NAND.png"
-import NOR_png  from "../images/NOR.png"
-import XNOR_png from "../images/XNOR.png"
+import AND_png from "../../images/AND.png"
+import OR_png  from "../../images/OR.png"
+import XOR_png from "../../images/XOR.png"
+import NOT_png from "../../images/NOT.png"
+import NAND_png from "../../images/NAND.png"
+import NOR_png  from "../../images/NOR.png"
+import XNOR_png from "../../images/XNOR.png"
 
 interface buttonOffset {
 	A_top: string,
@@ -28,16 +27,8 @@ const BaseGate = ({I, pos, comp, label, image, style, id, onClick, setPos}: { //
 	setPos: (pos: pos, id: string) => void}) => {
 	
 	const {wires, setWires} = useContext(WireContext);
-	const {config, setConfig} = useContext(ConfigContext);
 		
 	const [display, setDisplay] = useState("inline"); //for hiding the gate configuration
-
-	const updateXarrow = useXarrow();
-
-	const savePos = (e: any, element: any) => {
-		setPos({x: element.x, y: element.y} as pos, id);
-		updateXarrow();
-	}
 
 	useEffect(() => {
 		let newValue: boolean[];
@@ -54,36 +45,32 @@ const BaseGate = ({I, pos, comp, label, image, style, id, onClick, setPos}: { //
 		setWires(newWires);
 	}, [wires])
 
-	useEffect(() => {
-		setDisplay(!config["hideDetails" as keyof object] ? "inline": "none");
-	}, [config])
 
 	return (
+		<div>
+			<Component defaultPos={pos} newPos={(pos) => {setPos(pos, id)}} setDisplay={(v, d) => {setDisplay(d)}}> 
+				<div style={{userSelect: "none", position: "absolute", border: "0px solid red", width: "90px", height: "90px"}} >
+			
+					{display==="inline"?`${label} (${id})`:""} <br />
 
+					<img src={image} style={{width: "90px", position: "absolute", transform: "translate(-50%, 10%)"}} onDragStart={(e) => {e.preventDefault()}}/>
 
-		<Draggable grid={[5, 5]} defaultPosition={{x: pos.x, y: pos.y}} onDrag={updateXarrow} onStop={savePos}>
+					<div id={`${id}.A`} style={{left: "0%", top: style.A_top, position: "absolute", transform: "translate(0%, -50%)"}}>
+						<button onClick={(e) => onClick(`${id}.A`)} style={{marginLeft: "1.3em", display: display}}>A</button><br /> 
+					</div>
 
-			<div style={{userSelect: "none", position: "absolute", border: "0px solid red", width: "90px", height: "90px"}} >
-				
-				{display==="inline"?`${label} (${id})`:""} <br />
+					<div id={`${id}.Y`} style={{right: "0%", top: style.O_top, position: "absolute", transform: "translate(0%, -50%)"}}>
+						<label style={{display: display}}></label><button onClick={(e) => onClick(`${id}.Y`)} style={{marginRight: "1.3em", display: display}}>Y</button>
+					</div>
 
-				<img src={image} style={{width: "90px", position: "absolute", transform: "translate(-50%, 10%)"}} onDragStart={(e) => {e.preventDefault()}}/>
-
-				<div id={`${id}.A`} style={{left: "0%", top: style.A_top, position: "absolute", transform: "translate(0%, -50%)"}}>
-					<button onClick={(e) => onClick(`${id}.A`)} style={{marginLeft: "1.3em", display: display}}>A</button><br /> 
+					<div id={`${id}.B`} style={{left: "0%", top: style.B_top, display: style.B_top==="null"?"none":"inline", position: "absolute", transform: "translate(0%, -50%)"}}>
+						<button onClick={(e) => onClick(`${id}.B`)} style={{marginLeft: "1.3em", display: display}}>B</button> <br/> 
+					</div>
 				</div>
-
-				<div id={`${id}.Y`} style={{right: "0%", top: style.O_top, position: "absolute", transform: "translate(0%, -50%)"}}>
-					<label style={{display: display}}></label><button onClick={(e) => onClick(`${id}.Y`)} style={{marginRight: "1.3em", display: display}}>Y</button>
-				</div>
-
-				<div id={`${id}.B`} style={{left: "0%", top: style.B_top, display: style.B_top==="null"?"none":"inline", position: "absolute", transform: "translate(0%, -50%)"}}>
-					<button onClick={(e) => onClick(`${id}.B`)} style={{marginLeft: "1.3em", display: display}}>B</button> <br/> 
-				</div>
+			</Component>
+		</div>
 
 
-			</div>
-		</Draggable>
 
 	)
 }
