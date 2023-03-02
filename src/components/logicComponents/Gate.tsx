@@ -93,18 +93,18 @@ export const Gate = ({I, id, pos, type, onClick, setPos}: {I: input[], pos: pos,
 			compare = (A: boolean, B: boolean) => {return A || B}
 			break;
 		case "XOR":
-			style = {A_top: "40px",O_top: "60px",B_top: "75px"} as buttonOffset,
+			style = {A_top: "40px",O_top: "55px",B_top: "75px"} as buttonOffset,
 			image = XOR_png,
 			compare = (A: boolean, B: boolean) => {return A !== B}
 			break;
 
 		case "NAND":
-			style = {A_top: "45px",O_top: "60px",B_top: "80px"} as buttonOffset,
+			style = {A_top: "45px",O_top: "60px",B_top: "75px"} as buttonOffset,
 			image = NAND_png,
 			compare = (A: boolean, B: boolean) => {return !(A && B)}
 			break;
 		case "NOR":
-			style = {A_top: "45px",O_top: "55px",B_top: "70px"} as buttonOffset,
+			style = {A_top: "40px",O_top: "55px",B_top: "70px"} as buttonOffset,
 			image = NOR_png,
 			compare = (A: boolean, B: boolean) => {return !(A || B)}
 			break;
