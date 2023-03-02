@@ -83,9 +83,9 @@ function Workspace() {
 	}
 
 	function setPos(pos: pos, id: string) {
-		let newPositions = structuredClone(positions);
-		newPositions[id] = pos;
-		setPositions(newPositions);
+		let newComponents = structuredClone(components);
+		newComponents[parseInt(id)].init_pos = structuredClone(pos);
+		setComponents(newComponents);
 	}
 
 	useEffect(() => {
@@ -143,7 +143,6 @@ function Workspace() {
 	function save() {
 		let fileContent = JSON.stringify({
 			components: components,
-			positions: positions,
 			wires: wires
 		})
 
@@ -159,20 +158,17 @@ function Workspace() {
 
 	function load() {
 		let parsedFile = JSON.parse(file);
-		let comps, poses, wrs;
+		let comps, wrs;
 		try {
 			comps = parsedFile.components;
-			poses = parsedFile.positions;
 			wrs = parsedFile.wires;
 		} catch {
 			return;
 		}
 
 		let newComponents = comps as component[];
-		let newPoses = poses as pos[];
 		let newWires = wrs as boolean[][];
 		setComponents(newComponents);
-		setPositions(newPoses);
 		setWires(newWires);
 	}
 
