@@ -196,7 +196,7 @@ function Workspace() {
 			<tr>
 				<td>I/O</td>
 				<td><button className="interactBtn" onClick={(e) => {create("SW")}}>SW</button></td>
-				<td><button className="interactBtn" onClick={(e) => {create("SWBUS")}}>SW [8:0]</button></td>
+				<td><button className="interactBtn" onClick={(e) => {create("SWBUS")}}>SW [7:0]</button></td>
 				<td><button className="interactBtn" onClick={(e) => {create("LED")}}>LED</button></td>
 			</tr>
 			<tr>
