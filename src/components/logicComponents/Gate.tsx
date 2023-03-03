@@ -65,7 +65,7 @@ const BaseGate = ({I, pos, comp, label, image, style, id, onClick, setPos}: { //
 			
 					{display==="inline"?`${label} (${id})`:""} <br />
 
-					<img src={image} style={{width: "90px", position: "absolute", transform: "translate(-50%, 10%)"}} onDragStart={(e) => {e.preventDefault()}}/>
+					<img src={image} style={{width: "90px", position: "absolute", transform: "translate(0%, 10%)"}} onDragStart={(e) => {e.preventDefault()}}/>
 
 					<div id={`${id}.A`} style={{left: "0%", top: style.A_top, position: "absolute", transform: "translate(0%, -50%)"}}>
 						<button onClick={(e) => onClick(`${id}.A`)} style={{marginLeft: "1.3em", display: display}}>A</button><br /> 

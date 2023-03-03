@@ -4,7 +4,7 @@ import { component, input } from "../models/component";
 import { pos } from "../models/pos";
 
 import { Gate } from "./logicComponents/Gate";
-import { SW, LED } from "./logicComponents/IO";
+import { SW,  SWBUS, LED } from "./logicComponents/IO";
 import { BUS } from "./logicComponents/Busses"
 
 const ComponentRenderer = ({components, connect, setPos}: {components: component[], connect: (side: string, id: string) => void, setPos: (pos: pos, id: string) => void}) => {
@@ -22,6 +22,10 @@ const ComponentRenderer = ({components, connect, setPos}: {components: component
 			switch(c.type) {
 				case "SW":
 					newhtml[i] = <SW  key={i} pos={pos} id={i}              onClick={(id) => {connect("in", id)}} setPos={(pos, id) => {setPos(pos, id)}}/>
+					break;
+
+				case "SWBUS":
+					newhtml[i] = <SWBUS key={i} pos={pos} id={i}              onClick={(id) => {connect("in", id)}} setPos={(pos, id) => {setPos(pos, id)}}/>
 					break;
 				
 				case "LED":

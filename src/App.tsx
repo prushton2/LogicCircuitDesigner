@@ -7,7 +7,7 @@ import Workspace from "./components/Workspace"
 function App() {
 
 	return (
-		<div className="App">
+		<div>
 			<Workspace />
 		</div>
 	);

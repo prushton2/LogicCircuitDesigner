@@ -153,7 +153,6 @@ function Workspace() {
 	}
 	
 	function loadLCF(lcf: string) {
-		setComponents([]);
 		let parsedFile = JSON.parse(lcf);
 		let comps, wrs;
 		try {
@@ -197,8 +196,8 @@ function Workspace() {
 			<tr>
 				<td>I/O</td>
 				<td><button className="interactBtn" onClick={(e) => {create("SW")}}>SW</button></td>
+				<td><button className="interactBtn" onClick={(e) => {create("SWBUS")}}>SW [8:0]</button></td>
 				<td><button className="interactBtn" onClick={(e) => {create("LED")}}>LED</button></td>
-				<td><button className="interactBtn" onClick={(e) => {create("NOT")}}>NOT</button></td>
 			</tr>
 			<tr>
 				<td>Gates</td>
@@ -211,7 +210,10 @@ function Workspace() {
 				<td><button className="interactBtn" onClick={(e) => {create("NAND")}}>NAND</button></td>
 				<td><button className="interactBtn" onClick={(e) => {create("NOR")}}>NOR</button></td>
 				<td><button className="interactBtn" onClick={(e) => {create("XNOR")}}>XNOR</button></td>
-				{/* <td></td> */}
+			</tr>
+			<tr>
+				<td></td>
+				<td><button className="interactBtn" onClick={(e) => {create("NOT")}}>NOT</button></td>
 			</tr>
 			<tr>
 				<td>Busses</td>

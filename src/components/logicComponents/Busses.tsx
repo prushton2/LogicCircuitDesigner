@@ -72,6 +72,6 @@ export function BUS({id, pos, I, onClick, setPos}: {id: string, pos: pos, I: inp
 	);
 }
 
-export function MUX({}: {}) {
-
+export function MUX({id, pos, I, onClick, setPos}: {id: string, pos: pos, I: input[], onClick: (id: string) => void, setPos: (pos: pos, id: string) => void}) {
+	
 }
