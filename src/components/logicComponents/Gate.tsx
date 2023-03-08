@@ -31,24 +31,24 @@ const BaseGate = ({I, pos, comp, label, image, style, id, onClick, setPos}: { //
 	const [display, setDisplay] = useState("inline"); //for hiding the gate configuration
 
 	useEffect(() => {
-		let newValue: (boolean | undefined)[];
+		let newValue: string | undefined;
 		try {
-			newValue = wires[I[0].id].map((v, i) => {
-				if(wires[I[0].id][i] == undefined || wires[I[1].id][i] == undefined) {return undefined}
-				return comp(wires[I[0].id][i], wires[I[1].id][i])
-			})
+			newValue = wires[I[0].id].split("").map((v, i) => {
+				return comp(wires[I[0].id][i]==="1" ? true : false, wires[I[1].id][i]==="1" ? true : false) ? "1":"0"
+			}).join()
 		} catch {
 			if(I.length === 1) {
-				newValue = wires[I[0].id].map((v, i) => {
-					if(wires[I[0].id][i] == undefined) {return undefined}
-					return comp(wires[I[0].id][i], false)
-				})
-			} else {
-				return;
+				console.log("not");
+				newValue = wires[I[0].id].split("").map((v, i) => {
+					return comp(wires[I[0].id][i]==="1" ? true : false, false) ? "1":"0"
+				}).join()
 			}
 		}
 		
-		if(JSON.stringify(wires[id as keyof []]) === JSON.stringify(newValue)) {
+		console.log(newValue);
+		console.log(wires[id as keyof []]);
+		if(wires[id as keyof []] == newValue) {
+			console.log("Same Result");
 			return;
 		}
 
