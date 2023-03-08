@@ -12,7 +12,7 @@ export function BUS({id, pos, I, onClick, setPos}: {id: string, pos: pos, I: inp
 	const [display, setDisplay] = useState("inline"); //for hiding the gate configuration	
 	
 	useEffect(() => {
-		let bus = [];
+		let bus = "";
 
 		for(let i = 0; i<8; i++) {
 			try {
@@ -20,7 +20,7 @@ export function BUS({id, pos, I, onClick, setPos}: {id: string, pos: pos, I: inp
 					continue;
 				}
 	
-				bus[8-i] = wires[I[i].id][0];
+				bus += wires[I[i].id][0];
 			} catch {}
 		}
 	
@@ -73,5 +73,5 @@ export function BUS({id, pos, I, onClick, setPos}: {id: string, pos: pos, I: inp
 }
 
 export function MUX({id, pos, I, onClick, setPos}: {id: string, pos: pos, I: input[], onClick: (id: string) => void, setPos: (pos: pos, id: string) => void}) {
-	
+
 }
