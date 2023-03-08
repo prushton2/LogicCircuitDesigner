@@ -27,9 +27,6 @@ function Workspace() {
 	const updateXarrow = useXarrow();
 
 	function create(type: string) {
-		let newWires = structuredClone(wires);
-		newWires.push([]);
-		setWires(newWires);
 
 		let newcomps = structuredClone(components);
 		newcomps.push({

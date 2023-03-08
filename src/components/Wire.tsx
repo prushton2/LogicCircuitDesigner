@@ -15,7 +15,7 @@ const Wire = ({start, end}: {start: string, end: string}) => {
 		} else {
 			try {
 				let index: number = parseInt(start.split(".")[0])
-				let binary: string = JSON.stringify(wires[index]).replaceAll("[", "").replaceAll("]", "").replaceAll("null", "").replaceAll(",", "").replaceAll("false", "0").replaceAll("true", "1");
+				let binary: string = wires[index]
 				
 				setColor(binary.charAt(0) === "1" ? "red" : "white")
 			} catch {
