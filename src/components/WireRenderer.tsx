@@ -4,7 +4,7 @@ import Wire from "./Wire";
 
 import { component } from "../models/component";
 
-const WireRenderer = ({components, connectIn, connectOut}: {components: component[], connectIn: string, connectOut: string}) => {
+const WireRenderer = ({components, connectIn, connectOut, resetWires}: {components: component[], connectIn: string, connectOut: string, resetWires: boolean}) => {
 
 	const alphabet = "ABCDEFGHIJKLMNOPQRSTUVWXYZ".split("");
 	const [wireHTML, setWireHTML] = useState<JSX.Element[]>([]);
@@ -23,7 +23,7 @@ const WireRenderer = ({components, connectIn, connectOut}: {components: componen
 			}
 		}
 		setWireHTML(newhtml);
-	}, [components])
+	}, [components, resetWires])
 
 	useEffect(() => {
 		if(connectIn !== "") {
@@ -37,6 +37,9 @@ const WireRenderer = ({components, connectIn, connectOut}: {components: componen
 		}
 	}, [connectIn, connectOut])
 
+	useEffect(() => {
+		setWireHTML([]);
+	}, [resetWires])
 	
 	return (
 		<div>

@@ -17,6 +17,7 @@ function Workspace() {
 
 	const alphabet = "ABCDEFGHIJKLMNOPQRSTUVWXYZ".split("");
 	const [config, setConfig] = useState({"hideDetails": false, "hideWireStates": false});
+	const [resetWires, setResetWires] = useState(false);
 
 	const [wires, setWires] = useState<string[]>([]);
 	const [components, setComponents] = useState<component[]>([]);
@@ -223,7 +224,7 @@ function Workspace() {
 				<td>Config</td>
 				<td><button className="interactBtn" onClick={(e) => {toggleConfig("hideDetails")}}>Details</button></td>
 				<td><button className="interactBtn" onClick={(e) => {toggleConfig("hideWireStates")}}>Wires</button></td>
-				<td><button className="interactBtn" onClick={(e) => {}}>Fix Wires</button></td>
+				<td><button className="interactBtn" onClick={(e) => {setResetWires(!resetWires)}}>Fix Wires</button></td>
 			</tr>
 		</tbody>
 		</table>
@@ -239,7 +240,7 @@ function Workspace() {
 		<Xwrapper>
 			<ConfigContext.Provider value={{config, setConfig} as ConfigContent}>
 			<WireContext.Provider value={{wires, setWires} as WireContent}>
-				<WireRenderer components={components} connectIn={connectIn} connectOut={connectOut}/>
+				<WireRenderer components={components} connectIn={connectIn} connectOut={connectOut} resetWires={resetWires}/>
 				<ComponentRenderer components={components} connect={(side, id) => connect(side, id)} setPos={(pos, id) => {setPos(pos, id)}}/>
 				<MouseFollower />
 			</WireContext.Provider>
