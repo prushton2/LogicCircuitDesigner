@@ -86,7 +86,6 @@ export function MUX({id, pos, I, onClick, setPos}: {id: string, pos: pos, I: inp
 
 	useEffect(() => {
 		try {
-			console.log("I")
 			let newWires = structuredClone(wires);
 			let i = parseInt(newWires[I[18].id as keyof []], 2)
 			newWires[parseInt(id) as keyof []] = wires[I[i].id];
