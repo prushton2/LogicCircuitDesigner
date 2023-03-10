@@ -220,6 +220,7 @@ function Workspace() {
 				<td>Busses</td>
 				<td><button className="interactBtn" onClick={(e) => {create("BUS")}}>BUS</button></td>
 				<td><button className="interactBtn" onClick={(e) => {create("MUX")}}>MUX</button></td>
+				<td><button className="interactBtn" onClick={(e) => {create("ADDER")}}>ADDER</button></td>
 			</tr>
 			<tr>
 				<td>Config</td>

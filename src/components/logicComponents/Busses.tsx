@@ -124,3 +124,16 @@ export function MUX({id, pos, I, onClick, setPos}: {id: string, pos: pos, I: inp
 		</div>
 	)
 }
+
+export function ADDER({id, I, pos, onClick, setPos}: {id: string, I: input[], pos: pos, onClick: (id: string) => void, setPos: (pos: pos, id: string) => void}) {
+	
+	const [display, setDisplay] = useState("inline");
+	
+	return(
+		<Component defaultPos={pos} newPos={(pos) => setPos(pos, id)} setDisplay={(h, d) => {setDisplay(d)}}>
+				<div style={{width: "90px", height: "90px", border: "5px solid white"}}>
+				<Inputs inputCount={2} heights={[30, 60]} labelInputs componentID={id} onClick={(id) => onClick(id)}/>
+			</div>
+		</Component>
+	)
+}
