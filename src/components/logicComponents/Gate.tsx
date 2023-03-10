@@ -38,17 +38,13 @@ const BaseGate = ({I, pos, comp, label, image, style, id, onClick, setPos}: { //
 			}).join()
 		} catch {
 			if(I.length === 1) {
-				console.log("not");
 				newValue = wires[I[0].id].split("").map((v, i) => {
 					return comp(wires[I[0].id][i]==="1" ? true : false, false) ? "1":"0"
 				}).join()
 			}
 		}
 		
-		console.log(newValue);
-		console.log(wires[id as keyof []]);
 		if(wires[id as keyof []] == newValue) {
-			console.log("Same Result");
 			return;
 		}
 

@@ -7,6 +7,7 @@ import Xarrow, { useXarrow, Xwrapper } from "react-xarrows";
 
 import MouseFollower from "./MouseFollower";
 import WireRenderer from "./WireRenderer";
+import { upgrade } from "./FileUpgrader"
 
 import { component, input } from "../models/component";
 import ComponentRenderer from "./ComponentRenderer";
@@ -135,6 +136,7 @@ function Workspace() {
 
 	function save() {
 		let fileContent = JSON.stringify({
+			version: "0.0.2",
 			components: components,
 			wires: wires
 		})
@@ -150,7 +152,7 @@ function Workspace() {
 	}
 	
 	function loadLCF(lcf: string) {
-		let parsedFile = JSON.parse(lcf);
+		let parsedFile = JSON.parse(upgrade(lcf));
 		let comps, wrs;
 		try {
 			comps = parsedFile.components;
