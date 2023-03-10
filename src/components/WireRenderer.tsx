@@ -9,6 +9,7 @@ const WireRenderer = ({components, connectIn, connectOut, resetWires}: {componen
 	const alphabet = "ABCDEFGHIJKLMNOPQRSTUVWXYZ".split("");
 	const [wireHTML, setWireHTML] = useState<JSX.Element[]>([]);
 	const [tempWire, setTempWire] = useState(<a></a>);
+	const [rerenderWires, setRerenderWires] = useState(false);
 
 
 	useEffect(() => {
@@ -17,13 +18,14 @@ const WireRenderer = ({components, connectIn, connectOut, resetWires}: {componen
 			let c = components[i];
 
 			for(let j in c.inputs) {
+				if(c.inputs[j] === null) { continue; }
 				if(c.inputs[j].id === -1) { continue; }
 
 				newhtml.push(<Wire key={`${i}_${j}`} start={`${c.inputs[j].id}.Y`} end={`${i}.${alphabet[j]}`}/>)
 			}
 		}
 		setWireHTML(newhtml);
-	}, [components, resetWires])
+	}, [components, rerenderWires])
 
 	useEffect(() => {
 		if(connectIn !== "") {
@@ -41,6 +43,12 @@ const WireRenderer = ({components, connectIn, connectOut, resetWires}: {componen
 		setWireHTML([]);
 	}, [resetWires])
 	
+	useEffect(() => {
+		if(JSON.stringify(wireHTML) === "[]") {
+			setRerenderWires(!rerenderWires);
+		}
+	}, [wireHTML])
+
 	return (
 		<div>
 			{wireHTML}

@@ -192,6 +192,7 @@ function Workspace() {
 						<button className="interactBtn" onClick={(e) => {document.getElementById("contained-button-file")?.click()}}>Upload</button>
 					</label>
 				</td>
+				<td><button className="interactBtn" onClick={(e) => {setComponents([]);setWires([])}}>Clear</button></td>
 			</tr>
 			<tr>
 				<td>I/O</td>
