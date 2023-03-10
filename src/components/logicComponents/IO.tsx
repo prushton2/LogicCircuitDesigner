@@ -1,8 +1,8 @@
 import "../../App.css"
 
-import { useState, useEffect, useContext } from "react";
+import React, { useState, useEffect, useContext } from "react";
 
-import Component from "./Component";
+import { Component } from "./Component";
 import { WireContext } from "../Context";
 import { input } from "../../models/component";
 import { pos } from "../../models/pos";
@@ -17,7 +17,7 @@ export const SW = ({id, pos, onClick, setPos}: {id: any, pos: pos, onClick: (id:
 
 	useEffect(() => {
 		let newWires = structuredClone(wires);
-		newWires[id][0] = value;
+		newWires[id] = value ? "1":"0";
 		setWires(newWires);
 	}, [value])
 
@@ -41,6 +41,40 @@ export const SW = ({id, pos, onClick, setPos}: {id: any, pos: pos, onClick: (id:
 	)
 }
 
+export const SWBUS = ({id, pos, onClick, setPos}: {id: any, pos: pos, onClick: (id: string) => void, setPos: (pos: pos, id: string) => void}) => {
+
+	const [value, setValue] = useState<string>("0");
+	const {wires, setWires} = useContext(WireContext);
+	
+	const [display, setDisplay] = useState("inline"); //for hiding the gate configuration
+	const [name, setName] = useState(id);
+
+	useEffect(() => {
+		let newWires = structuredClone(wires);
+		newWires[id] = value;
+		setWires(newWires);
+	}, [value])
+
+	return (
+
+		<Component defaultPos={pos} newPos={(pos) => setPos(pos, id)} setDisplay={(v, d) => setDisplay(d)}>
+			<div style={{position: "absolute", width: "90px", height: "70px", border: "0px solid red"}}>
+				
+				
+				<input style={{ height: "20px", width: "20px", display: display}} onChange={(e) => {setName(e.target.value)}}></input>
+				<label style={{display: display}}> ({id}) </label><br />
+				
+				<input type="string" pattern="[0-1]*" onChange={(e) => {setValue(e.target.value)}} style={{position: "absolute", left: "-3px", top: "35px", width: "4.3em"}}/> <br />
+
+				<div id={`${id}.Y`} style={{right: "0px", top: "45px", width: "30%", height: "30%", position: 'absolute', transform: "translate(0%, -50%)", border: "0px solid red"}}>
+					<button onClick={(e) => onClick(`${id}.Y`)} style={{marginRight: "1.3em", display: display}}>Y</button> <br /> 
+				</div>
+			</div>
+		</Component>
+
+	)
+}
+
 export const LED = ({I, id, pos, onClick, setPos}: {I: input[], id: string, pos: pos ,onClick: (id: string) => void, setPos: (pos: pos, id: string) => void}) => {
     
 	const {wires, setWires} = useContext(WireContext);
@@ -51,15 +85,7 @@ export const LED = ({I, id, pos, onClick, setPos}: {I: input[], id: string, pos:
 
 	useEffect(() => {
 		try {
-			setValue(
-				JSON.stringify(wires[I[0].id as keyof []])
-				.replaceAll("[", "")
-				.replaceAll("]", "")
-				.replaceAll(",", "")
-				.replaceAll("true", "1")
-				.replaceAll("false", "0")
-				.replaceAll("null", "")
-			) 
+			setValue(wires[I[0].id as keyof []] as string) 
 		} catch {
 			setValue("Z");
 		}

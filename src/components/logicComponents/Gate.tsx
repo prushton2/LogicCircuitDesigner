@@ -1,6 +1,6 @@
 import React, { useContext, useEffect, useState } from "react";
 
-import Component from "./Component"
+import { Component } from "./Component"
 import { input } from "../../models/component";
 import { WireContext } from "../Context";
 import { pos } from "../../models/pos";
@@ -31,24 +31,20 @@ const BaseGate = ({I, pos, comp, label, image, style, id, onClick, setPos}: { //
 	const [display, setDisplay] = useState("inline"); //for hiding the gate configuration
 
 	useEffect(() => {
-		let newValue: (boolean | undefined)[];
+		let newValue: string | undefined;
 		try {
-			newValue = wires[I[0].id].map((v, i) => {
-				if(wires[I[0].id][i] == undefined || wires[I[1].id][i] == undefined) {return undefined}
-				return comp(wires[I[0].id][i], wires[I[1].id][i])
-			})
+			newValue = wires[I[0].id].split("").map((v, i) => {
+				return comp(wires[I[0].id][i]==="1" ? true : false, wires[I[1].id][i]==="1" ? true : false) ? "1":"0"
+			}).join("")
 		} catch {
 			if(I.length === 1) {
-				newValue = wires[I[0].id].map((v, i) => {
-					if(wires[I[0].id][i] == undefined) {return undefined}
-					return comp(wires[I[0].id][i], false)
-				})
-			} else {
-				return;
+				newValue = wires[I[0].id].split("").map((v, i) => {
+					return comp(wires[I[0].id][i]==="1" ? true : false, false) ? "1":"0"
+				}).join("")
 			}
 		}
 		
-		if(JSON.stringify(wires[id as keyof []]) === JSON.stringify(newValue)) {
+		if(wires[id as keyof []] == newValue) {
 			return;
 		}
 
@@ -65,7 +61,7 @@ const BaseGate = ({I, pos, comp, label, image, style, id, onClick, setPos}: { //
 			
 					{display==="inline"?`${label} (${id})`:""} <br />
 
-					<img src={image} style={{width: "90px", position: "absolute", transform: "translate(-50%, 10%)"}} onDragStart={(e) => {e.preventDefault()}}/>
+					<img src={image} style={{width: "90px", position: "absolute", transform: "translate(0%, 10%)"}} onDragStart={(e) => {e.preventDefault()}}/>
 
 					<div id={`${id}.A`} style={{left: "0%", top: style.A_top, position: "absolute", transform: "translate(0%, -50%)"}}>
 						<button onClick={(e) => onClick(`${id}.A`)} style={{marginLeft: "1.3em", display: display}}>A</button><br /> 

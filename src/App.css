@@ -34,6 +34,12 @@ select:hover {
 	border: #2b2a33;
 }
 
+input {
+	color: white;
+	background-color: #2b2a33;
+	border: 3px solid #1b1a23;
+}
+
 .App {
   text-align: center;
 }

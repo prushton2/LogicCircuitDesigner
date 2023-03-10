@@ -7,6 +7,7 @@ import Xarrow, { useXarrow, Xwrapper } from "react-xarrows";
 
 import MouseFollower from "./MouseFollower";
 import WireRenderer from "./WireRenderer";
+import { upgrade } from "./FileUpgrader"
 
 import { component, input } from "../models/component";
 import ComponentRenderer from "./ComponentRenderer";
@@ -16,8 +17,9 @@ function Workspace() {
 
 	const alphabet = "ABCDEFGHIJKLMNOPQRSTUVWXYZ".split("");
 	const [config, setConfig] = useState({"hideDetails": false, "hideWireStates": false});
+	const [resetWires, setResetWires] = useState(false);
 
-	const [wires, setWires] = useState<boolean[][]>([[]]);
+	const [wires, setWires] = useState<string[]>([]);
 	const [components, setComponents] = useState<component[]>([]);
 	const [deleteHTML, setDeleteHTML] = useState<JSX.Element[]>([]);
 
@@ -27,9 +29,6 @@ function Workspace() {
 	const updateXarrow = useXarrow();
 
 	function create(type: string) {
-		let newWires = structuredClone(wires);
-		newWires.push([]);
-		setWires(newWires);
 
 		let newcomps = structuredClone(components);
 		newcomps.push({
@@ -138,6 +137,7 @@ function Workspace() {
 
 	function save() {
 		let fileContent = JSON.stringify({
+			version: "0.0.2",
 			components: components,
 			wires: wires
 		})
@@ -153,8 +153,7 @@ function Workspace() {
 	}
 	
 	function loadLCF(lcf: string) {
-		setComponents([]);
-		let parsedFile = JSON.parse(lcf);
+		let parsedFile = JSON.parse(upgrade(lcf));
 		let comps, wrs;
 		try {
 			comps = parsedFile.components;
@@ -164,7 +163,7 @@ function Workspace() {
 		}
 
 		let newComponents = comps as component[];
-		let newWires = wrs as boolean[][];
+		let newWires = wrs as string[];
 		setComponents(newComponents);
 		setWires(newWires);
 	}
@@ -193,12 +192,13 @@ function Workspace() {
 						<button className="interactBtn" onClick={(e) => {document.getElementById("contained-button-file")?.click()}}>Upload</button>
 					</label>
 				</td>
+				<td><button className="interactBtn" onClick={(e) => {setComponents([]);setWires([])}}>Clear</button></td>
 			</tr>
 			<tr>
 				<td>I/O</td>
 				<td><button className="interactBtn" onClick={(e) => {create("SW")}}>SW</button></td>
+				<td><button className="interactBtn" onClick={(e) => {create("SWBUS")}}>SW [7:0]</button></td>
 				<td><button className="interactBtn" onClick={(e) => {create("LED")}}>LED</button></td>
-				<td><button className="interactBtn" onClick={(e) => {create("NOT")}}>NOT</button></td>
 			</tr>
 			<tr>
 				<td>Gates</td>
@@ -211,16 +211,21 @@ function Workspace() {
 				<td><button className="interactBtn" onClick={(e) => {create("NAND")}}>NAND</button></td>
 				<td><button className="interactBtn" onClick={(e) => {create("NOR")}}>NOR</button></td>
 				<td><button className="interactBtn" onClick={(e) => {create("XNOR")}}>XNOR</button></td>
-				{/* <td></td> */}
+			</tr>
+			<tr>
+				<td></td>
+				<td><button className="interactBtn" onClick={(e) => {create("NOT")}}>NOT</button></td>
 			</tr>
 			<tr>
 				<td>Busses</td>
 				<td><button className="interactBtn" onClick={(e) => {create("BUS")}}>BUS</button></td>
+				<td><button className="interactBtn" onClick={(e) => {create("MUX")}}>MUX</button></td>
 			</tr>
 			<tr>
 				<td>Config</td>
 				<td><button className="interactBtn" onClick={(e) => {toggleConfig("hideDetails")}}>Details</button></td>
 				<td><button className="interactBtn" onClick={(e) => {toggleConfig("hideWireStates")}}>Wires</button></td>
+				<td><button className="interactBtn" onClick={(e) => {setResetWires(!resetWires)}}>Fix Wires</button></td>
 			</tr>
 		</tbody>
 		</table>
@@ -236,7 +241,7 @@ function Workspace() {
 		<Xwrapper>
 			<ConfigContext.Provider value={{config, setConfig} as ConfigContent}>
 			<WireContext.Provider value={{wires, setWires} as WireContent}>
-				<WireRenderer components={components} connectIn={connectIn} connectOut={connectOut}/>
+				<WireRenderer components={components} connectIn={connectIn} connectOut={connectOut} resetWires={resetWires}/>
 				<ComponentRenderer components={components} connect={(side, id) => connect(side, id)} setPos={(pos, id) => {setPos(pos, id)}}/>
 				<MouseFollower />
 			</WireContext.Provider>
