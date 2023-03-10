@@ -43,7 +43,7 @@ export const Inputs = ({inputCount, heights, labelInputs, componentID, onClick}:
 	useEffect(() => {
 		setDisplay(!config["hideDetails" as keyof object] ? "inline": "none");
 	}, [config])
-
+	
 	useEffect(() => {
 		let newHTML = []
 		for(let i = 0; i<inputCount; i++) {
@@ -55,7 +55,7 @@ export const Inputs = ({inputCount, heights, labelInputs, componentID, onClick}:
 		}
 		setInputHTML(newHTML);
 		updateXarrow();
-	}, [inputCount])
+	}, [inputCount, display])
 
 	return (
 		<>

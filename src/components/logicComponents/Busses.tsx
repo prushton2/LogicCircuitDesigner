@@ -81,6 +81,7 @@ export function MUX({id, pos, I, onClick, setPos}: {id: string, pos: pos, I: inp
 	const [inputs, setInputs] = useState(4); //non-signal inputs
 
 	useEffect(() => {
+		setInputs(Math.min(Math.max(inputs, 2), 8))
 		setHeight((inputs+3)*25 + (inputs+3)*3)
 	}, [inputs])
 
@@ -115,8 +116,8 @@ export function MUX({id, pos, I, onClick, setPos}: {id: string, pos: pos, I: inp
 					
 
 					<div style={{left: "0%", bottom: `10px`, position: "absolute", transform: "translate(0%, 0%)"}}>
-						{'\u00A0'}<button onClick={(e) => {setInputs(inputs+1)}} style={{marginRight: ".3em", display: display}}>+</button>
-						{'\u00A0'}<button onClick={(e) => {setInputs(inputs-1)}} style={{marginRight: ".3em", display: display}}>-</button>
+						{'\u00A0'}<button onClick={(e) => {setInputs(inputs*2)}} style={{marginRight: ".3em", display: display}}>+</button>
+						{'\u00A0'}<button onClick={(e) => {setInputs(inputs/2)}} style={{marginRight: ".3em", display: display}}>-</button>
 					</div>
 				</div>
 			</Component>
