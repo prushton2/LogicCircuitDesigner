@@ -1,6 +1,6 @@
 import React, { useContext, useEffect, useState } from "react";
 
-import Component from "./Component"
+import { Component } from "./Component"
 import { input } from "../../models/component";
 import { WireContext } from "../Context";
 import { pos } from "../../models/pos";

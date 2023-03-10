@@ -5,7 +5,7 @@ import { pos } from "../models/pos";
 
 import { Gate } from "./logicComponents/Gate";
 import { SW,  SWBUS, LED } from "./logicComponents/IO";
-import { BUS } from "./logicComponents/Busses"
+import { BUS, MUX } from "./logicComponents/Busses"
 
 const ComponentRenderer = ({components, connect, setPos}: {components: component[], connect: (side: string, id: string) => void, setPos: (pos: pos, id: string) => void}) => {
 
@@ -25,7 +25,7 @@ const ComponentRenderer = ({components, connect, setPos}: {components: component
 					break;
 
 				case "SWBUS":
-					newhtml[i] = <SWBUS key={i} pos={pos} id={i}              onClick={(id) => {connect("in", id)}} setPos={(pos, id) => {setPos(pos, id)}}/>
+					newhtml[i] = <SWBUS  key={i} pos={pos} id={i}              onClick={(id) => {connect("in", id)}} setPos={(pos, id) => {setPos(pos, id)}}/>
 					break;
 				
 				case "LED":
@@ -44,6 +44,9 @@ const ComponentRenderer = ({components, connect, setPos}: {components: component
 				
 				case "BUS":
 					newhtml[i] = <BUS  key={i} pos={pos} id={i} I={c.inputs} onClick={(e) => connect(e.split(".")[1]=="Y"?"in":"out", e)} setPos={(pos, id) => {setPos(pos, id)}}/>
+					break;
+				case "MUX":
+					newhtml[i] = <MUX  key={i} pos={pos} id={i} I={c.inputs} onClick={(e) => connect(e.split(".")[1]=="Y"?"in":"out", e)} setPos={(pos, id) => {setPos(pos, id)}}/>
 					break;
 			}
 		}

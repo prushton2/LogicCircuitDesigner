@@ -215,11 +215,13 @@ function Workspace() {
 			<tr>
 				<td>Busses</td>
 				<td><button className="interactBtn" onClick={(e) => {create("BUS")}}>BUS</button></td>
+				<td><button className="interactBtn" onClick={(e) => {create("MUX")}}>MUX</button></td>
 			</tr>
 			<tr>
 				<td>Config</td>
 				<td><button className="interactBtn" onClick={(e) => {toggleConfig("hideDetails")}}>Details</button></td>
 				<td><button className="interactBtn" onClick={(e) => {toggleConfig("hideWireStates")}}>Wires</button></td>
+				<td><button className="interactBtn" onClick={(e) => {}}>Fix Wires</button></td>
 			</tr>
 		</tbody>
 		</table>

@@ -2,7 +2,7 @@ import "../../App.css"
 
 import React, { useState, useEffect, useContext } from "react";
 
-import Component from "./Component";
+import { Component } from "./Component";
 import { WireContext } from "../Context";
 import { input } from "../../models/component";
 import { pos } from "../../models/pos";
