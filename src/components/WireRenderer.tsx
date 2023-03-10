@@ -40,11 +40,11 @@ const WireRenderer = ({components, connectIn, connectOut, resetWires}: {componen
 	}, [connectIn, connectOut])
 
 	useEffect(() => {
-		setWireHTML([]);
+		setWireHTML([<div />]);
 	}, [resetWires])
 	
 	useEffect(() => {
-		if(JSON.stringify(wireHTML) === "[]") {
+		if(JSON.stringify(wireHTML) === "[<div />]") {
 			setRerenderWires(!rerenderWires);
 		}
 	}, [wireHTML])
