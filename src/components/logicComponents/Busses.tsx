@@ -4,6 +4,7 @@ import { Component, Inputs } from "./Component";
 import { WireContext } from "../Context";
 import { pos } from "../../models/pos";
 import { input } from "../../models/component";
+import Wire from "../Wire";
 
 export function BUS({id, pos, I, onClick, setPos}: {id: string, pos: pos, I: input[], onClick: (id: string) => void, setPos: (pos: pos, id: string) => void}) {
 
@@ -128,11 +129,31 @@ export function MUX({id, pos, I, onClick, setPos}: {id: string, pos: pos, I: inp
 export function ADDER({id, I, pos, onClick, setPos}: {id: string, I: input[], pos: pos, onClick: (id: string) => void, setPos: (pos: pos, id: string) => void}) {
 	
 	const [display, setDisplay] = useState("inline");
+	const {wires, setWires} = useContext(WireContext);
 	
+	useEffect(() => {
+		try {
+			let A = parseInt(wires[I[0].id], 2)
+			let B = parseInt(wires[I[1].id], 2)
+			let Y = (A+B).toString(2);
+
+			let newWires = structuredClone(wires)
+			newWires[id] = Y;
+			if(JSON.stringify(newWires) !== JSON.stringify(wires)) {
+				setWires(newWires);
+			}
+
+		} catch { return; }
+	}, [wires])
+
 	return(
 		<Component defaultPos={pos} newPos={(pos) => setPos(pos, id)} setDisplay={(h, d) => {setDisplay(d)}}>
-				<div style={{width: "90px", height: "90px", border: "5px solid white"}}>
+			<div style={{width: "90px", height: "90px", border: "5px solid white"}}>
 				<Inputs inputCount={2} heights={[30, 60]} labelInputs componentID={id} onClick={(id) => onClick(id)}/>
+
+				<div id={`${id}.Y`} style={{right: "0%", top: `42px`, position: "absolute", transform: "translate(0%, -50%)"}}>
+					<button onClick={(e) => onClick(`${id}.Y`)} style={{marginRight: ".3em", display: display}}>Y</button>Y{'\u00A0'}
+				</div>
 			</div>
 		</Component>
 	)
