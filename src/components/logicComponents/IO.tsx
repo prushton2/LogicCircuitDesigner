@@ -101,6 +101,8 @@ export const SWBUS = ({id, pos, onClick, setPos}: {id: any, pos: pos, onClick: (
 				
 				
 				<input style={{ height: "20px", width: "20px", display: display}} onChange={(e) => {setName(e.target.value)}}></input>
+				<label style={{ height: "20px", width: "20px", display: display == "none" ? "inline" : "none"}}>{name}</label>
+				
 				<label style={{display: display}}> ({id}) </label><br />
 				
 				<input type="string" pattern="[0-1]*" onChange={(e) => {setValue(e.target.value)}} style={{position: "absolute", left: "-3px", top: "35px", width: "4.3em"}}/> <br />
