@@ -173,6 +173,7 @@ function Workspace() {
 		let newWires = wrs;
 		setComponents(newComponents);
 		setWires(newWires);
+		setResetWires(!resetWires);
 	}
 
 	function handleFile(e: any) {
