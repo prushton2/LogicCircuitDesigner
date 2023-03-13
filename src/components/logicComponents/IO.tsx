@@ -17,7 +17,7 @@ export const SW = ({id, pos, onClick, setPos}: {id: any, pos: pos, onClick: (id:
 
 	useEffect(() => {
 		let newWires = structuredClone(wires);
-		newWires[id] = value ? "1":"0";
+		newWires[`${id}.Y`] = value ? "1":"0";
 		setWires(newWires);
 	}, [value])
 
@@ -51,7 +51,7 @@ export const SWBUS = ({id, pos, onClick, setPos}: {id: any, pos: pos, onClick: (
 
 	useEffect(() => {
 		let newWires = structuredClone(wires);
-		newWires[id] = value;
+		newWires[`${id}.Y`] = value;
 		setWires(newWires);
 	}, [value])
 

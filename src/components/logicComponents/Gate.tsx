@@ -49,8 +49,10 @@ const BaseGate = ({I, pos, comp, label, image, style, id, onClick, setPos}: { //
 		}
 
 		let newWires = structuredClone(wires);
-		newWires[id] = newValue;
-		setWires(newWires);
+		newWires[`${id}.Y`] = newValue;
+		if(JSON.stringify(wires) !== JSON.stringify(newWires)) {
+			setWires(newWires);
+		}
 	}, [wires])
 
 
