@@ -1,6 +1,8 @@
 import { useEffect, useState } from "react";
 
+
 export const latestVersion = "0.0.4"
+
 
 export function upgrade(file: string) {
 	let parsed = JSON.parse(file);
