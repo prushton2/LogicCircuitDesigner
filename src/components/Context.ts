@@ -4,8 +4,8 @@ export const WireContext =  createContext<WireContent>({wires: [], setWires: () 
 export const ConfigContext =  createContext<ConfigContent>({config: {}, setConfig: () => {}} as ConfigContent);
 
 export type WireContent = {
-	wires: string[],
-	setWires:(wires: string[]) => void
+	wires: object,
+	setWires:(wires: object) => void
 }
 
 export type ConfigContent = {

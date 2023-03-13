@@ -7,7 +7,7 @@ import Xarrow, { useXarrow, Xwrapper } from "react-xarrows";
 
 import MouseFollower from "./MouseFollower";
 import WireRenderer from "./WireRenderer";
-import { upgrade } from "./FileUpgrader"
+import { latestVersion, upgrade } from "./FileUpgrader"
 
 import { component, input } from "../models/component";
 import ComponentRenderer from "./ComponentRenderer";
@@ -19,7 +19,7 @@ function Workspace() {
 	const [config, setConfig] = useState({"hideDetails": false, "hideWireStates": false});
 	const [resetWires, setResetWires] = useState(false);
 
-	const [wires, setWires] = useState<string[]>([]);
+	const [wires, setWires] = useState(JSON.parse("{}"));
 	const [components, setComponents] = useState<component[]>([]);
 	const [deleteHTML, setDeleteHTML] = useState<JSX.Element[]>([]);
 
@@ -85,7 +85,7 @@ function Workspace() {
 
 	useEffect(() => {
 		if(connectIn !== "" && connectOut != "") {
-			let input = parseInt(connectIn.split(".")[0])
+			let input = connectIn
 			let outputid = parseInt(connectOut.split(".")[0])
 			let outputPort = alphabet.indexOf(connectOut.split(".")[1]);
 
@@ -137,7 +137,7 @@ function Workspace() {
 
 	function save() {
 		let fileContent = JSON.stringify({
-			version: "0.0.2",
+			version: latestVersion,
 			components: components,
 			wires: wires
 		})
@@ -163,7 +163,7 @@ function Workspace() {
 		}
 
 		let newComponents = comps as component[];
-		let newWires = wrs as string[];
+		let newWires = wrs;
 		setComponents(newComponents);
 		setWires(newWires);
 	}
@@ -192,7 +192,7 @@ function Workspace() {
 						<button className="interactBtn" onClick={(e) => {document.getElementById("contained-button-file")?.click()}}>Upload</button>
 					</label>
 				</td>
-				<td><button className="interactBtn" onClick={(e) => {setComponents([]);setWires([])}}>Clear</button></td>
+				<td><button className="interactBtn" onClick={(e) => {setComponents([]);setWires(JSON.parse("{}"))}}>Clear</button></td>
 			</tr>
 			<tr>
 				<td>I/O</td>

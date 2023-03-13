@@ -17,7 +17,7 @@ export const SW = ({id, pos, onClick, setPos}: {id: any, pos: pos, onClick: (id:
 
 	useEffect(() => {
 		let newWires = structuredClone(wires);
-		newWires[id] = value ? "1":"0";
+		newWires[`${id}.Y`] = value ? "1":"0";
 		setWires(newWires);
 	}, [value])
 
@@ -51,7 +51,7 @@ export const SWBUS = ({id, pos, onClick, setPos}: {id: any, pos: pos, onClick: (
 
 	useEffect(() => {
 		let newWires = structuredClone(wires);
-		newWires[id] = value;
+		newWires[`${id}.Y`] = value;
 		setWires(newWires);
 	}, [value])
 
@@ -85,7 +85,7 @@ export const LED = ({I, id, pos, onClick, setPos}: {I: input[], id: string, pos:
 
 	useEffect(() => {
 		try {
-			setValue(wires[I[0].id as keyof []] as string) 
+			setValue(wires[I[0].id as keyof {}] as string) 
 		} catch {
 			setValue("Z");
 		}

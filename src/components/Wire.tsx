@@ -14,8 +14,7 @@ const Wire = ({start, end}: {start: string, end: string}) => {
 			setColor("white");
 		} else {
 			try {
-				let index: number = parseInt(start.split(".")[0])
-				let binary: string = wires[index]
+				let binary: string = wires[start as keyof {}]
 				
 				setColor(binary.charAt(0) === "1" ? "red" : "white")
 			} catch {

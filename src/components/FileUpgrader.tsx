@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 
-const latestVersion = "0.0.2"
+export const latestVersion = "0.0.3"
 
 export function upgrade(file: string) {
 	let parsed = JSON.parse(file);
@@ -16,5 +16,26 @@ export function upgrade(file: string) {
 		parsed.wires = newWires;
 		parsed.version = "0.0.2"
 	}
+
+	if(parsed.version === "0.0.2") {
+		let newWires = JSON.parse("{}")
+		let newComponents = parsed.components
+		for(let i in parsed.wires) {
+			newWires[`${i}.Y`] = parsed.wires[i]
+		}
+
+		for(let i in parsed.components) {
+			for(let j in parsed.components[i].inputs) {
+				try {
+					newComponents[i].inputs[j].id = parsed.components[i].inputs[j].id + ".Y";
+				} catch {}
+			}
+		}
+
+		parsed.components = newComponents;
+		parsed.wires = newWires;
+		parsed.version = "0.0.3"
+	}
+
 	return JSON.stringify(parsed);
 }

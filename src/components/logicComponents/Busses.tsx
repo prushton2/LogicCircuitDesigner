@@ -4,7 +4,6 @@ import { Component, Inputs } from "./Component";
 import { WireContext } from "../Context";
 import { pos } from "../../models/pos";
 import { input } from "../../models/component";
-import Wire from "../Wire";
 
 export function BUS({id, pos, I, onClick, setPos}: {id: string, pos: pos, I: input[], onClick: (id: string) => void, setPos: (pos: pos, id: string) => void}) {
 
@@ -21,48 +20,26 @@ export function BUS({id, pos, I, onClick, setPos}: {id: string, pos: pos, I: inp
 					continue;
 				}
 	
-				bus += wires[I[i].id][0];
+				bus += wires[I[i].id as keyof {}];
 			} catch {}
 		}
 	
-		if(JSON.stringify(wires[id as keyof []]) === JSON.stringify(bus)) {
-			return;
-		}
-
+		
 		let newWires = structuredClone(wires)
-		newWires[id as keyof []] = structuredClone(bus);
-		setWires(newWires);
+		newWires[`${id}.Y`] = structuredClone(bus);
+
+		if(JSON.stringify(wires) !== JSON.stringify(newWires)) {
+			setWires(newWires);
+		}
 	}, [wires])
 
 	return (
 		<div>
 			<Component defaultPos={pos} newPos={(pos) => setPos(pos, id)} setDisplay={(v, d) => setDisplay(d)}>
 				<div style={{width: "90px", height: "205px", border: "5px solid white"}}>
-					<div id={`${id}.A`} style={{left: "0%", top: "15px", position: "absolute", transform: "translate(0%, -50%)"}}>
-						{'\u00A0'}A<button onClick={(e) => onClick(`${id}.A`)} style={{marginLeft: ".3em", display: display}}>A</button><br /> 
-					</div>
-					<div id={`${id}.B`} style={{left: "0%", top: "40px", position: "absolute", transform: "translate(0%, -50%)"}}>
-						{'\u00A0'}B<button onClick={(e) => onClick(`${id}.B`)} style={{marginLeft: ".3em", display: display}}>B</button><br /> 
-					</div>
-					<div id={`${id}.C`} style={{left: "0%", top: "65px", position: "absolute", transform: "translate(0%, -50%)"}}>
-						{'\u00A0'}C<button onClick={(e) => onClick(`${id}.C`)} style={{marginLeft: ".3em", display: display}}>C</button><br /> 
-					</div>
-					<div id={`${id}.D`} style={{left: "0%", top: "90px", position: "absolute", transform: "translate(0%, -50%)"}}>
-						{'\u00A0'}D<button onClick={(e) => onClick(`${id}.D`)} style={{marginLeft: ".3em", display: display}}>D</button><br /> 
-					</div>
-					<div id={`${id}.E`} style={{left: "0%", top: "115px", position: "absolute", transform: "translate(0%, -50%)"}}>
-						{'\u00A0'}E<button onClick={(e) => onClick(`${id}.E`)} style={{marginLeft: ".3em", display: display}}>E</button><br /> 
-					</div>
-					<div id={`${id}.F`} style={{left: "0%", top: "140px", position: "absolute", transform: "translate(0%, -50%)"}}>
-						{'\u00A0'}F<button onClick={(e) => onClick(`${id}.F`)} style={{marginLeft: ".3em", display: display}}>F</button><br /> 
-					</div>
-					<div id={`${id}.G`} style={{left: "0%", top: "165px", position: "absolute", transform: "translate(0%, -50%)"}}>
-						{'\u00A0'}G<button onClick={(e) => onClick(`${id}.G`)} style={{marginLeft: ".3em", display: display}}>G</button><br /> 
-					</div>
-					<div id={`${id}.H`} style={{left: "0%", top: "190px", position: "absolute", transform: "translate(0%, -50%)"}}>
-						{'\u00A0'}H<button onClick={(e) => onClick(`${id}.H`)} style={{marginLeft: ".3em", display: display}}>H</button><br /> 
-					</div>
-
+					
+					<Inputs inputCount={8} heights={[15,40,65,90,115,140,165,190]} labelInputs componentID={id} onClick={(id) => onClick(id)}/>
+					
 					<div id={`${id}.Y`} style={{right: "0%", top: "95px", position: "absolute", transform: "translate(0%, -50%)"}}>
 						<button onClick={(e) => onClick(`${id}.Y`)} style={{marginRight: ".3em", display: display}}>Y</button>Y{'\u00A0'}
 					</div>
@@ -90,7 +67,7 @@ export function MUX({id, pos, I, onClick, setPos}: {id: string, pos: pos, I: inp
 		try {
 			let newWires = structuredClone(wires);
 			let i = parseInt(newWires[I[18].id as keyof []], 2)
-			newWires[parseInt(id) as keyof []] = wires[I[i].id];
+			newWires[`${id}.Y`] = wires[I[i].id as keyof {}];
 
 			if(JSON.stringify(newWires) != JSON.stringify(wires)) {
 				setWires(newWires);
@@ -133,12 +110,23 @@ export function ADDER({id, I, pos, onClick, setPos}: {id: string, I: input[], po
 	
 	useEffect(() => {
 		try {
-			let A = parseInt(wires[I[0].id], 2)
-			let B = parseInt(wires[I[1].id], 2)
+			let A = parseInt(wires[I[0].id as keyof {}], 2)
+			let B = parseInt(wires[I[1].id as keyof {}], 2)
 			let Y = (A+B).toString(2);
-
+			
+			let overflowLength = Math.max((wires[I[0].id as keyof {}] as string).length, (wires[I[0].id as keyof {}] as string).length) + 1
+			//get the length of the higher bitsize + 1 to keep track of overflow
+			
 			let newWires = structuredClone(wires)
-			newWires[id] = Y;
+			
+			newWires[`${id}.Y`] = Y.slice(-(overflowLength-1)); //force cut off overflow bit to keep the bitsizes the same for input and output
+			
+			if(Y.length >= overflowLength) { //seperately return overflow
+				newWires[`${id}.Z`] = Y[0];
+			} else {
+				newWires[`${id}.Z`] = 0;
+			}
+
 			if(JSON.stringify(newWires) !== JSON.stringify(wires)) {
 				setWires(newWires);
 			}
@@ -151,8 +139,12 @@ export function ADDER({id, I, pos, onClick, setPos}: {id: string, I: input[], po
 			<div style={{width: "90px", height: "90px", border: "5px solid white"}}>
 				<Inputs inputCount={2} heights={[30, 60]} labelInputs componentID={id} onClick={(id) => onClick(id)}/>
 
-				<div id={`${id}.Y`} style={{right: "0%", top: `42px`, position: "absolute", transform: "translate(0%, -50%)"}}>
+				<div id={`${id}.Y`} style={{right: "0%", top: `30px`, position: "absolute", transform: "translate(0%, -50%)"}}>
 					<button onClick={(e) => onClick(`${id}.Y`)} style={{marginRight: ".3em", display: display}}>Y</button>Y{'\u00A0'}
+				</div>
+
+				<div id={`${id}.Z`} style={{right: "0%", top: `60px`, position: "absolute", transform: "translate(0%, -50%)"}}>
+					<button onClick={(e) => onClick(`${id}.Z`)} style={{marginRight: ".3em", display: display}}>Z</button>Z{'\u00A0'}
 				</div>
 			</div>
 		</Component>

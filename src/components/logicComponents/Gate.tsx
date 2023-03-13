@@ -33,24 +33,26 @@ const BaseGate = ({I, pos, comp, label, image, style, id, onClick, setPos}: { //
 	useEffect(() => {
 		let newValue: string | undefined;
 		try {
-			newValue = wires[I[0].id].split("").map((v, i) => {
-				return comp(wires[I[0].id][i]==="1" ? true : false, wires[I[1].id][i]==="1" ? true : false) ? "1":"0"
+			newValue = (wires[I[0].id as keyof {}] as string).split("").map((v, i) => {
+				return comp(wires[I[0].id as keyof {}][i]==="1" ? true : false, wires[I[1].id as keyof {}][i]==="1" ? true : false) ? "1":"0"
 			}).join("")
 		} catch {
 			if(I.length === 1) {
-				newValue = wires[I[0].id].split("").map((v, i) => {
-					return comp(wires[I[0].id][i]==="1" ? true : false, false) ? "1":"0"
+				newValue = (wires[I[0].id as keyof {}] as string).split("").map((v, i) => {
+					return comp(wires[I[0].id as keyof {}][i]==="1" ? true : false, false) ? "1":"0"
 				}).join("")
 			}
 		}
 		
-		if(wires[id as keyof []] == newValue) {
+		if(wires[id as keyof {}] == newValue) {
 			return;
 		}
 
 		let newWires = structuredClone(wires);
-		newWires[id] = newValue;
-		setWires(newWires);
+		newWires[`${id}.Y`] = newValue;
+		if(JSON.stringify(wires) !== JSON.stringify(newWires)) {
+			setWires(newWires);
+		}
 	}, [wires])
 
 
