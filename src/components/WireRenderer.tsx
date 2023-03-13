@@ -13,6 +13,10 @@ const WireRenderer = ({components, connectIn, connectOut, resetWires}: {componen
 
 
 	useEffect(() => {
+		if(rerenderWires) {
+			setRerenderWires(false);
+		}
+		
 		let newhtml: JSX.Element[] = []
 		for(let i in components) {
 			let c = components[i];
@@ -41,13 +45,8 @@ const WireRenderer = ({components, connectIn, connectOut, resetWires}: {componen
 
 	useEffect(() => {
 		setWireHTML([<div />]);
+		setRerenderWires(true)
 	}, [resetWires])
-	
-	useEffect(() => {
-		if(JSON.stringify(wireHTML) === "[<div />]") {
-			setRerenderWires(!rerenderWires);
-		}
-	}, [wireHTML])
 
 	return (
 		<div>

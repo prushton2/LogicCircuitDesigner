@@ -5,6 +5,10 @@ import { WireContext } from "../Context";
 import { pos } from "../../models/pos";
 import { input } from "../../models/component";
 
+import ADDER_PNG from "../../images/adder.png"
+import MUX_TOP_PNG from "../../images/mux_top.png"
+import MUX_BOT_PNG from "../../images/mux_bot.png"
+
 export function BUS({id, pos, I, onClick, setPos}: {id: string, pos: pos, I: input[], onClick: (id: string) => void, setPos: (pos: pos, id: string) => void}) {
 
 	const {wires, setWires} = useContext(WireContext);
@@ -38,6 +42,9 @@ export function BUS({id, pos, I, onClick, setPos}: {id: string, pos: pos, I: inp
 			<Component defaultPos={pos} newPos={(pos) => setPos(pos, id)} setDisplay={(v, d) => setDisplay(d)}>
 				<div style={{width: "90px", height: "205px", border: "5px solid white"}}>
 					
+					<label style={{display: display, position: "absolute", top: "-30px"}}> BUS ({id})  </label><br />
+
+
 					<Inputs inputCount={8} heights={[15,40,65,90,115,140,165,190]} labelInputs componentID={id} onClick={(id) => onClick(id)}/>
 					
 					<div id={`${id}.Y`} style={{right: "0%", top: "95px", position: "absolute", transform: "translate(0%, -50%)"}}>
@@ -80,8 +87,14 @@ export function MUX({id, pos, I, onClick, setPos}: {id: string, pos: pos, I: inp
 	return (
 		<div>
 			<Component defaultPos={pos} newPos={(pos) => setPos(pos, id)} setDisplay={(v, d) => setDisplay(d)}>
-				<div style={{width: "90px", height: `${height}px`, border: "5px solid white"}}>
+				<div style={{userSelect: "none", width: "90px", height: `${height-20}px`, borderLeft: "5px solid white", borderRight: "5px solid white"}}>
 					
+					<label style={{display: display, position: "absolute", top: "-70px"}}> MUX ({id})  </label><br />
+
+
+					<img src={MUX_TOP_PNG} style={{position: "absolute", width: "100px", left: "-5px", 	 top: "-44px"}} onDragStart={(e) => {e.preventDefault()}}/>
+					<img src={MUX_BOT_PNG} style={{position: "absolute", width: "100px", left: "-5px", bottom: "-44px"}} onDragStart={(e) => {e.preventDefault()}}/>
+
 					<div id={`${id}.S`} style={{left: "0%", top: `${20}px`, position: "absolute", transform: "translate(0%, -50%)"}}>
 						{'\u00A0'}S <button onClick={(e) => onClick(`${id}.S`)} style={{marginRight: ".3em", display: display}}>S</button>
 					</div>
@@ -136,14 +149,18 @@ export function ADDER({id, I, pos, onClick, setPos}: {id: string, I: input[], po
 
 	return(
 		<Component defaultPos={pos} newPos={(pos) => setPos(pos, id)} setDisplay={(h, d) => {setDisplay(d)}}>
-			<div style={{width: "90px", height: "90px", border: "5px solid white"}}>
-				<Inputs inputCount={2} heights={[30, 60]} labelInputs componentID={id} onClick={(id) => onClick(id)}/>
+			<div style={{userSelect: "none", width: "90px", height: "90px", border: "0px solid white"}}>
 
-				<div id={`${id}.Y`} style={{right: "0%", top: `30px`, position: "absolute", transform: "translate(0%, -50%)"}}>
+				{display==="inline"?`ADDER (${id})`:""} <br />
+
+				<img src={ADDER_PNG} onDragStart={(e) => {e.preventDefault()}}/>
+				<Inputs inputCount={2} heights={[60, 150]} labelInputs componentID={id} onClick={(id) => onClick(id)}/>
+
+				<div id={`${id}.Y`} style={{right: "0%", top: `85px`, position: "absolute", transform: "translate(0%, -50%)"}}>
 					<button onClick={(e) => onClick(`${id}.Y`)} style={{marginRight: ".3em", display: display}}>Y</button>Y{'\u00A0'}
 				</div>
 
-				<div id={`${id}.Z`} style={{right: "0%", top: `60px`, position: "absolute", transform: "translate(0%, -50%)"}}>
+				<div id={`${id}.Z`} style={{right: "0%", top: `120px`, position: "absolute", transform: "translate(0%, -50%)"}}>
 					<button onClick={(e) => onClick(`${id}.Z`)} style={{marginRight: ".3em", display: display}}>Z</button>Z{'\u00A0'}
 				</div>
 			</div>
