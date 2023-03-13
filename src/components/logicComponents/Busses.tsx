@@ -21,11 +21,11 @@ export function BUS({id, pos, I, onClick, setPos}: {id: string, pos: pos, I: inp
 					continue;
 				}
 	
-				bus += wires[I[i].id][0];
+				bus += wires[I[i].id as keyof {}][0];
 			} catch {}
 		}
 	
-		if(JSON.stringify(wires[id as keyof []]) === JSON.stringify(bus)) {
+		if(JSON.stringify(wires[id as keyof {}]) === JSON.stringify(bus)) {
 			return;
 		}
 
@@ -90,7 +90,7 @@ export function MUX({id, pos, I, onClick, setPos}: {id: string, pos: pos, I: inp
 		try {
 			let newWires = structuredClone(wires);
 			let i = parseInt(newWires[I[18].id as keyof []], 2)
-			newWires[parseInt(id) as keyof []] = wires[I[i].id];
+			newWires[parseInt(id) as keyof []] = wires[I[i].id as keyof {}];
 
 			if(JSON.stringify(newWires) != JSON.stringify(wires)) {
 				setWires(newWires);
@@ -133,8 +133,8 @@ export function ADDER({id, I, pos, onClick, setPos}: {id: string, I: input[], po
 	
 	useEffect(() => {
 		try {
-			let A = parseInt(wires[I[0].id], 2)
-			let B = parseInt(wires[I[1].id], 2)
+			let A = parseInt(wires[I[0].id as keyof {}], 2)
+			let B = parseInt(wires[I[1].id as keyof {}], 2)
 			let Y = (A+B).toString(2);
 
 			let newWires = structuredClone(wires)

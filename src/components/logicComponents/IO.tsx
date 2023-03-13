@@ -85,7 +85,7 @@ export const LED = ({I, id, pos, onClick, setPos}: {I: input[], id: string, pos:
 
 	useEffect(() => {
 		try {
-			setValue(wires[I[0].id as keyof []] as string) 
+			setValue(wires[I[0].id as keyof {}] as string) 
 		} catch {
 			setValue("Z");
 		}

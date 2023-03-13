@@ -19,7 +19,7 @@ function Workspace() {
 	const [config, setConfig] = useState({"hideDetails": false, "hideWireStates": false});
 	const [resetWires, setResetWires] = useState(false);
 
-	const [wires, setWires] = useState<string[]>([]);
+	const [wires, setWires] = useState(("{}"));
 	const [components, setComponents] = useState<component[]>([]);
 	const [deleteHTML, setDeleteHTML] = useState<JSX.Element[]>([]);
 
