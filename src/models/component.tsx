@@ -7,5 +7,5 @@ export interface component {
 }
 
 export interface input {
-	id: number
+	id: keyof {}
 }
