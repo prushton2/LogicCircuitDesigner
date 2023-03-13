@@ -176,7 +176,9 @@ function Workspace() {
 		}
 
 		let newComponents = comps as component[];
+
 		let newComponentData = compData as [];
+
 		let newWires = wrs;
 		setComponents(newComponents);
 		setComponentData(newComponentData);
@@ -209,6 +211,7 @@ function Workspace() {
 					</label>
 				</td>
 				<td><button className="interactBtn" onClick={(e) => {setComponents([]);setWires(JSON.parse("{}"));setComponentData([])}}>Clear</button></td>
+
 			</tr>
 			<tr>
 				<td>I/O</td>

@@ -33,6 +33,7 @@ const BaseGate = ({I, pos, comp, label, image, style, id, onClick, setPos}: { //
 	useEffect(() => {
 		let newValue: string | undefined;
 		try {
+
 			if(I.length === 1) {
 				newValue = (wires[I[0].id as keyof {}] as string).split("").map((v, i) => {
 					return comp(wires[I[0].id as keyof {}][i]==="1" ? true : false, false) ? "1":"0"
