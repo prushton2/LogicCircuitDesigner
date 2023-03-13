@@ -21,7 +21,7 @@ const WireRenderer = ({components, connectIn, connectOut, resetWires}: {componen
 				if(c.inputs[j] === null) { continue; }
 				if(c.inputs[j].id === -1) { continue; }
 
-				newhtml.push(<Wire key={`${i}_${j}`} start={`${c.inputs[j].id}.Y`} end={`${i}.${alphabet[j]}`}/>)
+				newhtml.push(<Wire key={`${i}_${j}`} start={`${c.inputs[j].id}`} end={`${i}.${alphabet[j]}`}/>)
 			}
 		}
 		setWireHTML(newhtml);
