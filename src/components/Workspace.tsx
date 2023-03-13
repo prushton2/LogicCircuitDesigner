@@ -1,7 +1,7 @@
 import "./Workspace.css"
 
 import { useEffect, useState } from "react";
-import { WireContext, WireContent, ConfigContext, ConfigContent } from "./Context";
+import { WireContext, WireContent, ConfigContext, ConfigContent, ComponentDataContent, ComponentDataContext } from "./Context";
 
 import Xarrow, { useXarrow, Xwrapper } from "react-xarrows";
 
@@ -21,6 +21,7 @@ function Workspace() {
 
 	const [wires, setWires] = useState(JSON.parse("{}"));
 	const [components, setComponents] = useState<component[]>([]);
+	const [componentData, setComponentData] = useState([]);
 	const [deleteHTML, setDeleteHTML] = useState<JSX.Element[]>([]);
 
 	const [connectIn, setConnectIn] = useState("");
@@ -31,11 +32,16 @@ function Workspace() {
 	function create(type: string) {
 
 		let newcomps = structuredClone(components);
+		let newComponentData = structuredClone(componentData);
+
 		newcomps.push({
 			type: type,
 			init_pos: {x:0,y:0} as pos,
 			inputs: []
 		} as component)
+		newComponentData.push({});
+
+		setComponentData(newComponentData);
 		setComponents(newcomps);
 		updateXarrow();
 	}
@@ -120,9 +126,7 @@ function Workspace() {
 				setConnectOut("");
 			}
 		};
-
 		document.addEventListener('keydown', handleKeyDown);
-
 		return () => { document.removeEventListener('keydown', handleKeyDown); };
 	}, [])
 
@@ -146,7 +150,8 @@ function Workspace() {
 		let fileContent = JSON.stringify({
 			version: latestVersion,
 			components: components,
-			wires: wires
+			wires: wires,
+			componentData: componentData
 		})
 
 		const blob = new Blob([fileContent], { type: "text/plain" });
@@ -161,17 +166,22 @@ function Workspace() {
 	
 	function loadLCF(lcf: string) {
 		let parsedFile = JSON.parse(upgrade(lcf));
-		let comps, wrs;
+		let comps, wrs, compData;
 		try {
 			comps = parsedFile.components;
+			compData = parsedFile.componentData;
 			wrs = parsedFile.wires;
 		} catch {
 			return;
 		}
 
 		let newComponents = comps as component[];
+
+		let newComponentData = compData as [];
+
 		let newWires = wrs;
 		setComponents(newComponents);
+		setComponentData(newComponentData);
 		setWires(newWires);
 		setResetWires(!resetWires);
 	}
@@ -200,7 +210,8 @@ function Workspace() {
 						<button className="interactBtn" onClick={(e) => {document.getElementById("contained-button-file")?.click()}}>Upload</button>
 					</label>
 				</td>
-				<td><button className="interactBtn" onClick={(e) => {setComponents([]);setWires(JSON.parse("{}"))}}>Clear</button></td>
+				<td><button className="interactBtn" onClick={(e) => {setComponents([]);setWires(JSON.parse("{}"));setComponentData([])}}>Clear</button></td>
+
 			</tr>
 			<tr>
 				<td>I/O</td>
@@ -250,9 +261,13 @@ function Workspace() {
 		<Xwrapper>
 			<ConfigContext.Provider value={{config, setConfig} as ConfigContent}>
 			<WireContext.Provider value={{wires, setWires} as WireContent}>
+			<ComponentDataContext.Provider value={{componentData, setComponentData} as ComponentDataContent}>
+
 				<WireRenderer components={components} connectIn={connectIn} connectOut={connectOut} resetWires={resetWires}/>
 				<ComponentRenderer components={components} connect={(side, id) => connect(side, id)} setPos={(pos, id) => {setPos(pos, id)}}/>
 				<MouseFollower />
+
+			</ComponentDataContext.Provider>
 			</WireContext.Provider>
 			</ConfigContext.Provider>
 		</Xwrapper>

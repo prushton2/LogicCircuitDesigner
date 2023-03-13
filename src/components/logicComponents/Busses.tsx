@@ -1,7 +1,7 @@
 import { useContext, useEffect, useState } from "react";
 
 import { Component, Inputs } from "./Component";
-import { WireContext } from "../Context";
+import { ComponentDataContext, WireContext } from "../Context";
 import { pos } from "../../models/pos";
 import { input } from "../../models/component";
 
@@ -60,15 +60,38 @@ export function BUS({id, pos, I, onClick, setPos}: {id: string, pos: pos, I: inp
 export function MUX({id, pos, I, onClick, setPos}: {id: string, pos: pos, I: input[], onClick: (id: string) => void, setPos: (pos: pos, id: string) => void}) {
 
 	const {wires, setWires} = useContext(WireContext);
+	const {componentData, setComponentData} = useContext(ComponentDataContext);
 
 	const [display, setDisplay] = useState("inline");
 	const [height, setHeight] = useState(50);
 	const [inputs, setInputs] = useState(4); //non-signal inputs
 
 	useEffect(() => {
+		console.log("updating inputs")
 		setInputs(Math.min(Math.max(inputs, 2), 8))
 		setHeight((inputs+2)*25 + (inputs+2)*3)
 	}, [inputs])
+
+	useEffect(() => {
+		let newComponentData = structuredClone(componentData);
+
+		newComponentData[id as keyof []].inputs = inputs;
+		
+		if(JSON.stringify(componentData) !== JSON.stringify(newComponentData)) {
+			setComponentData(newComponentData);
+		}
+	}, [inputs])
+
+	useEffect(() => {
+		try {
+			if(componentData[id as keyof {}]["inputs"] === undefined) {
+				setInputs(4);
+				return
+			}
+
+			setInputs(parseInt(componentData[id as keyof {}]["inputs"]));
+		} catch {}
+	}, [])
 
 	useEffect(() => {
 		try {

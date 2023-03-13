@@ -1,6 +1,8 @@
 import { useEffect, useState } from "react";
 
-export const latestVersion = "0.0.3"
+
+export const latestVersion = "0.0.4"
+
 
 export function upgrade(file: string) {
 	let parsed = JSON.parse(file);
@@ -35,6 +37,11 @@ export function upgrade(file: string) {
 		parsed.components = newComponents;
 		parsed.wires = newWires;
 		parsed.version = "0.0.3"
+	}
+
+	if(parsed.version === "0.0.3") {
+		parsed.componentData = parsed.components.map(() => {return {}})
+		parsed.version = "0.0.4"
 	}
 
 	return JSON.stringify(parsed);

@@ -25,7 +25,7 @@ const ComponentRenderer = ({components, connect, setPos}: {components: component
 					break;
 
 				case "SWBUS":
-					newhtml[i] = <SWBUS  key={i} pos={pos} id={i}              onClick={(id) => {connect("in", id)}} setPos={(pos, id) => {setPos(pos, id)}}/>
+					newhtml[i] = <SWBUS  key={i} pos={pos} id={i}           onClick={(id) => {connect("in", id)}} setPos={(pos, id) => {setPos(pos, id)}}/>
 					break;
 				
 				case "LED":
