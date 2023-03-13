@@ -3,7 +3,7 @@ import "../../App.css"
 import React, { useState, useEffect, useContext } from "react";
 
 import { Component } from "./Component";
-import { WireContext } from "../Context";
+import { WireContext, ComponentDataContext } from "../Context";
 import { input } from "../../models/component";
 import { pos } from "../../models/pos";
 
@@ -11,6 +11,7 @@ export const SW = ({id, pos, onClick, setPos}: {id: any, pos: pos, onClick: (id:
 
 	const [value, setValue] = useState(false);
 	const {wires, setWires} = useContext(WireContext);
+	const {componentData, setComponentData} = useContext(ComponentDataContext);
 	
 	const [display, setDisplay] = useState("inline"); //for hiding the gate configuration
 	const [name, setName] = useState(id);
@@ -20,6 +21,22 @@ export const SW = ({id, pos, onClick, setPos}: {id: any, pos: pos, onClick: (id:
 		newWires[`${id}.Y`] = value ? "1":"0";
 		setWires(newWires);
 	}, [value])
+	
+	useEffect(() => {
+		let newComponentData = structuredClone(componentData);
+
+		newComponentData[id as keyof []].value = value;
+		newComponentData[id as keyof []].name = name;
+		
+		if(JSON.stringify(componentData) !== JSON.stringify(newComponentData)) {
+			setComponentData(newComponentData);
+		}
+	}, [name, value])
+
+	useEffect(() => {
+		setName(componentData[id as keyof {}]["name"]);
+		setValue(componentData[id as keyof {}]["value"]);
+	}, [])
 
 	return (
 
@@ -44,6 +61,7 @@ export const SW = ({id, pos, onClick, setPos}: {id: any, pos: pos, onClick: (id:
 export const SWBUS = ({id, pos, onClick, setPos}: {id: any, pos: pos, onClick: (id: string) => void, setPos: (pos: pos, id: string) => void}) => {
 
 	const [value, setValue] = useState<string>("0");
+	const {componentData, setComponentData} = useContext(ComponentDataContext);
 	const {wires, setWires} = useContext(WireContext);
 	
 	const [display, setDisplay] = useState("inline"); //for hiding the gate configuration
@@ -54,6 +72,23 @@ export const SWBUS = ({id, pos, onClick, setPos}: {id: any, pos: pos, onClick: (
 		newWires[`${id}.Y`] = value;
 		setWires(newWires);
 	}, [value])
+
+
+	useEffect(() => {
+		let newComponentData = structuredClone(componentData);
+
+		newComponentData[id as keyof []].value = value;
+		newComponentData[id as keyof []].name = name;
+		
+		if(JSON.stringify(componentData) !== JSON.stringify(newComponentData)) {
+			setComponentData(newComponentData);
+		}
+	}, [name, value])
+
+	useEffect(() => {
+		setName(componentData[id as keyof {}]["name"]);
+		setValue(componentData[id as keyof {}]["value"]);
+	}, [])
 
 	return (
 
@@ -78,6 +113,7 @@ export const SWBUS = ({id, pos, onClick, setPos}: {id: any, pos: pos, onClick: (
 export const LED = ({I, id, pos, onClick, setPos}: {I: input[], id: string, pos: pos ,onClick: (id: string) => void, setPos: (pos: pos, id: string) => void}) => {
     
 	const {wires, setWires} = useContext(WireContext);
+	const {componentData, setComponentData} = useContext(ComponentDataContext);
 
 	const [display, setDisplay] = useState("inline"); //for hiding the gate configuration
 	const [name, setName] = useState(id);
@@ -90,6 +126,20 @@ export const LED = ({I, id, pos, onClick, setPos}: {I: input[], id: string, pos:
 			setValue("Z");
 		}
 	}, [wires])
+
+	useEffect(() => {
+		let newComponentData = structuredClone(componentData);
+
+		newComponentData[id as keyof []].name = name;
+		
+		if(JSON.stringify(componentData) !== JSON.stringify(newComponentData)) {
+			setComponentData(newComponentData);
+		}
+	}, [name, value])
+
+	useEffect(() => {
+		setName(componentData[id as keyof {}]["name"]);
+	}, [])
 
 	return (
 		<Component defaultPos={pos} newPos={(pos) => setPos(pos, id)} setDisplay={(v, d) => setDisplay(d)}>
