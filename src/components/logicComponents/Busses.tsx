@@ -67,6 +67,7 @@ export function MUX({id, pos, I, onClick, setPos}: {id: string, pos: pos, I: inp
 	const [inputs, setInputs] = useState(4); //non-signal inputs
 
 	useEffect(() => {
+		console.log("updating inputs")
 		setInputs(Math.min(Math.max(inputs, 2), 8))
 		setHeight((inputs+2)*25 + (inputs+2)*3)
 	}, [inputs])
@@ -83,7 +84,12 @@ export function MUX({id, pos, I, onClick, setPos}: {id: string, pos: pos, I: inp
 
 	useEffect(() => {
 		try {
-			setInputs(componentData[id as keyof {}]["value"] | 4);
+			if(componentData[id as keyof {}]["inputs"] === undefined) {
+				setInputs(4);
+				return
+			}
+
+			setInputs(parseInt(componentData[id as keyof {}]["inputs"]));
 		} catch {}
 	}, [])
 
