@@ -7,7 +7,7 @@ import Xarrow, { useXarrow, Xwrapper } from "react-xarrows";
 
 import MouseFollower from "./MouseFollower";
 import WireRenderer from "./WireRenderer";
-import { upgrade } from "./FileUpgrader"
+import { latestVersion, upgrade } from "./FileUpgrader"
 
 import { component, input } from "../models/component";
 import ComponentRenderer from "./ComponentRenderer";
@@ -85,14 +85,13 @@ function Workspace() {
 
 	useEffect(() => {
 		if(connectIn !== "" && connectOut != "") {
-			let inputid = parseInt(connectIn.split(".")[0])
 			let input = connectIn
 			let outputid = parseInt(connectOut.split(".")[0])
 			let outputPort = alphabet.indexOf(connectOut.split(".")[1]);
 
 			let newComponents = structuredClone(components);
 			try {
-				if (newComponents[outputid].inputs[outputPort].id === inputid) {
+				if (newComponents[outputid].inputs[outputPort].id === input) {
 					newComponents[outputid].inputs[outputPort].id = -1;
 				} else {
 					newComponents[outputid].inputs[outputPort] = {id: input} as input;
@@ -138,7 +137,7 @@ function Workspace() {
 
 	function save() {
 		let fileContent = JSON.stringify({
-			version: "0.0.2",
+			version: latestVersion,
 			components: components,
 			wires: wires
 		})

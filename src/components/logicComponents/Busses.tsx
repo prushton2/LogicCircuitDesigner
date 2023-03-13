@@ -25,13 +25,13 @@ export function BUS({id, pos, I, onClick, setPos}: {id: string, pos: pos, I: inp
 			} catch {}
 		}
 	
-		if(JSON.stringify(wires[id as keyof {}]) === JSON.stringify(bus)) {
-			return;
-		}
-
+		
 		let newWires = structuredClone(wires)
-		newWires[id as keyof []] = structuredClone(bus);
-		setWires(newWires);
+		newWires[`${id}.Y`] = structuredClone(bus);
+
+		if(JSON.stringify(wires) !== JSON.stringify(newWires)) {
+			setWires(newWires);
+		}
 	}, [wires])
 
 	return (
@@ -90,7 +90,7 @@ export function MUX({id, pos, I, onClick, setPos}: {id: string, pos: pos, I: inp
 		try {
 			let newWires = structuredClone(wires);
 			let i = parseInt(newWires[I[18].id as keyof []], 2)
-			newWires[parseInt(id) as keyof []] = wires[I[i].id as keyof {}];
+			newWires[`${id}.Y`] = wires[I[i].id as keyof {}];
 
 			if(JSON.stringify(newWires) != JSON.stringify(wires)) {
 				setWires(newWires);
