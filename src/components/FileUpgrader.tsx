@@ -19,9 +19,18 @@ export function upgrade(file: string) {
 
 	if(parsed.version === "0.0.2") {
 		let newWires = JSON.parse("{}")
+		let newComponents = parsed.components
 		for(let i in parsed.wires) {
 			newWires[`${i}.Y`] = parsed.wires[i]
 		}
+
+		for(let i in parsed.components) {
+			for(let j in parsed.components[i].inputs) {
+				newComponents[i].inputs[j].id = parsed.components[i].inputs[j].id + ".Y";
+			}
+		}
+
+		parsed.components = newComponents;
 		parsed.wires = newWires;
 		parsed.version = "0.0.3"
 	}
