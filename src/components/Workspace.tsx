@@ -44,7 +44,9 @@ function Workspace() {
 		let newComponents = structuredClone(components);
 		newComponents[n].type = "deleted_gate";
 		for(let i in newComponents[n].inputs) {
-			newComponents[n].inputs[i].id = -1;
+			try {
+				newComponents[n].inputs[i].id = -1;
+			} catch {}
 		}
 		
 		//remove references to deleted gates
@@ -53,10 +55,15 @@ function Workspace() {
 			for(let j in c.inputs) { //for each input in component
 				let input = c.inputs[j]; // cache input object
 
-				if(input.id === -1) { continue; } //Skip if the reference is null
+				console.log(input);
 
-				if(newComponents[input.id].type === "deleted_gate") { //check if the gate that the input references is dead
-					newComponents[i].inputs[j].id = -1; //if it is dead, then remove the reference to it
+				if(input === null || input === undefined) { continue; }
+				if(input.id.split(".")[0] === "-1") { continue; } //Skip if the reference is null
+
+				if(newComponents[parseInt(input.id.split(".")[0])].type === "deleted_gate") { //check if the gate that the input references is dead
+					try {
+						newComponents[i].inputs[j].id = -1; //if it is dead, then remove the reference to it
+					} catch {}
 				}
 			}
 		}
