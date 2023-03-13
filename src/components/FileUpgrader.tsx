@@ -26,7 +26,9 @@ export function upgrade(file: string) {
 
 		for(let i in parsed.components) {
 			for(let j in parsed.components[i].inputs) {
-				newComponents[i].inputs[j].id = parsed.components[i].inputs[j].id + ".Y";
+				try {
+					newComponents[i].inputs[j].id = parsed.components[i].inputs[j].id + ".Y";
+				} catch {}
 			}
 		}
 
