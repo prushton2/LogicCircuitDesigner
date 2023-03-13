@@ -136,9 +136,20 @@ export function ADDER({id, I, pos, onClick, setPos}: {id: string, I: input[], po
 			let A = parseInt(wires[I[0].id as keyof {}], 2)
 			let B = parseInt(wires[I[1].id as keyof {}], 2)
 			let Y = (A+B).toString(2);
-
+			
+			let overflowLength = Math.max((wires[I[0].id as keyof {}] as string).length, (wires[I[0].id as keyof {}] as string).length) + 1
+			//get the length of the higher bitsize + 1 to keep track of overflow
+			
 			let newWires = structuredClone(wires)
-			newWires[id] = Y;
+			
+			newWires[`${id}.Y`] = Y.slice(-(overflowLength-1)); //force cut off overflow bit to keep the bitsizes the same for input and output
+			
+			if(Y.length >= overflowLength) { //seperately return overflow
+				newWires[`${id}.Z`] = Y[0];
+			} else {
+				newWires[`${id}.Z`] = 0;
+			}
+
 			if(JSON.stringify(newWires) !== JSON.stringify(wires)) {
 				setWires(newWires);
 			}
@@ -151,8 +162,12 @@ export function ADDER({id, I, pos, onClick, setPos}: {id: string, I: input[], po
 			<div style={{width: "90px", height: "90px", border: "5px solid white"}}>
 				<Inputs inputCount={2} heights={[30, 60]} labelInputs componentID={id} onClick={(id) => onClick(id)}/>
 
-				<div id={`${id}.Y`} style={{right: "0%", top: `42px`, position: "absolute", transform: "translate(0%, -50%)"}}>
+				<div id={`${id}.Y`} style={{right: "0%", top: `30px`, position: "absolute", transform: "translate(0%, -50%)"}}>
 					<button onClick={(e) => onClick(`${id}.Y`)} style={{marginRight: ".3em", display: display}}>Y</button>Y{'\u00A0'}
+				</div>
+
+				<div id={`${id}.Z`} style={{right: "0%", top: `60px`, position: "absolute", transform: "translate(0%, -50%)"}}>
+					<button onClick={(e) => onClick(`${id}.Z`)} style={{marginRight: ".3em", display: display}}>Z</button>Z{'\u00A0'}
 				</div>
 			</div>
 		</Component>
