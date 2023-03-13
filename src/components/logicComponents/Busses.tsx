@@ -42,6 +42,9 @@ export function BUS({id, pos, I, onClick, setPos}: {id: string, pos: pos, I: inp
 			<Component defaultPos={pos} newPos={(pos) => setPos(pos, id)} setDisplay={(v, d) => setDisplay(d)}>
 				<div style={{width: "90px", height: "205px", border: "5px solid white"}}>
 					
+					<label style={{display: display, position: "absolute", top: "-30px"}}> BUS ({id})  </label><br />
+
+
 					<Inputs inputCount={8} heights={[15,40,65,90,115,140,165,190]} labelInputs componentID={id} onClick={(id) => onClick(id)}/>
 					
 					<div id={`${id}.Y`} style={{right: "0%", top: "95px", position: "absolute", transform: "translate(0%, -50%)"}}>
