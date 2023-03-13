@@ -19,7 +19,7 @@ function Workspace() {
 	const [config, setConfig] = useState({"hideDetails": false, "hideWireStates": false});
 	const [resetWires, setResetWires] = useState(false);
 
-	const [wires, setWires] = useState(("{}"));
+	const [wires, setWires] = useState(JSON.parse("{}"));
 	const [components, setComponents] = useState<component[]>([]);
 	const [deleteHTML, setDeleteHTML] = useState<JSX.Element[]>([]);
 
@@ -85,13 +85,14 @@ function Workspace() {
 
 	useEffect(() => {
 		if(connectIn !== "" && connectOut != "") {
-			let input = parseInt(connectIn.split(".")[0])
+			let inputid = parseInt(connectIn.split(".")[0])
+			let input = connectIn
 			let outputid = parseInt(connectOut.split(".")[0])
 			let outputPort = alphabet.indexOf(connectOut.split(".")[1]);
 
 			let newComponents = structuredClone(components);
 			try {
-				if (newComponents[outputid].inputs[outputPort].id === input) {
+				if (newComponents[outputid].inputs[outputPort].id === inputid) {
 					newComponents[outputid].inputs[outputPort].id = -1;
 				} else {
 					newComponents[outputid].inputs[outputPort] = {id: input} as input;
@@ -163,7 +164,7 @@ function Workspace() {
 		}
 
 		let newComponents = comps as component[];
-		let newWires = wrs as string[];
+		let newWires = wrs;
 		setComponents(newComponents);
 		setWires(newWires);
 	}
@@ -192,7 +193,7 @@ function Workspace() {
 						<button className="interactBtn" onClick={(e) => {document.getElementById("contained-button-file")?.click()}}>Upload</button>
 					</label>
 				</td>
-				<td><button className="interactBtn" onClick={(e) => {setComponents([]);setWires([])}}>Clear</button></td>
+				<td><button className="interactBtn" onClick={(e) => {setComponents([]);setWires(JSON.parse("{}"))}}>Clear</button></td>
 			</tr>
 			<tr>
 				<td>I/O</td>

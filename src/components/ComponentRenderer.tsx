@@ -49,7 +49,7 @@ const ComponentRenderer = ({components, connect, setPos}: {components: component
 					newhtml[i] = <MUX  key={i} pos={pos} id={i} I={c.inputs} onClick={(e) => connect(e.split(".")[1]=="Y"?"in":"out", e)} setPos={(pos, id) => {setPos(pos, id)}}/>
 					break;
 				case "ADDER":
-					newhtml[i] = <ADDER  key={i} pos={pos} id={i} I={c.inputs} onClick={(e) => connect(e.split(".")[1]=="Y"?"in":"out", e)} setPos={(pos, id) => {setPos(pos, id)}}/>
+					newhtml[i] = <ADDER  key={i} pos={pos} id={i} I={c.inputs} onClick={(e) => connect("XYZ".indexOf(e.split(".")[1]) !== -1 ?"in":"out", e)} setPos={(pos, id) => {setPos(pos, id)}}/>
 					break;
 			}
 		}
