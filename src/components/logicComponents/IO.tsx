@@ -34,8 +34,10 @@ export const SW = ({id, pos, onClick, setPos}: {id: any, pos: pos, onClick: (id:
 	}, [name, value])
 
 	useEffect(() => {
-		setName(componentData[id as keyof {}]["name"]);
-		setValue(componentData[id as keyof {}]["value"]);
+		try {
+			setName(componentData[id as keyof {}]["name"]);
+			setValue(componentData[id as keyof {}]["value"]);
+		} catch {}
 	}, [])
 
 	return (
@@ -86,8 +88,10 @@ export const SWBUS = ({id, pos, onClick, setPos}: {id: any, pos: pos, onClick: (
 	}, [name, value])
 
 	useEffect(() => {
-		setName(componentData[id as keyof {}]["name"]);
-		setValue(componentData[id as keyof {}]["value"]);
+		try {
+			setName(componentData[id as keyof {}]["name"]);
+			setValue(componentData[id as keyof {}]["value"]);
+		} catch {}
 	}, [])
 
 	return (
@@ -138,7 +142,9 @@ export const LED = ({I, id, pos, onClick, setPos}: {I: input[], id: string, pos:
 	}, [name, value])
 
 	useEffect(() => {
-		setName(componentData[id as keyof {}]["name"]);
+		try {
+			setName(componentData[id as keyof {}]["name"]);
+		} catch {}
 	}, [])
 
 	return (
