@@ -4,7 +4,6 @@ import { Component, Inputs } from "./Component";
 import { WireContext } from "../Context";
 import { pos } from "../../models/pos";
 import { input } from "../../models/component";
-import Wire from "../Wire";
 
 export function BUS({id, pos, I, onClick, setPos}: {id: string, pos: pos, I: input[], onClick: (id: string) => void, setPos: (pos: pos, id: string) => void}) {
 
