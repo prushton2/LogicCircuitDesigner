@@ -21,7 +21,7 @@ export function BUS({id, pos, I, onClick, setPos}: {id: string, pos: pos, I: inp
 					continue;
 				}
 	
-				bus += wires[I[i].id as keyof {}][0];
+				bus += wires[I[i].id as keyof {}];
 			} catch {}
 		}
 	
