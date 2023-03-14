@@ -43,16 +43,18 @@ export const SW = ({id, pos, onClick, setPos}: {id: any, pos: pos, onClick: (id:
 	return (
 
 		<Component defaultPos={pos} newPos={(pos) => setPos(pos, id)} setDisplay={(v, d) => setDisplay(d)}>
-			<div style={{position: "absolute", width: "50px", height: "70px", border: "0px solid red"}}>
+			<div style={{position: "absolute", width: "90px", height: "70px", border: "0px solid red"}}>
 				
 				
-				<input style={{ height: "20px", width: "20px", display: display}} onChange={(e) => {setName(e.target.value)}}></input>
+				<input style={{ height: "20px", width: "20px", display: display}} defaultValue={componentData[id as keyof {}]["name"]} onChange={(e) => {setName(e.target.value)}}></input>
+				<label style={{ height: "20px", width: "20px", display: display==="none" ? "inline" : "none"}}>{name}</label>
+				
 				<label style={{display: display}}> ({id}) </label><br />
 				
-				<button className="invisButton" style={{width: "50px", height: "50px", position: 'absolute', top: "20px", left: "0px", border: "0px solid red"}} onClick={() => {setValue(!value)}}>{name}</button> <br />
+				<button style={{border: "3px solid #1b1a23", backgroundColor: "#2b2a33", width: "5.4em", height: "22px", position: 'absolute', top: "35px", left: "0px"}} onClick={() => {setValue(!value)}}>{value ? "1":"0"}</button> <br />
 
-				<div id={`${id}.Y`} style={{right: "0px", top: "45px", width: "30%", height: "30%", position: 'absolute', transform: "translate(0%, -50%)", border: "0px solid red"}}>
-					<button onClick={(e) => onClick(`${id}.Y`)} style={{marginRight: "1.3em", display: display}}>Y</button> <br /> 
+				<div id={`${id}.Y`} style={{right: `${display==="none"?"20":"0"}px`, top: "45px", position: 'absolute', transform: "translate(0%, -50%)", border: "0px solid red"}}>
+					<button onClick={(e) => onClick(`${id}.Y`)} style={{display: display}}>Y</button> <br /> 
 				</div>
 			</div>
 		</Component>
@@ -97,18 +99,18 @@ export const SWBUS = ({id, pos, onClick, setPos}: {id: any, pos: pos, onClick: (
 	return (
 
 		<Component defaultPos={pos} newPos={(pos) => setPos(pos, id)} setDisplay={(v, d) => setDisplay(d)}>
-			<div style={{position: "absolute", width: "90px", height: "70px", border: "0px solid red"}}>
+			<div style={{position: "absolute", width: "80px", height: "70px", border: "0px solid red"}}>
 				
 				
-				<input style={{ height: "20px", width: "20px", display: display}} onChange={(e) => {setName(e.target.value)}}></input>
+				<input style={{ height: "20px", width: "20px", display: display}} defaultValue={componentData[id as keyof {}]["name"]} onChange={(e) => {setName(e.target.value)}}></input>
 				<label style={{ height: "20px", width: "20px", display: display == "none" ? "inline" : "none"}}>{name}</label>
 				
 				<label style={{display: display}}> ({id}) </label><br />
 				
 				<input type="string" pattern="[0-1]*" onChange={(e) => {setValue(e.target.value)}} style={{position: "absolute", left: "-3px", top: "35px", width: "4.3em"}}/> <br />
 
-				<div id={`${id}.Y`} style={{right: "0px", top: "45px", width: "30%", height: "30%", position: 'absolute', transform: "translate(0%, -50%)", border: "0px solid red"}}>
-					<button onClick={(e) => onClick(`${id}.Y`)} style={{marginRight: "1.3em", display: display}}>Y</button> <br /> 
+				<div id={`${id}.Y`} style={{right: `${display==="none"?"20":"0"}px`, top: "45px", position: 'absolute', transform: "translate(0%, -50%)", border: "0px solid red"}}>
+					<button onClick={(e) => onClick(`${id}.Y`)} style={{display: display}}>Y</button> <br /> 
 				</div>
 			</div>
 		</Component>

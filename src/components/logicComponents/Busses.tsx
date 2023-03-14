@@ -124,7 +124,7 @@ export function MUX({id, pos, I, onClick, setPos}: {id: string, pos: pos, I: inp
 
 					<Inputs inputCount={inputs} heights={[50, 80, 110, 140, 170, 200, 230, 260]} labelInputs componentID={id} onClick={(i: string) => {onClick(i)}}/>
 
-					<div id={`${id}.Y`} style={{right: "0%", top: `${height/2}px`, position: "absolute", transform: "translate(0%, -50%)"}}>
+					<div id={`${id}.Y`} style={{right: "0%", top: `${(height/2) - ((height/2)%5)}px`, position: "absolute", transform: "translate(0%, -50%)"}}>
 						<button onClick={(e) => onClick(`${id}.Y`)} style={{marginRight: ".3em", display: display}}>Y</button>Y{'\u00A0'}
 					</div>
 					
