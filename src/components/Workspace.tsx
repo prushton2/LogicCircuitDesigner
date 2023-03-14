@@ -49,6 +49,7 @@ function Workspace() {
 	function remove(n: number) {
 		let newComponents = structuredClone(components);
 		newComponents[n].type = "deleted_gate";
+		newComponents[n].inputs = [];
 		for(let i in newComponents[n].inputs) {
 			try {
 				newComponents[n].inputs[i].id = -1;
