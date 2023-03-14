@@ -1,4 +1,5 @@
 import "../../App.css"
+import "./IO.css"
 
 import React, { useState, useEffect, useContext } from "react";
 
@@ -43,17 +44,16 @@ export const SW = ({id, pos, onClick, setPos}: {id: any, pos: pos, onClick: (id:
 	return (
 
 		<Component defaultPos={pos} newPos={(pos) => setPos(pos, id)} setDisplay={(v, d) => setDisplay(d)}>
-			<div style={{position: "absolute", width: "90px", height: "70px", border: "0px solid red"}}>
+			<div className="wrapperDiv">
 				
-				
-				<input style={{ height: "20px", width: "20px", display: display}} defaultValue={componentData[id as keyof {}]["name"]} onChange={(e) => {setName(e.target.value)}}></input>
-				<label style={{ height: "20px", width: "20px", display: display==="none" ? "inline" : "none"}}>{name}</label>
+				<input className="nametag" style={{display: display}} defaultValue={componentData[id as keyof {}]["name"]} onChange={(e) => {setName(e.target.value)}}></input>
+				<label className="nametag" style={{display: display==="none" ? "inline" : "none"}}>{name}</label>
 				
 				<label style={{display: display}}> ({id}) </label><br />
 				
-				<button style={{border: "3px solid #1b1a23", backgroundColor: "#2b2a33", width: "5.4em", height: "22px", position: 'absolute', top: "35px", left: "0px"}} onClick={() => {setValue(!value)}}>{value ? "1":"0"}</button> <br />
+				<button className="SWbtn" style={{width: `${display==="none"?"100%":"5.4em"}`}} onClick={() => {setValue(!value)}}>{value ? "1":"0"}</button> <br />
 
-				<div id={`${id}.Y`} style={{right: `${display==="none"?"20":"0"}px`, top: "45px", position: 'absolute', transform: "translate(0%, -50%)", border: "0px solid red"}}>
+				<div id={`${id}.Y`} style={{right: `0px`, top: "45px", position: 'absolute', transform: "translate(0%, -50%)", border: "0px solid red"}}>
 					<button onClick={(e) => onClick(`${id}.Y`)} style={{display: display}}>Y</button> <br /> 
 				</div>
 			</div>
@@ -99,17 +99,17 @@ export const SWBUS = ({id, pos, onClick, setPos}: {id: any, pos: pos, onClick: (
 	return (
 
 		<Component defaultPos={pos} newPos={(pos) => setPos(pos, id)} setDisplay={(v, d) => setDisplay(d)}>
-			<div style={{position: "absolute", width: "80px", height: "70px", border: "0px solid red"}}>
+			<div className="wrapperDiv">
 				
 				
-				<input style={{ height: "20px", width: "20px", display: display}} defaultValue={componentData[id as keyof {}]["name"]} onChange={(e) => {setName(e.target.value)}}></input>
-				<label style={{ height: "20px", width: "20px", display: display == "none" ? "inline" : "none"}}>{name}</label>
+				<input className="nametag" style={{display: display}} defaultValue={componentData[id as keyof {}]["name"]} onChange={(e) => {setName(e.target.value)}}></input>
+				<label className="nametag" style={{display: display == "none" ? "inline" : "none"}}>{name}</label>
 				
 				<label style={{display: display}}> ({id}) </label><br />
 				
-				<input type="string" pattern="[0-1]*" onChange={(e) => {setValue(e.target.value)}} style={{position: "absolute", left: "-3px", top: "35px", width: "4.3em"}}/> <br />
+				<input className="SWinput" style={{width: `${display==="none"?"100%":"4.5em"}`}} type="string" pattern="[0-1]*" onChange={(e) => {setValue(e.target.value)}} /> <br />
 
-				<div id={`${id}.Y`} style={{right: `${display==="none"?"20":"0"}px`, top: "45px", position: 'absolute', transform: "translate(0%, -50%)", border: "0px solid red"}}>
+				<div id={`${id}.Y`} style={{right: `0px`, top: "45px", position: 'absolute', transform: "translate(0%, -50%)", border: "0px solid red"}}>
 					<button onClick={(e) => onClick(`${id}.Y`)} style={{display: display}}>Y</button> <br /> 
 				</div>
 			</div>
@@ -153,15 +153,17 @@ export const LED = ({I, id, pos, onClick, setPos}: {I: input[], id: string, pos:
 
 	return (
 		<Component defaultPos={pos} newPos={(pos) => setPos(pos, id)} setDisplay={(v, d) => setDisplay(d)}>
-			<div style={{position: "absolute", width: "50px", height: "70px", border: "0px solid red"}}>
+			<div className="wrapperDiv small">
 				
 				
-				<input style={{ height: "20px", width: "20px", display: display}} onChange={(e) => {setName(e.target.value)}}></input>
-				<label style={{display: display}}> ({id}) </label><br />
-				
-				<label className="invisButton" style={{width: "50px", height: "50px", position: 'absolute', top: "20px", left: "0px", border: "0px solid red"}}>{name}<br />{value}</label> <br />
+				<input className="nametag" style={{display: display}} defaultValue={componentData[id as keyof {}]["name"]} onChange={(e) => {setName(e.target.value)}}></input>
+				<label className="nametag" style={{display: display == "none" ? "inline" : "none"}}>{name}</label>
 
-				<div id={`${id}.A`} style={{left: "0px", top: "30px", width: "30%", height: "30%", position: 'absolute', transform: "translate(0%, -50%)", border: "0px solid red"}}>
+				<label style={{display: display}}> ({id}) </label>
+				
+				<label className="LEDoutput" style={{left: `${display==="none"?"0":"20"}px`}}>{value}</label> <br />
+
+				<div id={`${id}.A`} style={{left: "0px", top: "45px", position: 'absolute', transform: "translate(0%, -50%)"}}>
 					<button onClick={(e) => onClick(`${id}.A`)} style={{marginRight: "1.3em", display: display}}>A</button> <br /> 
 				</div>
 			</div>

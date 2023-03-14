@@ -1,0 +1,44 @@
+.wrapperDiv {
+	/* border: 1px solid red; */
+	position: absolute;
+	width: 90px;
+	height: 70px;
+}
+.small {
+	width: 70px;
+	height: 60px;
+}
+
+.nametag {
+	height: 20px;
+	width: 20px;
+}
+
+.SWbtn {
+	border: 3px solid #1b1a23;
+	background-color: #2b2a33;
+	width: 5.4em;
+	height: 22px;
+	position: absolute;
+	top: 35px;
+	left: 0px;
+}
+
+.SWbtn:active {
+	border: 3px solid #1b1a23;
+}
+
+.SWinput {
+	position: absolute;
+	left: 0px;
+	top: 35px;
+	width: 4.5em;
+}
+
+.LEDoutput {
+	border: 3px solid #1b1a23;
+	width: 100%;
+	position: absolute;
+	top: 35px;
+	left: 20px;
+}
