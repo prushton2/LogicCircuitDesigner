@@ -51,7 +51,7 @@ export const SW = ({id, pos, onClick, setPos}: {id: any, pos: pos, onClick: (id:
 				
 				<label style={{display: display}}> ({id}) </label><br />
 				
-				<button className="SWbtn" style={{width: `${display==="none"?"100%":"5.4em"}`}} onClick={() => {setValue(!value)}}>{value ? "1":"0"}</button> <br />
+				<button className="SWbtn" style={{width: `${display==="none"?"100%":"5.4em"}`}} defaultValue={componentData[id as keyof {}]["value"]} onClick={() => {setValue(!value)}}>{value ? "1":"0"}</button> <br />
 
 				<div id={`${id}.Y`} style={{right: `0px`, top: "45px", position: 'absolute', transform: "translate(0%, -50%)", border: "0px solid red"}}>
 					<button onClick={(e) => onClick(`${id}.Y`)} style={{display: display}}>Y</button> <br /> 
@@ -107,7 +107,7 @@ export const SWBUS = ({id, pos, onClick, setPos}: {id: any, pos: pos, onClick: (
 				
 				<label style={{display: display}}> ({id}) </label><br />
 				
-				<input className="SWinput" style={{width: `${display==="none"?"100%":"4.5em"}`}} type="string" pattern="[0-1]*" onChange={(e) => {setValue(e.target.value)}} /> <br />
+				<input className="SWinput" style={{width: `${display==="none"?"100%":"4.5em"}`}} type="string" pattern="[0-1]*" defaultValue={componentData[id as keyof {}]["value"]} onChange={(e) => {setValue(e.target.value)}} /> <br />
 
 				<div id={`${id}.Y`} style={{right: `0px`, top: "45px", position: 'absolute', transform: "translate(0%, -50%)", border: "0px solid red"}}>
 					<button onClick={(e) => onClick(`${id}.Y`)} style={{display: display}}>Y</button> <br /> 
