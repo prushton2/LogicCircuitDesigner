@@ -15,74 +15,21 @@ import { pos } from "../models/pos";
 
 function Workspace() {
 
-	const alphabet = "ABCDEFGHIJKLMNOPQRSTUVWXYZ".split("");
 	let componentRendererRef = useRef<any>(null);
+	let wireRendererRef = useRef<any>(null);
 	
 	const [config, setConfig] = useState({"hideDetails": false, "hideWireStates": false});
-	const [resetWires, setResetWires] = useState(false);
 
 	const [wires, setWires] = useState(JSON.parse("{}"));
 	const [components, setComponents] = useState<component[]>([]);
 	const [componentData, setComponentData] = useState([]);
 	const [deleteHTML, setDeleteHTML] = useState<JSX.Element[]>([]);
 
-	const [connectIn, setConnectIn] = useState("");
-	const [connectOut, setConnectOut] = useState("");
-
-	const updateXarrow = useXarrow();
-
-	function connect(side: string, id: string) {
-		switch(side) {
-			case "in":
-				if(id === connectIn) {setConnectIn(""); return;}
-				else {setConnectIn(id)};
-				break;
-				case "out": 
-				if(id === connectOut) {setConnectOut(""); return;}
-				else {setConnectOut(id)};
-				break;
-		}
-	}
-
 	function setPos(pos: pos, id: string) {
 		let newComponents = structuredClone(components);
 		newComponents[parseInt(id)].init_pos = structuredClone(pos);
 		setComponents(newComponents);
 	}
-
-	useEffect(() => {
-		if(connectIn !== "" && connectOut != "") {
-			let input = connectIn
-			let outputid = parseInt(connectOut.split(".")[0])
-			let outputPort = alphabet.indexOf(connectOut.split(".")[1]);
-
-			let newComponents = structuredClone(components);
-			try {
-				if (newComponents[outputid].inputs[outputPort].id === input) {
-					newComponents[outputid].inputs[outputPort].id = -1;
-				} else {
-					newComponents[outputid].inputs[outputPort] = {id: input} as input;
-				}
-			} catch {
-				newComponents[outputid].inputs[outputPort] = {id: input} as input;
-			}
-			setComponents(newComponents);
-			
-			setConnectIn("");
-			setConnectOut("");
-		}
-	}, [connectIn, connectOut])
-
-	useEffect(() => { //for escaping wire placement
-		const handleKeyDown = (event: KeyboardEvent) => {		
-			if (event.key === 'Escape') {
-				setConnectIn("");
-				setConnectOut("");
-			}
-		};
-		document.addEventListener('keydown', handleKeyDown);
-		return () => { document.removeEventListener('keydown', handleKeyDown); };
-	}, [])
 
 	useEffect(() => {
 		let newDeleteHTML: JSX.Element[] = [<option value={-1}>Delete Component</option>];
@@ -137,7 +84,9 @@ function Workspace() {
 		setComponents(newComponents);
 		setComponentData(newComponentData);
 		setWires(newWires);
-		setResetWires(!resetWires);
+		setTimeout(() => {
+			wireRendererRef.current?.resetWires();
+		}, 100);
 	}
 
 	function handleFile(e: any) {
@@ -205,7 +154,7 @@ function Workspace() {
 				<td>Config</td>
 				<td><button className="interactBtn" onClick={(e) => {toggleConfig("hideDetails")}}>Details</button></td>
 				<td><button className="interactBtn" onClick={(e) => {toggleConfig("hideWireStates")}}>Wires</button></td>
-				<td><button className="interactBtn" onClick={(e) => {setResetWires(!resetWires)}}>Fix Wires</button></td>
+				<td><button className="interactBtn" onClick={(e) => {wireRendererRef.current?.resetWires()}}>Fix Wires</button></td>
 			</tr>
 		</tbody>
 		</table>
@@ -224,8 +173,8 @@ function Workspace() {
 			<ComponentDataContext.Provider value={{componentData, setComponentData} as ComponentDataContent}>
 			<ComponentContext.Provider value={{components, setComponents} as ComponentContent}>
 
-				<WireRenderer components={components} connectIn={connectIn} connectOut={connectOut} resetWires={resetWires}/>
-				<ComponentRenderer ref={componentRendererRef} connect={(side, id) => connect(side, id)} setPos={(pos, id) => {setPos(pos, id)}}/>
+				<WireRenderer ref={wireRendererRef}/>
+				<ComponentRenderer ref={componentRendererRef} connect={(side, id) => wireRendererRef.current?.connect(side, id)} setPos={(pos, id) => {setPos(pos, id)}}/>
 				<MouseFollower />
 
 			</ComponentContext.Provider>
@@ -236,6 +185,4 @@ function Workspace() {
 	</div> )
 }
 
-
 export default Workspace;
-
