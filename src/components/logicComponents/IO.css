@@ -1,12 +1,11 @@
 .wrapperDiv {
-	/* border: 1px solid red; */
 	position: absolute;
 	width: 90px;
 	height: 70px;
 }
-.small {
-	width: 70px;
-	height: 60px;
+.large {
+	width: 110px;
+	height: 70px;
 }
 
 .nametag {

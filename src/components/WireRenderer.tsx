@@ -9,7 +9,7 @@ const WireRenderer = React.forwardRef(({}, ref) => {
 
 	const alphabet = "ABCDEFGHIJKLMNOPQRSTUVWXYZ".split("");
 	const {components, setComponents} = useContext(ComponentContext)
-	
+
 	const [wireHTML, setWireHTML] = useState<JSX.Element[]>([]);
 	const [tempWire, setTempWire] = useState(<a></a>);
 	const [rerenderWires, setRerenderWires] = useState(false);

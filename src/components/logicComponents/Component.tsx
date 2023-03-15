@@ -25,7 +25,7 @@ export const Component = ({children, defaultPos, newPos, setDisplay}: {children:
 
 	return (
 		<div>
-			<Draggable grid={[5,5]} defaultPosition={{x: defaultPos.x, y: defaultPos.y}} onDrag={updateXarrow} onStop={savePos}>
+			<Draggable cancel=".field" grid={[5,5]} defaultPosition={{x: defaultPos.x, y: defaultPos.y}} onDrag={updateXarrow} onStop={savePos}>
 				{children}
 			</Draggable>
 		</div>
@@ -49,7 +49,7 @@ export const Inputs = ({inputCount, heights, labelInputs, componentID, onClick}:
 		for(let i = 0; i<inputCount; i++) {
 			let letter = alphabet[i];
 			newHTML[i] = 
-			<div key={i} id={`${componentID}.${letter}`} style={{left: "0%", top: `${heights[i]}px`, position: "absolute", transform: "translate(0%, -50%)"}}>
+			<div key={i} className="field" id={`${componentID}.${letter}`} style={{left: "0%", top: `${heights[i]}px`, position: "absolute", transform: "translate(0%, -50%)"}}>
 				{'\u00A0'}{labelInputs ? letter : ""}<button onClick={(e) => onClick(`${componentID}.${letter}`)} style={{marginLeft: ".3em", display: display}}>{letter}</button><br /> 
 			</div>
 		}

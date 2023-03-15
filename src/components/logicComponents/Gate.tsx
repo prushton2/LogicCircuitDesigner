@@ -1,6 +1,7 @@
+import "./Gate.css"
 import React, { useContext, useEffect, useState } from "react";
 
-import { Component } from "./Component"
+import { Component, Inputs } from "./Component"
 import { input } from "../../models/component";
 import { WireContext } from "../Context";
 import { pos } from "../../models/pos";
@@ -14,9 +15,9 @@ import NOR_png  from "../../images/NOR.png"
 import XNOR_png from "../../images/XNOR.png"
 
 interface buttonOffset {
-	A_top: string,
-	O_top: string,
-	B_top: string,
+	A_top: number,
+	O_top: number,
+	B_top: number,
 }
 
 const BaseGate = ({I, pos, comp, label, image, style, id, onClick, setPos}: { //the skeleton for a logic gate. Everything minus the image and logic.
@@ -60,22 +61,16 @@ const BaseGate = ({I, pos, comp, label, image, style, id, onClick, setPos}: { //
 	return (
 		<div>
 			<Component defaultPos={pos} newPos={(pos) => {setPos(pos, id)}} setDisplay={(v, d) => {setDisplay(d)}}> 
-				<div style={{userSelect: "none", position: "absolute", border: "0px solid red", width: "90px", height: "90px"}} >
+				<div className="wrapperDiv">
 			
 					{display==="inline"?`${label} (${id})`:""} <br />
 
-					<img src={image} style={{width: "90px", position: "absolute", transform: "translate(0%, 10%)"}} onDragStart={(e) => {e.preventDefault()}}/>
+					<img src={image} className="gateImage" onDragStart={(e) => {e.preventDefault()}}/>
 
-					<div id={`${id}.A`} style={{left: "0%", top: style.A_top, position: "absolute", transform: "translate(0%, -50%)"}}>
-						<button onClick={(e) => onClick(`${id}.A`)} style={{marginLeft: "1.3em", display: display}}>A</button><br /> 
-					</div>
+					<Inputs labelInputs={false} inputCount={style.B_top == -1 ? 1 : 2} heights={[style.A_top, style.B_top]} componentID={id} onClick={(id) => onClick(id)} />
 
-					<div id={`${id}.Y`} style={{right: "0%", top: style.O_top, position: "absolute", transform: "translate(0%, -50%)"}}>
+					<div id={`${id}.Y`} className="field" style={{right: "0%", top: style.O_top, position: "absolute", transform: "translate(0%, -50%)"}}>
 						<label style={{display: display}}></label><button onClick={(e) => onClick(`${id}.Y`)} style={{marginRight: "1.3em", display: display}}>Y</button>
-					</div>
-
-					<div id={`${id}.B`} style={{left: "0%", top: style.B_top, display: style.B_top==="null"?"none":"inline", position: "absolute", transform: "translate(0%, -50%)"}}>
-						<button onClick={(e) => onClick(`${id}.B`)} style={{marginLeft: "1.3em", display: display}}>B</button> <br/> 
 					</div>
 				</div>
 			</Component>
@@ -94,39 +89,39 @@ export const Gate = ({I, id, pos, type, onClick, setPos}: {I: input[], pos: pos,
 	
 	switch(type) {
 		case "AND":
-			style = {A_top: "45px",O_top: "65px",B_top: "80px"} as buttonOffset,
+			style = {A_top: 45,O_top: 65,B_top: 80} as buttonOffset,
 			image = AND_png,
 			compare = (A: boolean, B: boolean) => {return A && B}
 			break;
 		case "OR":
-			style = {A_top: "40px",O_top: "60px",B_top: "80px"} as buttonOffset,
+			style = {A_top: 40,O_top: 60,B_top: 80} as buttonOffset,
 			image = OR_png,
 			compare = (A: boolean, B: boolean) => {return A || B}
 			break;
 		case "XOR":
-			style = {A_top: "40px",O_top: "55px",B_top: "75px"} as buttonOffset,
+			style = {A_top: 40, O_top: 55, B_top: 75} as buttonOffset,
 			image = XOR_png,
 			compare = (A: boolean, B: boolean) => {return A !== B}
 			break;
 
 		case "NAND":
-			style = {A_top: "45px",O_top: "60px",B_top: "75px"} as buttonOffset,
+			style = {A_top: 45, O_top: 60, B_top: 75} as buttonOffset,
 			image = NAND_png,
 			compare = (A: boolean, B: boolean) => {return !(A && B)}
 			break;
 		case "NOR":
-			style = {A_top: "40px",O_top: "55px",B_top: "70px"} as buttonOffset,
+			style = {A_top: 40,O_top: 55,B_top: 70} as buttonOffset,
 			image = NOR_png,
 			compare = (A: boolean, B: boolean) => {return !(A || B)}
 			break;
 		case "XNOR":
-			style = {A_top: "40px",O_top: "55px",B_top: "65px"} as buttonOffset,
+			style = {A_top: 40,O_top: 55,B_top: 65} as buttonOffset,
 			image = XNOR_png,
 			compare = (A: boolean, B: boolean) => {return A === B}
 			break;
 
 		case "NOT":
-			style = ({A_top: "75px",O_top: "75px",B_top: "null"} as buttonOffset),
+			style = ({A_top: 75, O_top: 75, B_top: -1} as buttonOffset),
 			image = NOT_png,
 			compare = (A: boolean, B: boolean) => {return !A}
 			break;
