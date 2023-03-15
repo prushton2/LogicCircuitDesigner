@@ -3,13 +3,13 @@ import "./Workspace.css"
 import { useEffect, useState, useRef } from "react";
 import { WireContext, WireContent, ConfigContext, ConfigContent, ComponentDataContent, ComponentDataContext, ComponentContext, ComponentContent } from "./Context";
 
-import Xarrow, { useXarrow, Xwrapper } from "react-xarrows";
+import { Xwrapper } from "react-xarrows";
 
 import MouseFollower from "./MouseFollower";
 import WireRenderer from "./WireRenderer";
 import { latestVersion, upgrade } from "./FileUpgrader"
 
-import { component, input } from "../models/component";
+import { component } from "../models/component";
 import ComponentRenderer from "./ComponentRenderer";
 import { pos } from "../models/pos";
 

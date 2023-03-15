@@ -36,23 +36,16 @@ const ComponentRenderer = React.forwardRef(({connect, setPos}: {connect: (side: 
 		},
 		remove: (n: number) => {
 			let newComponents = structuredClone(components);
-			newComponents[n].type = "deleted_gate";
-			newComponents[n].inputs = [];
-			for(let i in newComponents[n].inputs) {
-				try {
-					newComponents[n].inputs[i].id = -1;
-				} catch {}
-			}
+			newComponents[n].type = "deleted_gate"; //mark it as deleted
+			newComponents[n].inputs = []; //remove its inputs
 			
 			//remove references to deleted gates
 			for(let i in newComponents) { //for each component
 				let c = newComponents[i]; //cache component
 				for(let j in c.inputs) { //for each input in component
 					let input = c.inputs[j]; // cache input object
-	
-					console.log(input);
-	
-					if(input === null || input === undefined) { continue; }
+		
+					if(input === null || input === undefined) { continue; } //Skip if the input isnt defined
 					if(input.id.split(".")[0] === "-1") { continue; } //Skip if the reference is null
 	
 					if(newComponents[parseInt(input.id.split(".")[0])].type === "deleted_gate") { //check if the gate that the input references is dead

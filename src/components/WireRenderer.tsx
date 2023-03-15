@@ -8,7 +8,6 @@ import { ComponentContext } from "./Context";
 const WireRenderer = React.forwardRef(({}, ref) => {
 
 	const alphabet = "ABCDEFGHIJKLMNOPQRSTUVWXYZ".split("");
-	
 	const {components, setComponents} = useContext(ComponentContext)
 	
 	const [wireHTML, setWireHTML] = useState<JSX.Element[]>([]);
