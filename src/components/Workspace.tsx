@@ -152,7 +152,7 @@ function Workspace() {
 			</tr>
 			<tr>
 				<td>Memory</td>
-				<td><button className="interactBtn" onClick={(e) => {componentRendererRef.current?.create("FSM")}}>FSM</button></td>
+				<td><button className="interactBtn" onClick={(e) => {componentRendererRef.current?.create("REG")}}>REG</button></td>
 
 			</tr>
 			<tr>
