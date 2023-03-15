@@ -23,14 +23,14 @@ const Wire = ({start, end}: {start: string, end: string}) => {
 			}
 		}
 
-		if("S".indexOf(end.split(".")[1]) !== -1) {
+		if("+S".indexOf(end.split(".")[1]) !== -1) {
 			setSides([
 				sides[0],
 				"top"
 			])
 		}
 
-		if("R".indexOf(end.split(".")[1]) !== -1) {
+		if("+R".indexOf(end.split(".")[1]) !== -1) {
 			setSides([
 				sides[0],
 				"bottom"
