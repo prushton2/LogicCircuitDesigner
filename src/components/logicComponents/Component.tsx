@@ -63,3 +63,35 @@ export const Inputs = ({inputCount, heights, labelInputs, componentID, onClick}:
 		</>
 	)
 }
+
+export const Outputs = ({outputCount, heights, labelOutputs, componentID, onClick}: {outputCount: number, heights: number[], labelOutputs: boolean, componentID:string, onClick: (id: string) => void}) => {
+
+	const {config, setConfig} = useContext(ConfigContext);
+	const [display, setDisplay] = useState("inline");
+	const [outputHTML, setOutputHTML] = useState<JSX.Element[]>([])
+	const alphabet = "ABCDEFGHIJKLMNOPQRSTUVWXYZ".split("")
+	const updateXarrow = useXarrow();
+
+	useEffect(() => {
+		setDisplay(!config["hideDetails" as keyof object] ? "inline": "none");
+	}, [config])
+	
+	useEffect(() => {
+		let newHTML = []
+		for(let i = 0; i<outputCount; i++) {
+			let letter = alphabet[i];
+			newHTML[i] = 
+			<div key={i} className="field" id={`${componentID}.-${letter}`} style={{right: "0%", top: `${heights[i]}px`, position: "absolute", transform: "translate(0%, -50%)"}}>
+				{labelOutputs ? letter : ""}<button onClick={(e) => onClick(`${componentID}.-${letter}`)} style={{marginLeft: ".3em", display: display}}>{letter}</button>{'\u00A0'}<br /> 
+			</div>
+		}
+		setOutputHTML(newHTML);
+		updateXarrow();
+	}, [outputCount, display, heights])
+
+	return (
+		<>
+			{outputHTML}
+		</>
+	)
+}
