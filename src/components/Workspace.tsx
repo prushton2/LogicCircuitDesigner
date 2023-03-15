@@ -1,7 +1,7 @@
 import "./Workspace.css"
 
-import { useEffect, useState } from "react";
-import { WireContext, WireContent, ConfigContext, ConfigContent, ComponentDataContent, ComponentDataContext } from "./Context";
+import { useEffect, useState, useRef } from "react";
+import { WireContext, WireContent, ConfigContext, ConfigContent, ComponentDataContent, ComponentDataContext, ComponentContext, ComponentContent } from "./Context";
 
 import Xarrow, { useXarrow, Xwrapper } from "react-xarrows";
 
@@ -16,6 +16,8 @@ import { pos } from "../models/pos";
 function Workspace() {
 
 	const alphabet = "ABCDEFGHIJKLMNOPQRSTUVWXYZ".split("");
+	let componentRendererRef = useRef<any>(null);
+	
 	const [config, setConfig] = useState({"hideDetails": false, "hideWireStates": false});
 	const [resetWires, setResetWires] = useState(false);
 
@@ -28,55 +30,6 @@ function Workspace() {
 	const [connectOut, setConnectOut] = useState("");
 
 	const updateXarrow = useXarrow();
-
-	function create(type: string) {
-
-		let newcomps = structuredClone(components);
-		let newComponentData = structuredClone(componentData);
-
-		newcomps.push({
-			type: type,
-			init_pos: {x:0,y:0} as pos,
-			inputs: []
-		} as component)
-		newComponentData.push({});
-
-		setComponentData(newComponentData);
-		setComponents(newcomps);
-		updateXarrow();
-	}
-
-	function remove(n: number) {
-		let newComponents = structuredClone(components);
-		newComponents[n].type = "deleted_gate";
-		newComponents[n].inputs = [];
-		for(let i in newComponents[n].inputs) {
-			try {
-				newComponents[n].inputs[i].id = -1;
-			} catch {}
-		}
-		
-		//remove references to deleted gates
-		for(let i in newComponents) { //for each component
-			let c = newComponents[i]; //cache component
-			for(let j in c.inputs) { //for each input in component
-				let input = c.inputs[j]; // cache input object
-
-				console.log(input);
-
-				if(input === null || input === undefined) { continue; }
-				if(input.id.split(".")[0] === "-1") { continue; } //Skip if the reference is null
-
-				if(newComponents[parseInt(input.id.split(".")[0])].type === "deleted_gate") { //check if the gate that the input references is dead
-					try {
-						newComponents[i].inputs[j].id = -1; //if it is dead, then remove the reference to it
-					} catch {}
-				}
-			}
-		}
-		setComponents(newComponents);
-		updateXarrow();
-	}
 
 	function connect(side: string, id: string) {
 		switch(side) {
@@ -120,7 +73,7 @@ function Workspace() {
 		}
 	}, [connectIn, connectOut])
 
-	useEffect(() => {
+	useEffect(() => { //for escaping wire placement
 		const handleKeyDown = (event: KeyboardEvent) => {		
 			if (event.key === 'Escape') {
 				setConnectIn("");
@@ -222,31 +175,31 @@ function Workspace() {
 			</tr>
 			<tr>
 				<td>I/O</td>
-				<td><button className="interactBtn" onClick={(e) => {create("SW")}}>SW</button></td>
-				<td><button className="interactBtn" onClick={(e) => {create("SWBUS")}}>SW [7:0]</button></td>
-				<td><button className="interactBtn" onClick={(e) => {create("LED")}}>LED</button></td>
+				<td><button className="interactBtn" onClick={(e) => {componentRendererRef.current?.create("SW")}}>SW</button></td>
+				<td><button className="interactBtn" onClick={(e) => {componentRendererRef.current?.create("SWBUS")}}>SW [7:0]</button></td>
+				<td><button className="interactBtn" onClick={(e) => {componentRendererRef.current?.create("LED")}}>LED</button></td>
 			</tr>
 			<tr>
 				<td>Gates</td>
-				<td><button className="interactBtn" onClick={(e) => {create("AND")}}>AND</button></td>
-				<td><button className="interactBtn" onClick={(e) => {create("OR")}}>OR</button></td>
-				<td><button className="interactBtn" onClick={(e) => {create("XOR")}}>XOR</button></td>
+				<td><button className="interactBtn" onClick={(e) => {componentRendererRef.current?.create("AND")}}>AND</button></td>
+				<td><button className="interactBtn" onClick={(e) => {componentRendererRef.current?.create("OR")}}>OR</button></td>
+				<td><button className="interactBtn" onClick={(e) => {componentRendererRef.current?.create("XOR")}}>XOR</button></td>
 			</tr>
 			<tr>
 				<td></td>
-				<td><button className="interactBtn" onClick={(e) => {create("NAND")}}>NAND</button></td>
-				<td><button className="interactBtn" onClick={(e) => {create("NOR")}}>NOR</button></td>
-				<td><button className="interactBtn" onClick={(e) => {create("XNOR")}}>XNOR</button></td>
+				<td><button className="interactBtn" onClick={(e) => {componentRendererRef.current?.create("NAND")}}>NAND</button></td>
+				<td><button className="interactBtn" onClick={(e) => {componentRendererRef.current?.create("NOR")}}>NOR</button></td>
+				<td><button className="interactBtn" onClick={(e) => {componentRendererRef.current?.create("XNOR")}}>XNOR</button></td>
 			</tr>
 			<tr>
 				<td></td>
-				<td><button className="interactBtn" onClick={(e) => {create("NOT")}}>NOT</button></td>
+				<td><button className="interactBtn" onClick={(e) => {componentRendererRef.current?.create("NOT")}}>NOT</button></td>
 			</tr>
 			<tr>
 				<td>Busses</td>
-				<td><button className="interactBtn" onClick={(e) => {create("BUS")}}>BUS</button></td>
-				<td><button className="interactBtn" onClick={(e) => {create("MUX")}}>MUX</button></td>
-				<td><button className="interactBtn" onClick={(e) => {create("ADDER")}}>ADDER</button></td>
+				<td><button className="interactBtn" onClick={(e) => {componentRendererRef.current?.create("BUS")}}>BUS</button></td>
+				<td><button className="interactBtn" onClick={(e) => {componentRendererRef.current?.create("MUX")}}>MUX</button></td>
+				<td><button className="interactBtn" onClick={(e) => {componentRendererRef.current?.create("ADDER")}}>ADDER</button></td>
 			</tr>
 			<tr>
 				<td>Config</td>
@@ -258,7 +211,7 @@ function Workspace() {
 		</table>
 		<div style={{left: "3.3em", position: 'absolute'}}>
 
-		<select onChange={(e) => {remove(parseInt(e.target.value))}}>
+		<select onChange={(e) => {componentRendererRef.current?.remove(parseInt(e.target.value))}}>
 			{deleteHTML}
 		</select>
 		</div>
@@ -269,11 +222,13 @@ function Workspace() {
 			<ConfigContext.Provider value={{config, setConfig} as ConfigContent}>
 			<WireContext.Provider value={{wires, setWires} as WireContent}>
 			<ComponentDataContext.Provider value={{componentData, setComponentData} as ComponentDataContent}>
+			<ComponentContext.Provider value={{components, setComponents} as ComponentContent}>
 
 				<WireRenderer components={components} connectIn={connectIn} connectOut={connectOut} resetWires={resetWires}/>
-				<ComponentRenderer components={components} connect={(side, id) => connect(side, id)} setPos={(pos, id) => {setPos(pos, id)}}/>
+				<ComponentRenderer ref={componentRendererRef} connect={(side, id) => connect(side, id)} setPos={(pos, id) => {setPos(pos, id)}}/>
 				<MouseFollower />
 
+			</ComponentContext.Provider>
 			</ComponentDataContext.Provider>
 			</WireContext.Provider>
 			</ConfigContext.Provider>
