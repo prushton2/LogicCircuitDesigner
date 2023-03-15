@@ -46,8 +46,6 @@ export function upgrade(file: string) {
 
 	if(parsed.version === "0.0.4") {
 
-		console.log("updating to 0.0.5");
-
 		let newWires = JSON.parse("{}");
 		let newComponents = parsed.components;
 
