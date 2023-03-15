@@ -55,7 +55,7 @@ export const Inputs = ({inputCount, heights, labelInputs, componentID, onClick}:
 		}
 		setInputHTML(newHTML);
 		updateXarrow();
-	}, [inputCount, display])
+	}, [inputCount, display, heights])
 
 	return (
 		<>

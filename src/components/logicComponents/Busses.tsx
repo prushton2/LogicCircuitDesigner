@@ -68,7 +68,7 @@ export function MUX({id, pos, I, onClick, setPos}: {id: string, pos: pos, I: inp
 
 	useEffect(() => {
 		setInputs(Math.min(Math.max(inputs, 2), 8))
-		setHeight((inputs+2)*25 + (inputs+2)*3)
+		setHeight((inputs+1)*25 + (inputs+1)*3)
 	}, [inputs])
 
 	useEffect(() => {
@@ -111,24 +111,24 @@ export function MUX({id, pos, I, onClick, setPos}: {id: string, pos: pos, I: inp
 			<Component defaultPos={pos} newPos={(pos) => setPos(pos, id)} setDisplay={(v, d) => setDisplay(d)}>
 				<div style={{userSelect: "none", width: "90px", height: `${height-20}px`, borderLeft: "5px solid white", borderRight: "5px solid white"}}>
 					
-					<label style={{display: display, position: "absolute", top: "-70px"}}> MUX ({id})  </label><br />
+					<label style={{display: display, position: "absolute", top: "-70px", left: "9px"}}> MUX ({id})  </label><br />
 
 
 					<img src={MUX_TOP_PNG} style={{position: "absolute", width: "100px", left: "-5px", 	 top: "-44px"}} onDragStart={(e) => {e.preventDefault()}}/>
 					<img src={MUX_BOT_PNG} style={{position: "absolute", width: "100px", left: "-5px", bottom: "-44px"}} onDragStart={(e) => {e.preventDefault()}}/>
 
-					<div id={`${id}.S`} className="field" style={{left: "0%", top: `${20}px`, position: "absolute", transform: "translate(0%, -50%)"}}>
+					<div id={`${id}.S`} className="field" style={{left: "50%", top: `-5px`, position: "absolute", transform: "translate(-50%, -50%)"}}>
 						{'\u00A0'}S <button onClick={(e) => onClick(`${id}.S`)} style={{marginRight: ".3em", display: display}}>S</button>
 					</div>
 
-					<Inputs inputCount={inputs} heights={[50, 80, 110, 140, 170, 200, 230, 260]} labelInputs componentID={id} onClick={(i: string) => {onClick(i)}}/>
+					<Inputs inputCount={inputs} heights={[20, 50, 80, 110, 140, 170, 200, 230, 260]} labelInputs componentID={id} onClick={(i: string) => {onClick(i)}}/>
 
-					<div id={`${id}.Y`} className="field" style={{right: "0%", top: `${(height/2) - ((height/2)%5)}px`, position: "absolute", transform: "translate(0%, -50%)"}}>
+					<div id={`${id}.Y`} className="field" style={{right: "0%", top: `${((height-20)/2)}px`, position: "absolute", transform: "translate(0%, -50%)"}}>
 						<button onClick={(e) => onClick(`${id}.Y`)} style={{marginRight: ".3em", display: display}}>Y</button>Y{'\u00A0'}
 					</div>
 					
 
-					<div className="field" style={{right: "0%", top: `10px`, position: "absolute", transform: "translate(0%, 0%)"}}>
+					<div className="field" style={{right: "0%", top: `-50px`, position: "absolute", transform: "translate(0%, 0%)"}}>
 						{'\u00A0'}<button onClick={(e) => {setInputs(inputs*2)}} style={{marginRight: ".3em", display: display}}>+</button>
 						{'\u00A0'}<button onClick={(e) => {setInputs(inputs/2)}} style={{marginRight: ".3em", display: display}}>-</button>
 					</div>
