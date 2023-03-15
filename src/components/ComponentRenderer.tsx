@@ -3,7 +3,7 @@ import { useXarrow } from "react-xarrows";
 
 import { ComponentContext, ComponentDataContext } from "./Context";
 import { pos } from "../models/pos";
-import { component, input } from "../models/component";
+import { component } from "../models/component";
 
 import { Gate } from "./logicComponents/Gate";
 import { SW,  SWBUS, LED } from "./logicComponents/IO";
