@@ -151,6 +151,11 @@ function Workspace() {
 				<td><button className="interactBtn" onClick={(e) => {componentRendererRef.current?.create("ADDER")}}>ADDER</button></td>
 			</tr>
 			<tr>
+				<td>Memory</td>
+				<td><button className="interactBtn" onClick={(e) => {componentRendererRef.current?.create("FSM")}}>FSM</button></td>
+
+			</tr>
+			<tr>
 				<td>Config</td>
 				<td><button className="interactBtn" onClick={(e) => {toggleConfig("hideDetails")}}>Details</button></td>
 				<td><button className="interactBtn" onClick={(e) => {toggleConfig("hideWireStates")}}>Wires</button></td>

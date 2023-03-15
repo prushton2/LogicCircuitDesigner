@@ -8,6 +8,7 @@ import { component } from "../models/component";
 import { Gate } from "./logicComponents/Gate";
 import { SW,  SWBUS, LED } from "./logicComponents/IO";
 import { BUS, MUX, ADDER } from "./logicComponents/Busses"
+import { FSM } from "./logicComponents/Memory";
 
 const ComponentRenderer = React.forwardRef(({connect, setPos}: {connect: (side: string, id: string) => void, setPos: (pos: pos, id: string) => void}, ref: any) => {
 
@@ -102,6 +103,9 @@ const ComponentRenderer = React.forwardRef(({connect, setPos}: {connect: (side: 
 					break;
 				case "ADDER":
 					newhtml[i] = <ADDER  key={i} pos={pos} id={i} I={c.inputs} onClick={(e) => connect("XYZ".indexOf(e.split(".")[1]) !== -1 ?"in":"out", e)} setPos={(pos, id) => {setPos(pos, id)}}/>
+					break;
+				case "FSM":
+					newhtml[i] = <FSM  key={i} pos={pos} id={i} I={c.inputs} onClick={(e) => connect("XYZ".indexOf(e.split(".")[1]) !== -1 ?"in":"out", e)} setPos={(pos, id) => {setPos(pos, id)}}/>
 					break;
 			}
 		}

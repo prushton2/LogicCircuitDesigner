@@ -30,6 +30,13 @@ const Wire = ({start, end}: {start: string, end: string}) => {
 			])
 		}
 
+		if("R".indexOf(end.split(".")[1]) !== -1) {
+			setSides([
+				sides[0],
+				"bottom"
+			])
+		}
+
 
 
 	}, [wires, config])
