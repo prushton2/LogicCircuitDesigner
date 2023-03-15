@@ -19,12 +19,12 @@ export const FSM = ({id, pos, I, setPos, onClick}: {id: string, pos: pos, I: inp
 				<Inputs inputCount={inputs} heights={[50, 80, 110, 50, 60, 70, 80, 90]} labelInputs componentID={id} onClick={(id) => onClick(id)}/>		
 				
 				
-				<div id={`${id}.S`} className="clk">
-					clk <button className="field" onClick={(e) => onClick(`${id}.S`)} style={{marginRight: ".3em", display: display}}>c</button>
+				<div id={`${id}.+S`} className="clk">
+					clk <button className="field" onClick={(e) => onClick(`${id}.+S`)} style={{marginRight: ".3em", display: display}}>c</button>
 				</div>
 
-				<div id={`${id}.R`} className="rst">
-					rst <button className="field" onClick={(e) => onClick(`${id}.R`)} style={{marginRight: ".3em", display: display}}>r</button>
+				<div id={`${id}.+R`} className="rst">
+					rst <button className="field" onClick={(e) => onClick(`${id}.+R`)} style={{marginRight: ".3em", display: display}}>r</button>
 				</div>
 
 			</div>

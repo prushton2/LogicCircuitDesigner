@@ -28,7 +28,7 @@ const WireRenderer = React.forwardRef(({}, ref) => {
 					if(id === connectIn) {setConnectIn(""); return;}
 					else {setConnectIn(id)};
 					break;
-					case "out": 
+				case "out": 
 					if(id === connectOut) {setConnectOut(""); return;}
 					else {setConnectOut(id)};
 					break;
@@ -51,7 +51,7 @@ const WireRenderer = React.forwardRef(({}, ref) => {
 				if(c.inputs[j] === null) { continue; }
 				if(c.inputs[j].id === -1) { continue; }
 
-				newhtml.push(<Wire key={`${i}_${j}`} start={`${c.inputs[j].id}`} end={`${i}.${alphabet[j]}`}/>)
+				newhtml.push(<Wire key={`${i}_${j}`} start={`${c.inputs[j].id}`} end={`${i}.+${alphabet[j]}`}/>)
 			}
 		}
 		setWireHTML(newhtml);
@@ -60,9 +60,9 @@ const WireRenderer = React.forwardRef(({}, ref) => {
 	useEffect(() => {
 
 		if(connectIn !== "" && connectOut != "") {
-			let input = connectIn
-			let outputid = parseInt(connectOut.split(".")[0])
-			let outputPort = alphabet.indexOf(connectOut.split(".")[1]);
+			let input = connectIn;
+			let outputid = parseInt(connectOut.split(".")[0]);
+			let outputPort = alphabet.indexOf(connectOut.split(".")[1][1]);
 
 			let newComponents = structuredClone(components);
 			try {

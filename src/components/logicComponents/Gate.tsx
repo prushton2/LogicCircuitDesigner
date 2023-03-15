@@ -69,8 +69,8 @@ const BaseGate = ({I, pos, comp, label, image, style, id, onClick, setPos}: { //
 
 					<Inputs labelInputs={false} inputCount={style.B_top == -1 ? 1 : 2} heights={[style.A_top, style.B_top]} componentID={id} onClick={(id) => onClick(id)} />
 
-					<div id={`${id}.Y`} className="field" style={{right: "0%", top: style.O_top, position: "absolute", transform: "translate(0%, -50%)"}}>
-						<label style={{display: display}}></label><button onClick={(e) => onClick(`${id}.Y`)} style={{marginRight: "1.3em", display: display}}>Y</button>
+					<div id={`${id}.-Y`} className="field" style={{right: "0%", top: style.O_top, position: "absolute", transform: "translate(0%, -50%)"}}>
+						<label style={{display: display}}></label><button onClick={(e) => onClick(`${id}.-Y`)} style={{marginRight: "1.3em", display: display}}>Y</button>
 					</div>
 				</div>
 			</Component>

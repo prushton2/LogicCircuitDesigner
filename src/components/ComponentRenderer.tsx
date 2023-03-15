@@ -18,6 +18,9 @@ const ComponentRenderer = React.forwardRef(({connect, setPos}: {connect: (side: 
 
 	const updateXarrow = useXarrow();
 
+	function portToConnect(port: string) {
+		return port.split(".")[1][0]==="+"?"out":"in";
+	}
 
 	useImperativeHandle(ref, () => ({
 		create: (type: string) => {
@@ -92,20 +95,20 @@ const ComponentRenderer = React.forwardRef(({connect, setPos}: {connect: (side: 
 				case "NOR":
 				case "XNOR":
 				case "NOT":
-					newhtml[i] = <Gate key={i} pos={pos} id={i} I={c.inputs} type={c.type} onClick={(e) => connect(e.split(".")[1]=="Y"?"in":"out", e)} setPos={(pos, id) => {setPos(pos, id)}}/>
+					newhtml[i] = <Gate key={i} pos={pos} id={i} I={c.inputs} type={c.type} onClick={(e) => connect(portToConnect(e), e)} setPos={(pos, id) => {setPos(pos, id)}}/>
 					break;
 				
 				case "BUS":
-					newhtml[i] = <BUS  key={i} pos={pos} id={i} I={c.inputs} onClick={(e) => connect(e.split(".")[1]=="Y"?"in":"out", e)} setPos={(pos, id) => {setPos(pos, id)}}/>
+					newhtml[i] = <BUS  key={i} pos={pos} id={i} I={c.inputs} onClick={(e) => connect(portToConnect(e), e)} setPos={(pos, id) => {setPos(pos, id)}}/>
 					break;
 				case "MUX":
-					newhtml[i] = <MUX  key={i} pos={pos} id={i} I={c.inputs} onClick={(e) => connect(e.split(".")[1]=="Y"?"in":"out", e)} setPos={(pos, id) => {setPos(pos, id)}}/>
+					newhtml[i] = <MUX  key={i} pos={pos} id={i} I={c.inputs} onClick={(e) => connect(portToConnect(e), e)} setPos={(pos, id) => {setPos(pos, id)}}/>
 					break;
 				case "ADDER":
-					newhtml[i] = <ADDER  key={i} pos={pos} id={i} I={c.inputs} onClick={(e) => connect("XYZ".indexOf(e.split(".")[1]) !== -1 ?"in":"out", e)} setPos={(pos, id) => {setPos(pos, id)}}/>
+					newhtml[i] = <ADDER  key={i} pos={pos} id={i} I={c.inputs} onClick={(e) => connect(portToConnect(e), e)} setPos={(pos, id) => {setPos(pos, id)}}/>
 					break;
 				case "FSM":
-					newhtml[i] = <FSM  key={i} pos={pos} id={i} I={c.inputs} onClick={(e) => connect("XYZ".indexOf(e.split(".")[1]) !== -1 ?"in":"out", e)} setPos={(pos, id) => {setPos(pos, id)}}/>
+					newhtml[i] = <FSM   key={i} pos={pos} id={i} I={c.inputs} onClick={(e) => connect(portToConnect(e), e)} setPos={(pos, id) => {setPos(pos, id)}}/>
 					break;
 			}
 		}

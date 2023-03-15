@@ -30,7 +30,7 @@ export function BUS({id, pos, I, onClick, setPos}: {id: string, pos: pos, I: inp
 	
 		
 		let newWires = structuredClone(wires)
-		newWires[`${id}.Y`] = structuredClone(bus);
+		newWires[`${id}.-Y`] = structuredClone(bus);
 
 		if(JSON.stringify(wires) !== JSON.stringify(newWires)) {
 			setWires(newWires);
@@ -47,8 +47,8 @@ export function BUS({id, pos, I, onClick, setPos}: {id: string, pos: pos, I: inp
 
 					<Inputs inputCount={8} heights={[15,40,65,90,115,140,165,190]} labelInputs componentID={id} onClick={(id) => onClick(id)}/>
 					
-					<div id={`${id}.Y`} className="field" style={{right: "0%", top: "95px", position: "absolute", transform: "translate(0%, -50%)"}}>
-						<button onClick={(e) => onClick(`${id}.Y`)} style={{marginRight: ".3em", display: display}}>Y</button>Y{'\u00A0'}
+					<div id={`${id}.-Y`} className="field" style={{right: "0%", top: "95px", position: "absolute", transform: "translate(0%, -50%)"}}>
+						<button onClick={(e) => onClick(`${id}.-Y`)} style={{marginRight: ".3em", display: display}}>Y</button>Y{'\u00A0'}
 					</div>
 
 				</div>
@@ -96,7 +96,7 @@ export function MUX({id, pos, I, onClick, setPos}: {id: string, pos: pos, I: inp
 		try {
 			let newWires = structuredClone(wires);
 			let i = parseInt(newWires[I[18].id as keyof []], 2)
-			newWires[`${id}.Y`] = wires[I[i].id as keyof {}];
+			newWires[`${id}.-Y`] = wires[I[i].id as keyof {}];
 
 			if(JSON.stringify(newWires) != JSON.stringify(wires)) {
 				setWires(newWires);
@@ -117,14 +117,14 @@ export function MUX({id, pos, I, onClick, setPos}: {id: string, pos: pos, I: inp
 					<img src={MUX_TOP_PNG} style={{position: "absolute", width: "100px", left: "-5px", 	 top: "-44px"}} onDragStart={(e) => {e.preventDefault()}}/>
 					<img src={MUX_BOT_PNG} style={{position: "absolute", width: "100px", left: "-5px", bottom: "-44px"}} onDragStart={(e) => {e.preventDefault()}}/>
 
-					<div id={`${id}.S`} className="field" style={{left: "50%", top: `-5px`, position: "absolute", transform: "translate(-50%, -50%)"}}>
-						{'\u00A0'}S <button onClick={(e) => onClick(`${id}.S`)} style={{marginRight: ".3em", display: display}}>S</button>
+					<div id={`${id}.+S`} className="field" style={{left: "50%", top: `-5px`, position: "absolute", transform: "translate(-50%, -50%)"}}>
+						{'\u00A0'}S <button onClick={(e) => onClick(`${id}.+S`)} style={{marginRight: ".3em", display: display}}>S</button>
 					</div>
 
 					<Inputs inputCount={inputs} heights={[20, 50, 80, 110, 140, 170, 200, 230, 260]} labelInputs componentID={id} onClick={(i: string) => {onClick(i)}}/>
 
-					<div id={`${id}.Y`} className="field" style={{right: "0%", top: `${((height-20)/2)}px`, position: "absolute", transform: "translate(0%, -50%)"}}>
-						<button onClick={(e) => onClick(`${id}.Y`)} style={{marginRight: ".3em", display: display}}>Y</button>Y{'\u00A0'}
+					<div id={`${id}.-Y`} className="field" style={{right: "0%", top: `${((height-20)/2)}px`, position: "absolute", transform: "translate(0%, -50%)"}}>
+						<button onClick={(e) => onClick(`${id}.-Y`)} style={{marginRight: ".3em", display: display}}>Y</button>Y{'\u00A0'}
 					</div>
 					
 
@@ -154,12 +154,12 @@ export function ADDER({id, I, pos, onClick, setPos}: {id: string, I: input[], po
 			
 			let newWires = structuredClone(wires)
 			
-			newWires[`${id}.Y`] = Y.slice(-(overflowLength-1)); //force cut off overflow bit to keep the bitsizes the same for input and output
+			newWires[`${id}.-Y`] = Y.slice(-(overflowLength-1)); //force cut off overflow bit to keep the bitsizes the same for input and output
 			
 			if(Y.length >= overflowLength) { //seperately return overflow
-				newWires[`${id}.Z`] = Y[0];
+				newWires[`${id}.-Z`] = Y[0];
 			} else {
-				newWires[`${id}.Z`] = 0;
+				newWires[`${id}.-Z`] = 0;
 			}
 
 			if(JSON.stringify(newWires) !== JSON.stringify(wires)) {
@@ -178,12 +178,12 @@ export function ADDER({id, I, pos, onClick, setPos}: {id: string, I: input[], po
 				<img src={ADDER_PNG} onDragStart={(e) => {e.preventDefault()}}/>
 				<Inputs inputCount={2} heights={[60, 150]} labelInputs componentID={id} onClick={(id) => onClick(id)}/>
 
-				<div id={`${id}.Y`} className="field" style={{right: "0%", top: `85px`, position: "absolute", transform: "translate(0%, -50%)"}}>
-					<button onClick={(e) => onClick(`${id}.Y`)} style={{marginRight: ".3em", display: display}}>Y</button>Y{'\u00A0'}
+				<div id={`${id}.-Y`} className="field" style={{right: "0%", top: `85px`, position: "absolute", transform: "translate(0%, -50%)"}}>
+					<button onClick={(e) => onClick(`${id}.-Y`)} style={{marginRight: ".3em", display: display}}>Y</button>Y{'\u00A0'}
 				</div>
 
-				<div id={`${id}.Z`} className="field" style={{right: "0%", top: `120px`, position: "absolute", transform: "translate(0%, -50%)"}}>
-					<button onClick={(e) => onClick(`${id}.Z`)} style={{marginRight: ".3em", display: display}}>Z</button>Z{'\u00A0'}
+				<div id={`${id}.-Z`} className="field" style={{right: "0%", top: `120px`, position: "absolute", transform: "translate(0%, -50%)"}}>
+					<button onClick={(e) => onClick(`${id}.-Z`)} style={{marginRight: ".3em", display: display}}>Z</button>Z{'\u00A0'}
 				</div>
 			</div>
 		</Component>
