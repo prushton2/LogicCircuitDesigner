@@ -47,16 +47,16 @@ export const SW = ({id, pos, onClick, setPos}: {id: any, pos: pos, onClick: (id:
 			<div className="wrapperDiv">
 				
 				<input className="nametag" style={{display: display}} defaultValue={componentData[id as keyof {}]["name"]} onChange={(e) => {setName(e.target.value)}}></input>
-				<label className="nametag" style={{display: display==="none" ? "inline" : "none"}}>{name}</label>
 				
 				<label style={{display: display}}> ({id}) </label><br />
 				
-				<div className="field">
+				<div className="field" style={{display: display}}>
 					<button className="SWbtn" style={{width: `${display==="none"?"100%":"5.4em"}`}} defaultValue={componentData[id as keyof {}]["value"]} onClick={() => {setValue(!value)}}>{value ? "1":"0"}</button> <br />
 				</div>
 
 				<div id={`${id}.Y`} style={{right: `0px`, top: "45px", position: 'absolute', transform: "translate(0%, -50%)", border: "0px solid red"}}>
-					<button onClick={(e) => onClick(`${id}.Y`)} style={{display: display}}>Y</button> <br /> 
+					<button onClick={(e) => onClick(`${id}.Y`)} style={{display: display}}>Y</button>
+					<label className="nametag" style={{display: display == "none" ? "inline" : "none", marginRight: ".5em"}}>{name}</label>
 				</div>
 			</div>
 		</Component>
@@ -105,14 +105,14 @@ export const SWBUS = ({id, pos, onClick, setPos}: {id: any, pos: pos, onClick: (
 				
 				
 				<input className="nametag" style={{display: display}} defaultValue={componentData[id as keyof {}]["name"]} onChange={(e) => {setName(e.target.value)}}></input>
-				<label className="nametag" style={{display: display == "none" ? "inline" : "none"}}>{name}</label>
 				
 				<label style={{display: display}}> ({id}) </label><br />
 				
-				<input className="SWinput" style={{width: `${display==="none"?"100%":"4.5em"}`}} type="string" pattern="[0-1]*" defaultValue={componentData[id as keyof {}]["value"]} onChange={(e) => {setValue(e.target.value)}} /> <br />
+				<input className="SWinput" style={{display: display}} type="string" pattern="[0-1]*" defaultValue={componentData[id as keyof {}]["value"]} onChange={(e) => {setValue(e.target.value)}} /> <br />
 
 				<div id={`${id}.Y`} className="field" style={{right: `0px`, top: "45px", position: 'absolute', transform: "translate(0%, -50%)", border: "0px solid red"}}>
-					<button onClick={(e) => onClick(`${id}.Y`)} style={{display: display}}>Y</button> <br /> 
+					<button onClick={(e) => onClick(`${id}.Y`)} style={{display: display}}>Y</button>
+					<label className="nametag" style={{display: display == "none" ? "inline" : "none", marginRight: ".5em"}}>{name}</label>
 				</div>
 			</div>
 		</Component>
@@ -159,14 +159,14 @@ export const LED = ({I, id, pos, onClick, setPos}: {I: input[], id: string, pos:
 				
 				
 				<input className="nametag" style={{display: display}} defaultValue={componentData[id as keyof {}]["name"]} onChange={(e) => {setName(e.target.value)}}></input>
-				<label className="nametag" style={{display: display == "none" ? "inline" : "none"}}>{name}</label>
 
 				<label style={{display: display}}> ({id}) </label>
 				
-				<label className="LEDoutput" style={{left: `${display==="none"?"0":"20"}px`}}>{value}</label> <br />
+				<label className="LEDoutput" style={{display: display, left: `20px`}}>{value}</label> <br />
 
 				<div id={`${id}.A`} className="field" style={{left: "0px", top: "45px", position: 'absolute', transform: "translate(0%, -50%)"}}>
-					<button onClick={(e) => onClick(`${id}.A`)} style={{marginRight: "1.3em", display: display}}>A</button> <br /> 
+					<button onClick={(e) => onClick(`${id}.A`)} style={{marginRight: "1.3em", display: display}}>A</button>
+					<label className="nametag" style={{display: display == "none" ? "inline" : "none", marginLeft: ".5em"}}>{name}</label>
 				</div>
 			</div>
 		</Component>
