@@ -44,6 +44,7 @@ export const Component = ({children, id, defaultPos, newPos, setDisplay}: {child
 			x: data.x - offset.x, 
 			y: data.y - offset.y
 		} as pos);
+		newPos(position);
 		updateXarrow();
 	}
 
