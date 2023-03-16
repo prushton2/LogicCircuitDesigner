@@ -23,6 +23,7 @@ function Workspace() {
 	const [wires, setWires] = useState(JSON.parse("{}"));
 	const [components, setComponents] = useState<component[]>([]);
 	const [componentData, setComponentData] = useState([]);
+
 	const [deleteHTML, setDeleteHTML] = useState<JSX.Element[]>([]);
 
 	function setPos(pos: pos, id: string) {
@@ -165,7 +166,7 @@ function Workspace() {
 		</table>
 		<div style={{left: "3.3em", position: 'absolute'}}>
 
-		<select onChange={(e) => {componentRendererRef.current?.remove(parseInt(e.target.value))}}>
+		<select value={-1} onChange={(e) => {componentRendererRef.current?.remove(parseInt(e.target.value))}}>
 			{deleteHTML}
 		</select>
 		</div>
