@@ -47,9 +47,7 @@ export const SW = ({id, pos, onClick, setPos}: {id: any, pos: pos, onClick: (id:
 			<div className="wrapperDiv">
 				
 				<input className="nametag" style={{display: display}} defaultValue={componentData[id as keyof {}]["name"]} onChange={(e) => {setName(e.target.value)}}></input>
-				
-				<label style={{display: display}}> ({id}) </label><br />
-				
+								
 				<div className="field" style={{display: display}}>
 					<button className="SWbtn" style={{width: `${display==="none"?"100%":"5.4em"}`}} defaultValue={componentData[id as keyof {}]["value"]} onClick={() => {setValue(!value)}}>{value ? "1":"0"}</button> <br />
 				</div>
@@ -105,9 +103,7 @@ export const SWBUS = ({id, pos, onClick, setPos}: {id: any, pos: pos, onClick: (
 				
 				
 				<input className="nametag" style={{display: display}} defaultValue={componentData[id as keyof {}]["name"]} onChange={(e) => {setName(e.target.value)}}></input>
-				
-				<label style={{display: display}}> ({id}) </label><br />
-				
+								
 				<input className="SWinput" style={{display: display}} type="string" pattern="[0-1]*" defaultValue={componentData[id as keyof {}]["value"]} onChange={(e) => {setValue(e.target.value)}} /> <br />
 
 				<div id={`${id}.-Y`} className="field" style={{right: `0px`, top: "45px", position: 'absolute', transform: "translate(0%, -50%)", border: "0px solid red"}}>
@@ -159,8 +155,6 @@ export const LED = ({I, id, pos, onClick, setPos}: {I: input[], id: string, pos:
 				
 				
 				<input className="nametag" style={{display: display}} defaultValue={componentData[id as keyof {}]["name"]} onChange={(e) => {setName(e.target.value)}}></input>
-
-				<label style={{display: display}}> ({id}) </label>
 				
 				<label className="LEDoutput" style={{display: display, left: `20px`}}>{value}</label> <br />
 
