@@ -23,7 +23,6 @@ function Workspace() {
 	const [wires, setWires] = useState(JSON.parse("{}"));
 	const [components, setComponents] = useState<component[]>([]);
 	const [componentData, setComponentData] = useState([]);
-	const [deleteHTML, setDeleteHTML] = useState<JSX.Element[]>([]);
 
 	function setPos(pos: pos, id: string) {
 		let newComponents = structuredClone(components);
@@ -31,15 +30,17 @@ function Workspace() {
 		setComponents(newComponents);
 	}
 
-	useEffect(() => {
-		let newDeleteHTML: JSX.Element[] = [<option value={-1}>Delete Component</option>];
-
-		for(let i in components) {
-			if(components[i].type === "deleted_gate") { continue; }
-			newDeleteHTML.push(<option value={i}>Delete: ID: {i} ({components[i].type})</option>)
-		}
-		setDeleteHTML(newDeleteHTML);
-	}, [components])
+	useEffect(() => { //for escaping wire placement
+		const handleKeyDown = (event: KeyboardEvent) => {		
+			if (event.key === 'Escape') {
+				let newConfig = structuredClone(config);
+				newConfig["selectedComponent"] = -1;
+				setConfig(newConfig);
+			}
+		};
+		document.addEventListener('keydown', handleKeyDown);
+		return () => { document.removeEventListener('keydown', handleKeyDown); };
+	}, [])
 
 	function toggleConfig(param: string) {
 		let newConfig = structuredClone(config);
@@ -121,6 +122,16 @@ function Workspace() {
 					}, 500)
 					}}>Clear</button></td>
 
+				{
+				
+				config["selectedComponent"] === -1 ? <td /> : 
+				<a>
+					<td>{'\u00A0'}{'\u00A0'}{'\u00A0'}{'\u00A0'}{'\u00A0'}{'\u00A0'}{'\u00A0'}{'\u00A0'}</td>
+					<td>{components[config["selectedComponent"]].type}</td>
+					<td>(ID {config["selectedComponent"]})</td>
+					<td><button className="interactBtn" onClick={(e) => {componentRendererRef.current?.remove(config["selectedComponent"])}}>Delete</button></td>
+				</a>
+				}
 			</tr>
 			<tr>
 				<td>I/O</td>
@@ -163,12 +174,6 @@ function Workspace() {
 			</tr>
 		</tbody>
 		</table>
-		<div style={{left: "3.3em", position: 'absolute'}}>
-
-		<select value={-1} onChange={(e) => {componentRendererRef.current?.remove(parseInt(e.target.value))}}>
-			{deleteHTML}
-		</select>
-		</div>
 
 		
 

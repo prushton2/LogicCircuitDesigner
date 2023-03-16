@@ -42,9 +42,6 @@ export function BUS({id, pos, I, onClick, setPos}: {id: string, pos: pos, I: inp
 			<Component id={id} defaultPos={pos} newPos={(pos) => setPos(pos, id)} setDisplay={(v, d) => setDisplay(d)}>
 				<div style={{width: "90px", height: "205px", border: "5px solid white"}}>
 					
-					<label style={{display: display, position: "absolute", top: "-30px"}}> BUS ({id})  </label><br />
-
-
 					<Inputs inputCount={8} heights={[15,40,65,90,115,140,165,190]} labelInputs componentID={id} onClick={(id) => onClick(id)}/>
 					
 					<div id={`${id}.-Y`} className="field" style={{right: "0%", top: "95px", position: "absolute", transform: "translate(0%, -50%)"}}>
@@ -113,9 +110,6 @@ export function MUX({id, pos, I, onClick, setPos}: {id: string, pos: pos, I: inp
 					
 					<div style={{position: "absolute", top: "44px", right: "-4px", height: `${height}px`, borderRight: "5px solid white"}}></div>
 
-					<label style={{display: display, position: "absolute", top: "-20px", left: "9px"}}> MUX ({id})  </label><br />
-
-
 					<img src={MUX_TOP_PNG} style={{position: "absolute", width: "100px", left: "0px", 	 top: "0px"}} onDragStart={(e) => {e.preventDefault()}}/>
 					<img src={MUX_BOT_PNG} style={{position: "absolute", width: "100px", left: "0px", bottom: "0px"}} onDragStart={(e) => {e.preventDefault()}}/>
 
@@ -173,18 +167,16 @@ export function ADDER({id, I, pos, onClick, setPos}: {id: string, I: input[], po
 
 	return(
 		<Component id={id} defaultPos={pos} newPos={(pos) => setPos(pos, id)} setDisplay={(h, d) => {setDisplay(d)}}>
-			<div style={{userSelect: "none", width: "90px", height: "190px", border: "0px solid white"}}>
-
-				{display==="inline"?`ADDER (${id})`:""} <br />
+			<div style={{userSelect: "none", width: "90px", height: "170px", border: "0px solid white"}}>
 
 				<img src={ADDER_PNG} onDragStart={(e) => {e.preventDefault()}}/>
-				<Inputs inputCount={2} heights={[60, 150]} labelInputs componentID={id} onClick={(id) => onClick(id)}/>
+				<Inputs inputCount={2} heights={[40, 130]} labelInputs componentID={id} onClick={(id) => onClick(id)}/>
 
-				<div id={`${id}.-Y`} className="field" style={{right: "0%", top: `85px`, position: "absolute", transform: "translate(0%, -50%)"}}>
+				<div id={`${id}.-Y`} className="field" style={{right: "0%", top: `65px`, position: "absolute", transform: "translate(0%, -50%)"}}>
 					<button onClick={(e) => onClick(`${id}.-Y`)} style={{marginRight: ".3em", display: display}}>Y</button>Y{'\u00A0'}
 				</div>
 
-				<div id={`${id}.-Z`} className="field" style={{right: "0%", top: `120px`, position: "absolute", transform: "translate(0%, -50%)"}}>
+				<div id={`${id}.-Z`} className="field" style={{right: "0%", top: `100px`, position: "absolute", transform: "translate(0%, -50%)"}}>
 					<button onClick={(e) => onClick(`${id}.-Z`)} style={{marginRight: ".3em", display: display}}>Z</button>Z{'\u00A0'}
 				</div>
 			</div>
