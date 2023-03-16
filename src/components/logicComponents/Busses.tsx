@@ -146,7 +146,6 @@ export function ADDER({id, I, pos, onClick, setPos}: {id: string, I: input[], po
 			let Y = (A+B).toString(2);
 			
 			let overflowLength = Math.max((wires[I[0].id as keyof {}] as string).length, (wires[I[0].id as keyof {}] as string).length) + 1
-			//get the length of the higher bitsize + 1 to keep track of overflow
 			
 			let newWires = structuredClone(wires)
 			

@@ -1,7 +1,7 @@
 import "./Component.css";
 import { useEffect, useState, useContext, useSyncExternalStore, useDebugValue } from "react";
 
-import Draggable from "react-draggable";
+import Draggable, {DraggableCore, DraggableData, DraggableEvent} from 'react-draggable'; 
 import { useXarrow } from "react-xarrows";
 
 import { ConfigContext } from "../Context";
@@ -12,17 +12,38 @@ export const Component = ({children, id, defaultPos, newPos, setDisplay}: {child
 	
 	const {config, setConfig} = useContext(ConfigContext);
 	const [selectStyling, setSelectStyling] = useState("");
-	
+	const [position, setPosition] = useState(defaultPos as pos);
+	const [mousePos, setMousePos] = useState(defaultPos as pos);
+	const [offset, setOffset] = useState({x:0,y:0} as pos);
+
 	const updateXarrow = useXarrow();
 	
+	const calcOffset = (e: DraggableEvent, data: DraggableData) => {
+		setOffset({
+			x: mousePos.x - position.x,
+			y: mousePos.y - position.y,
+		} as pos);
+	}
+
+	const dragHandler = (e: DraggableEvent, data: DraggableData) => {
+		setPosition({
+			x: data.x - offset.x, 
+			y: data.y - offset.y
+		} as pos);
+		updateXarrow();
+	}
+
 	function select(id: string) {
 		let newConfig = structuredClone(config);
 		newConfig["selectedComponent"] = newConfig["selectedComponent"] === id ? -1 : id;
 		setConfig(newConfig);
 	}
 
-	const savePos = (e: any, element: any) => {
-		newPos({x: element.x, y: element.y} as pos);
+	const savePos = (e: any, data: any) => {
+		setPosition({
+			x: data.x - offset.x, 
+			y: data.y - offset.y
+		} as pos);
 		updateXarrow();
 	}
 
@@ -35,12 +56,12 @@ export const Component = ({children, id, defaultPos, newPos, setDisplay}: {child
 	}, [config])
 
 	return (
-		<div>
-			<Draggable cancel=".field" grid={[5,5]} defaultPosition={{x: defaultPos.x, y: defaultPos.y}} onDrag={updateXarrow} onStop={savePos}>
-				<div className={`componentChildren ${selectStyling}`} onClick={(e) => select(id)}>
+		<div >
+			<DraggableCore cancel=".field" grid={[5,5]} onStart={calcOffset} onDrag={dragHandler} onStop={savePos}>
+				<div className={`componentChildren ${selectStyling}`} onMouseMove={(e) => setMousePos({x: e.clientX, y: e.clientY} as pos)} style={{position: "absolute", left: position.x, top: position.y}} onClick={(e) => select(id)}>
 					{children}
 				</div>
-			</Draggable>
+			</DraggableCore>
 		</div>
 	)
 }
