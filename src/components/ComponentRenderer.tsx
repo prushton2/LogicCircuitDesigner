@@ -49,8 +49,10 @@ const ComponentRenderer = React.forwardRef(({connect, setPos}: {connect: (side: 
 				for(let j in c.inputs) { //for each input in component
 					let input = c.inputs[j]; // cache input object
 		
+					console.log(c, input)
+
 					if(input === null || input === undefined) { continue; } //Skip if the input isnt defined
-					if(input.id.split(".")[0] === "-1") { continue; } //Skip if the reference is null
+					if(input.id.toString().split(".")[0].indexOf("-1") !== -1) { continue; } //Skip if the reference is null
 	
 					if(newComponents[parseInt(input.id.split(".")[0])].type === "deleted_gate") { //check if the gate that the input references is dead
 						try {
