@@ -70,7 +70,7 @@ export function upgrade(file: string) {
 		let newComponents = parsed.components;
 
 		for(let i in parsed.components) {
-			newComponents[i].init_pos.y += 210;
+			newComponents[i].init_pos.y = Math.max(newComponents[i].init_pos.y + 210, 50);
 		}
 
 		parsed.components = newComponents;

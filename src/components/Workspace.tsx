@@ -23,6 +23,21 @@ function Workspace() {
 	const [wires, setWires] = useState(JSON.parse("{}"));
 	const [components, setComponents] = useState<component[]>([]);
 	const [componentData, setComponentData] = useState([]);
+	const [selectedComponentHTML, setSelectedComponentHTML] = useState(<label>Right click a component to select</label>)
+
+	useEffect(() => {
+		setSelectedComponentHTML(
+			config["selectedComponent"] === -1 ? 
+			<label>Right click a component to select</label>
+			: 
+			<a>
+				{'\u00A0'}{'\u00A0'}{'\u00A0'}{'\u00A0'}{'\u00A0'}{'\u00A0'}{'\u00A0'}{'\u00A0'}
+				{components[config["selectedComponent"]].type}{'\u00A0'}
+				(ID {config["selectedComponent"]}){'\u00A0'}
+				<button className="interactBtn" onClick={(e) => {componentRendererRef.current?.remove(config["selectedComponent"])}}>Delete</button>{'\u00A0'}
+			</a>
+		)
+	}, [config])
 
 	function setPos(pos: pos, id: string) {
 		let newComponents = structuredClone(components);
@@ -121,17 +136,6 @@ function Workspace() {
 						setComponentData([]);
 					}, 500)
 					}}>Clear</button></td>
-
-				{
-				
-				config["selectedComponent"] === -1 ? <td /> : 
-				<a>
-					<td>{'\u00A0'}{'\u00A0'}{'\u00A0'}{'\u00A0'}{'\u00A0'}{'\u00A0'}{'\u00A0'}{'\u00A0'}</td>
-					<td>{components[config["selectedComponent"]].type}</td>
-					<td>(ID {config["selectedComponent"]})</td>
-					<td><button className="interactBtn" onClick={(e) => {componentRendererRef.current?.remove(config["selectedComponent"])}}>Delete</button></td>
-				</a>
-				}
 			</tr>
 			<tr>
 				<td>I/O</td>
@@ -175,6 +179,9 @@ function Workspace() {
 		</tbody>
 		</table>
 
+		<div style={{position: "absolute", top: "0px", left: "25em"}}>
+			{selectedComponentHTML}
+		</div>
 		
 
 		<Xwrapper>
