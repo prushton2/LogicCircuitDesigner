@@ -1,14 +1,6 @@
-.wrapperDiv {
-	/* border: 2px dashed red; */
-	/* background-color: yellow; */
-	position: absolute;
-	user-select: none;
-	width: 90px;
-	height: 90px;
-}
-
 .gateImage {
 	position: absolute;
 	width: 90px;
+	height: auto;
 	transform: translate(0%, 10%);
 }
