@@ -60,7 +60,7 @@ const BaseGate = ({I, pos, comp, label, image, style, id, onClick, setPos}: { //
 
 	return (
 		<div>
-			<Component defaultPos={pos} newPos={(pos) => {setPos(pos, id)}} setDisplay={(v, d) => {setDisplay(d)}}> 
+			<Component id={id} defaultPos={pos} newPos={(pos) => {setPos(pos, id)}} setDisplay={(v, d) => {setDisplay(d)}}> 
 				<div className="wrapperDiv">
 			
 					{display==="inline"?`${label} (${id})`:""} <br />

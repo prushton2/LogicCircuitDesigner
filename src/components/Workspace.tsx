@@ -18,7 +18,7 @@ function Workspace() {
 	let componentRendererRef = useRef<any>(null);
 	let wireRendererRef = useRef<any>(null);
 	
-	const [config, setConfig] = useState({"hideDetails": false, "hideWireStates": false});
+	const [config, setConfig] = useState({"hideDetails": false, "hideWireStates": false, "selectedComponent": -1});
 
 	const [wires, setWires] = useState(JSON.parse("{}"));
 	const [components, setComponents] = useState<component[]>([]);

@@ -1,0 +1,11 @@
+.componentChildren {
+	width: fit-content;
+	height: fit-content;
+}
+
+.selected {
+	background: #2e2f37;
+	/* background: yellow; */
+	/* color: red; */
+	/* border: 10px solid yellow; */
+}

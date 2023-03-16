@@ -1,3 +1,4 @@
+import "./Component.css";
 import { useEffect, useState, useContext, useSyncExternalStore, useDebugValue } from "react";
 
 import Draggable from "react-draggable";
@@ -8,9 +9,10 @@ import { pos } from "../../models/pos";
 
 
 
-export const Component = ({children, defaultPos, newPos, setDisplay}: {children: JSX.Element, defaultPos: pos, newPos: (pos: pos) => void, setDisplay: (hideDetails: boolean, display: string) => void}) => {
+export const Component = ({children, id, defaultPos, newPos, setDisplay}: {children: JSX.Element, id: string, defaultPos: pos, newPos: (pos: pos) => void, setDisplay: (hideDetails: boolean, display: string) => void}) => {
 
 	const {config, setConfig} = useContext(ConfigContext);
+	const [selectStyling, setSelectStyling] = useState("");
 
 	const updateXarrow = useXarrow();
 
@@ -20,13 +22,23 @@ export const Component = ({children, defaultPos, newPos, setDisplay}: {children:
 	}
 
 	useEffect(() => {
-		setDisplay(config["hideDetails" as keyof object], !config["hideDetails" as keyof object] ? "inline": "none");
+		setDisplay(
+			config["hideDetails" as keyof object], !config["hideDetails" as keyof object] ? "inline": "none");
+		setSelectStyling(
+			config["selectedComponent" as keyof {}] === id ? "selected" : ""
+		)
 	}, [config])
 
 	return (
 		<div>
 			<Draggable cancel=".field" grid={[5,5]} defaultPosition={{x: defaultPos.x, y: defaultPos.y}} onDrag={updateXarrow} onStop={savePos}>
-				{children}
+				<div className={`componentChildren ${selectStyling}`} onClick={(e) => {
+					let newConfig = structuredClone(config);
+					newConfig["selectedComponent"] = id;
+					setConfig(newConfig);}}>
+
+					{children}
+				</div>
 			</Draggable>
 		</div>
 	)

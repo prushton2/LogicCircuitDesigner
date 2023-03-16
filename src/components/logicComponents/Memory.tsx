@@ -46,7 +46,7 @@ export const REG = ({id, pos, I, setPos, onClick}: {id: string, pos: pos, I: inp
 
 
 	return (
-		<Component defaultPos={pos} newPos={(pos: pos) => setPos(pos, id)} setDisplay={(h,d) => setDisplay(d)}>
+		<Component id={id} defaultPos={pos} newPos={(pos: pos) => setPos(pos, id)} setDisplay={(h,d) => setDisplay(d)}>
 			<div style={{userSelect: "none", width: "90px", height: `${height}px`, border: "5px solid white"}}>
 
 				<Inputs inputCount={inputs} heights={[50, 80, 110, 140, 170, 200, 230, 260]} labelInputs componentID={id} onClick={(id) => onClick(id)}/>		
