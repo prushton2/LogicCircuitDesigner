@@ -61,7 +61,7 @@ const BaseGate = ({I, pos, comp, label, image, style, id, onClick, setPos}: { //
 	return (
 		<div>
 			<Component id={id} defaultPos={pos} newPos={(pos) => {setPos(pos, id)}} setDisplay={(v, d) => {setDisplay(d)}}> 
-				<div style={{width: "90px", height: "90px"}}>
+				<div className="wrapperDiv">
 
 					<img src={image} className="gateImage" onDragStart={(e) => {e.preventDefault()}}/>
 

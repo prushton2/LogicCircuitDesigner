@@ -44,7 +44,7 @@ export const SW = ({id, pos, onClick, setPos}: {id: any, pos: pos, onClick: (id:
 	return (
 
 		<Component id={id} defaultPos={pos} newPos={(pos) => setPos(pos, id)} setDisplay={(v, d) => setDisplay(d)}>
-			<div style={{width: "90px", height: "60px"}}>
+			<div className="wrapperDiv">
 				
 				<input className="nametag" style={{display: display}} defaultValue={componentData[id as keyof {}]["name"]} onChange={(e) => {setName(e.target.value)}}></input>
 				
@@ -101,7 +101,7 @@ export const SWBUS = ({id, pos, onClick, setPos}: {id: any, pos: pos, onClick: (
 	return (
 
 		<Component id={id} defaultPos={pos} newPos={(pos) => setPos(pos, id)} setDisplay={(v, d) => setDisplay(d)}>
-			<div style={{width: "90px", height: "60px"}}>
+			<div className="wrapperDiv">
 				
 				
 				<input className="nametag" style={{display: display}} defaultValue={componentData[id as keyof {}]["name"]} onChange={(e) => {setName(e.target.value)}}></input>
@@ -155,7 +155,7 @@ export const LED = ({I, id, pos, onClick, setPos}: {I: input[], id: string, pos:
 
 	return (
 		<Component id={id} defaultPos={pos} newPos={(pos) => setPos(pos, id)} setDisplay={(v, d) => setDisplay(d)}>
-			<div style={{width: "110px", height: "70px"}}>
+			<div className="wrapperDiv large">
 				
 				
 				<input className="nametag" style={{display: display}} defaultValue={componentData[id as keyof {}]["name"]} onChange={(e) => {setName(e.target.value)}}></input>

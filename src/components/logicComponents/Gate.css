@@ -1,3 +1,9 @@
+.wrapperDiv {
+	position: relative;
+	width: 90px;
+	height: 90px;
+}
+
 .gateImage {
 	position: absolute;
 	width: 90px;
