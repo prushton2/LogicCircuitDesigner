@@ -58,7 +58,7 @@ export const Component = ({children, id, defaultPos, newPos, setDisplay}: {child
 	return (
 		<div >
 			<DraggableCore cancel=".field" grid={[5,5]} onStart={calcOffset} onDrag={dragHandler} onStop={savePos}>
-				<div className={`componentChildren ${selectStyling}`} onMouseMove={(e) => setMousePos({x: e.clientX, y: e.clientY} as pos)} style={{position: "absolute", left: position.x, top: position.y}} onClick={(e) => select(id)}>
+				<div className={`componentChildren ${selectStyling}`} onMouseMove={(e) => setMousePos({x: e.clientX, y: e.clientY} as pos)} style={{position: "absolute", left: position.x, top: position.y}} onContextMenu={(e) => {e.preventDefault();select(id)}}>
 					{children}
 				</div>
 			</DraggableCore>
