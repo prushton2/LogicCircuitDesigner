@@ -65,6 +65,6 @@ export function upgrade(file: string) {
 		parsed.components = newComponents;
 		parsed.version = "0.0.5";
 	}
-
+  
 	return JSON.stringify(parsed);
 }
