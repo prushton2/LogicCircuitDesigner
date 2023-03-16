@@ -60,10 +60,8 @@ const BaseGate = ({I, pos, comp, label, image, style, id, onClick, setPos}: { //
 
 	return (
 		<div>
-			<Component defaultPos={pos} newPos={(pos) => {setPos(pos, id)}} setDisplay={(v, d) => {setDisplay(d)}}> 
+			<Component id={id} defaultPos={pos} newPos={(pos) => {setPos(pos, id)}} setDisplay={(v, d) => {setDisplay(d)}}> 
 				<div className="wrapperDiv">
-			
-					{display==="inline"?`${label} (${id})`:""} <br />
 
 					<img src={image} className="gateImage" onDragStart={(e) => {e.preventDefault()}}/>
 
@@ -89,39 +87,39 @@ export const Gate = ({I, id, pos, type, onClick, setPos}: {I: input[], pos: pos,
 	
 	switch(type) {
 		case "AND":
-			style = {A_top: 45,O_top: 65,B_top: 80} as buttonOffset,
+			style = {A_top: 25,O_top: 45,B_top: 60} as buttonOffset,
 			image = AND_png,
 			compare = (A: boolean, B: boolean) => {return A && B}
 			break;
 		case "OR":
-			style = {A_top: 40,O_top: 60,B_top: 80} as buttonOffset,
+			style = {A_top: 20,O_top: 40,B_top: 60} as buttonOffset,
 			image = OR_png,
 			compare = (A: boolean, B: boolean) => {return A || B}
 			break;
 		case "XOR":
-			style = {A_top: 40, O_top: 55, B_top: 75} as buttonOffset,
+			style = {A_top: 20, O_top: 35, B_top: 55} as buttonOffset,
 			image = XOR_png,
 			compare = (A: boolean, B: boolean) => {return A !== B}
 			break;
 
 		case "NAND":
-			style = {A_top: 45, O_top: 60, B_top: 75} as buttonOffset,
+			style = {A_top: 25, O_top: 40, B_top: 55} as buttonOffset,
 			image = NAND_png,
 			compare = (A: boolean, B: boolean) => {return !(A && B)}
 			break;
 		case "NOR":
-			style = {A_top: 40,O_top: 55,B_top: 70} as buttonOffset,
+			style = {A_top: 20,O_top: 35,B_top: 50} as buttonOffset,
 			image = NOR_png,
 			compare = (A: boolean, B: boolean) => {return !(A || B)}
 			break;
 		case "XNOR":
-			style = {A_top: 40,O_top: 55,B_top: 65} as buttonOffset,
+			style = {A_top: 20,O_top: 35,B_top: 45} as buttonOffset,
 			image = XNOR_png,
 			compare = (A: boolean, B: boolean) => {return A === B}
 			break;
 
 		case "NOT":
-			style = ({A_top: 75, O_top: 75, B_top: -1} as buttonOffset),
+			style = ({A_top: 55, O_top: 55, B_top: -1} as buttonOffset),
 			image = NOT_png,
 			compare = (A: boolean, B: boolean) => {return !A}
 			break;

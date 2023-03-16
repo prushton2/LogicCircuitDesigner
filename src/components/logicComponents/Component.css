@@ -1,0 +1,11 @@
+.componentChildren {
+	user-select: none;
+	box-sizing: border-box;
+	width: fit-content;
+	height: fit-content;
+}
+
+.selected {
+	box-sizing: border-box;
+	border: 3px dashed yellow;
+}

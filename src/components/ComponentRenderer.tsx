@@ -1,7 +1,7 @@
 import React, { useContext, useEffect, useImperativeHandle, useState } from "react";
 import { useXarrow } from "react-xarrows";
 
-import { ComponentContext, ComponentDataContext } from "./Context";
+import { ComponentContext, ComponentDataContext, ConfigContext } from "./Context";
 import { pos } from "../models/pos";
 import { component } from "../models/component";
 
@@ -12,9 +12,12 @@ import { REG } from "./logicComponents/Memory";
 
 const ComponentRenderer = React.forwardRef(({connect, setPos}: {connect: (side: string, id: string) => void, setPos: (pos: pos, id: string) => void}, ref: any) => {
 
-	const [componentHTML, setComponentHTML] = useState<JSX.Element[]>([]);
 	const {components, setComponents} = useContext(ComponentContext);
 	const {componentData, setComponentData} = useContext(ComponentDataContext);
+	const {config, setConfig} = useContext(ConfigContext);
+	
+	
+	const [componentHTML, setComponentHTML] = useState<JSX.Element[]>([]);
 
 	const updateXarrow = useXarrow();
 
@@ -59,6 +62,9 @@ const ComponentRenderer = React.forwardRef(({connect, setPos}: {connect: (side: 
 					}
 				}
 			}
+			let newConfig = structuredClone(config);
+			newConfig["selectedComponent"] = -1;
+			setConfig(newConfig);
 			setComponents(newComponents);
 			updateXarrow();
 		}

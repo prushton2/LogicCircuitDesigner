@@ -39,12 +39,9 @@ export function BUS({id, pos, I, onClick, setPos}: {id: string, pos: pos, I: inp
 
 	return (
 		<div>
-			<Component defaultPos={pos} newPos={(pos) => setPos(pos, id)} setDisplay={(v, d) => setDisplay(d)}>
+			<Component id={id} defaultPos={pos} newPos={(pos) => setPos(pos, id)} setDisplay={(v, d) => setDisplay(d)}>
 				<div style={{width: "90px", height: "205px", border: "5px solid white"}}>
 					
-					<label style={{display: display, position: "absolute", top: "-30px"}}> BUS ({id})  </label><br />
-
-
 					<Inputs inputCount={8} heights={[15,40,65,90,115,140,165,190]} labelInputs componentID={id} onClick={(id) => onClick(id)}/>
 					
 					<div id={`${id}.-Y`} className="field" style={{right: "0%", top: "95px", position: "absolute", transform: "translate(0%, -50%)"}}>
@@ -67,7 +64,6 @@ export function MUX({id, pos, I, onClick, setPos}: {id: string, pos: pos, I: inp
 	const [inputs, setInputs] = useState(4); //non-signal inputs
 
 	useEffect(() => {
-		console.log("updating inputs")
 		setInputs(Math.min(Math.max(inputs, 2), 8))
 		setHeight((inputs+1)*25 + (inputs+1)*3)
 	}, [inputs])
@@ -109,27 +105,26 @@ export function MUX({id, pos, I, onClick, setPos}: {id: string, pos: pos, I: inp
 
 	return (
 		<div>
-			<Component defaultPos={pos} newPos={(pos) => setPos(pos, id)} setDisplay={(v, d) => setDisplay(d)}>
-				<div style={{userSelect: "none", width: "90px", height: `${height-20}px`, borderLeft: "5px solid white", borderRight: "5px solid white"}}>
+			<Component id={id} defaultPos={pos} newPos={(pos) => setPos(pos, id)} setDisplay={(v, d) => setDisplay(d)}>
+				<div style={{userSelect: "none", width: "90px", height: `${height+88}px`, borderLeft: "5px solid white"}}>
 					
-					<label style={{display: display, position: "absolute", top: "-70px", left: "9px"}}> MUX ({id})  </label><br />
+					<div style={{position: "absolute", top: "44px", right: "-4px", height: `${height}px`, borderRight: "5px solid white"}}></div>
 
+					<img src={MUX_TOP_PNG} style={{position: "absolute", width: "100px", left: "0px", 	 top: "0px"}} onDragStart={(e) => {e.preventDefault()}}/>
+					<img src={MUX_BOT_PNG} style={{position: "absolute", width: "100px", left: "0px", bottom: "0px"}} onDragStart={(e) => {e.preventDefault()}}/>
 
-					<img src={MUX_TOP_PNG} style={{position: "absolute", width: "100px", left: "-5px", 	 top: "-44px"}} onDragStart={(e) => {e.preventDefault()}}/>
-					<img src={MUX_BOT_PNG} style={{position: "absolute", width: "100px", left: "-5px", bottom: "-44px"}} onDragStart={(e) => {e.preventDefault()}}/>
-
-					<div id={`${id}.+S`} className="field" style={{left: "50%", top: `-5px`, position: "absolute", transform: "translate(-50%, -50%)"}}>
+					<div id={`${id}.+S`} className="field" style={{left: "50%", top: `37px`, position: "absolute", transform: "translate(-50%, -50%)"}}>
 						{'\u00A0'}S <button onClick={(e) => onClick(`${id}.+S`)} style={{marginRight: ".3em", display: display}}>S</button>
 					</div>
 
-					<Inputs inputCount={inputs} heights={[20, 50, 80, 110, 140, 170, 200, 230, 260]} labelInputs componentID={id} onClick={(i: string) => {onClick(i)}}/>
+					<Inputs inputCount={inputs} heights={[64, 94, 124, 154, 184, 214, 244, 274, 304]} labelInputs componentID={id} onClick={(i: string) => {onClick(i)}}/>
 
-					<div id={`${id}.-Y`} className="field" style={{right: "0%", top: `${((height-20)/2)}px`, position: "absolute", transform: "translate(0%, -50%)"}}>
+					<div id={`${id}.-Y`} className="field" style={{right: "0%", top: `${((height+68)/2)}px`, position: "absolute", transform: "translate(0%, -50%)"}}>
 						<button onClick={(e) => onClick(`${id}.-Y`)} style={{marginRight: ".3em", display: display}}>Y</button>Y{'\u00A0'}
 					</div>
 					
 
-					<div className="field" style={{right: "0%", top: `-50px`, position: "absolute", transform: "translate(0%, 0%)"}}>
+					<div className="field" style={{right: "0%", top: `0px`, position: "absolute", transform: "translate(0%, 0%)"}}>
 						{'\u00A0'}<button onClick={(e) => {setInputs(inputs*2)}} style={{marginRight: ".3em", display: display}}>+</button>
 						{'\u00A0'}<button onClick={(e) => {setInputs(inputs/2)}} style={{marginRight: ".3em", display: display}}>-</button>
 					</div>
@@ -151,7 +146,6 @@ export function ADDER({id, I, pos, onClick, setPos}: {id: string, I: input[], po
 			let Y = (A+B).toString(2);
 			
 			let overflowLength = Math.max((wires[I[0].id as keyof {}] as string).length, (wires[I[0].id as keyof {}] as string).length) + 1
-			//get the length of the higher bitsize + 1 to keep track of overflow
 			
 			let newWires = structuredClone(wires)
 			
@@ -171,19 +165,17 @@ export function ADDER({id, I, pos, onClick, setPos}: {id: string, I: input[], po
 	}, [wires])
 
 	return(
-		<Component defaultPos={pos} newPos={(pos) => setPos(pos, id)} setDisplay={(h, d) => {setDisplay(d)}}>
-			<div style={{userSelect: "none", width: "90px", height: "90px", border: "0px solid white"}}>
-
-				{display==="inline"?`ADDER (${id})`:""} <br />
+		<Component id={id} defaultPos={pos} newPos={(pos) => setPos(pos, id)} setDisplay={(h, d) => {setDisplay(d)}}>
+			<div style={{userSelect: "none", width: "90px", height: "170px", border: "0px solid white"}}>
 
 				<img src={ADDER_PNG} onDragStart={(e) => {e.preventDefault()}}/>
-				<Inputs inputCount={2} heights={[60, 150]} labelInputs componentID={id} onClick={(id) => onClick(id)}/>
+				<Inputs inputCount={2} heights={[40, 130]} labelInputs componentID={id} onClick={(id) => onClick(id)}/>
 
-				<div id={`${id}.-Y`} className="field" style={{right: "0%", top: `85px`, position: "absolute", transform: "translate(0%, -50%)"}}>
+				<div id={`${id}.-Y`} className="field" style={{right: "0%", top: `65px`, position: "absolute", transform: "translate(0%, -50%)"}}>
 					<button onClick={(e) => onClick(`${id}.-Y`)} style={{marginRight: ".3em", display: display}}>Y</button>Y{'\u00A0'}
 				</div>
 
-				<div id={`${id}.-Z`} className="field" style={{right: "0%", top: `120px`, position: "absolute", transform: "translate(0%, -50%)"}}>
+				<div id={`${id}.-Z`} className="field" style={{right: "0%", top: `100px`, position: "absolute", transform: "translate(0%, -50%)"}}>
 					<button onClick={(e) => onClick(`${id}.-Z`)} style={{marginRight: ".3em", display: display}}>Z</button>Z{'\u00A0'}
 				</div>
 			</div>

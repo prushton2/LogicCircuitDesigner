@@ -1,6 +1,5 @@
 .wrapperDiv {
-	position: absolute;
-	user-select: none;
+	position: relative;
 	width: 90px;
 	height: 90px;
 }
@@ -8,5 +7,6 @@
 .gateImage {
 	position: absolute;
 	width: 90px;
+	height: auto;
 	transform: translate(0%, 10%);
 }
