@@ -165,7 +165,7 @@ function Workspace() {
 		</table>
 		<div style={{left: "3.3em", position: 'absolute'}}>
 
-		<select onChange={(e) => {componentRendererRef.current?.remove(parseInt(e.target.value))}}>
+		<select value={-1} onChange={(e) => {componentRendererRef.current?.remove(parseInt(e.target.value))}}>
 			{deleteHTML}
 		</select>
 		</div>
