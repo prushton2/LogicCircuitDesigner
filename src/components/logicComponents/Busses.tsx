@@ -187,6 +187,7 @@ export function SPLITTER({id, I, pos, onClick, setPos}: {id: string, I: input[],
 
 	const alphabet = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
 	const {wires, setWires} = useContext(WireContext);
+	const {componentData, setComponentData} = useContext(ComponentDataContext);
 
 	const [display, setDisplay] = useState("inline");
 	const [height, setHeight] = useState(90);
@@ -209,7 +210,7 @@ export function SPLITTER({id, I, pos, onClick, setPos}: {id: string, I: input[],
 		
 		let newInputHTML = []
 		for(let i = 0; i<outputs; i++) {
-			newInputHTML.push(<input style={{position: "absolute", width:"50px", top: heights[i]-10, right: "3em"}} onChange={(e) => setValue(i, e.target.value.toString())} />)
+			newInputHTML.push(<input defaultValue={inputValues[i]} style={{position: "absolute", width:"50px", top: heights[i]-10, right: "3em"}} onChange={(e) => setValue(i, e.target.value.toString())} />)
 		}
 		setInputHTML(newInputHTML);
 	}, [outputs])
@@ -233,8 +234,16 @@ export function SPLITTER({id, I, pos, onClick, setPos}: {id: string, I: input[],
 	}, [wires, inputValues])
 
 	useEffect(() => {
-
+		let newComponentData = structuredClone(componentData);
+		newComponentData[id]["outputs"] = outputs;
+		newComponentData[id]["inputValues"] = inputValues;
+		setComponentData(newComponentData);
 	}, [outputs, inputValues]);
+
+	useEffect(() => {
+		setOutputs(componentData[id as keyof {}]["outputs"] as number || 1);
+		setInputValues(componentData[id as keyof {}]["inputValues"] as string[] || []);
+	}, []);
 
 	return (
 		<Component id={id} defaultPos={pos} newPos={(pos) => setPos(pos, id)} setDisplay={(h,d) => setDisplay(d)}>
