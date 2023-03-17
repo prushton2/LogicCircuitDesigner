@@ -67,6 +67,11 @@ const ComponentRenderer = React.forwardRef(({connect, setPos}: {connect: (side: 
 			setConfig(newConfig);
 			setComponents(newComponents);
 			updateXarrow();
+		},
+		clearInputs: (id: number) => {
+			let newComponents = structuredClone(components);
+			newComponents[id].inputs = []; //remove its inputs
+			setComponents(newComponents);
 		}
 	}))
 

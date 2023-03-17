@@ -141,9 +141,10 @@ export function ADDER({id, I, pos, onClick, setPos}: {id: string, I: input[], po
 	
 	useEffect(() => {
 		try {
-			let A = parseInt(wires[I[0].id as keyof {}], 2)
-			let B = parseInt(wires[I[1].id as keyof {}], 2)
-			let Y = (A+B).toString(2);
+			let Cin = parseInt(wires[I[18].id as keyof {}], 2)
+			let A   = parseInt(wires[I[0 ].id as keyof {}], 2)
+			let B   = parseInt(wires[I[1 ].id as keyof {}], 2)
+			let Y   = (A+B+Cin).toString(2);
 			
 			let overflowLength = Math.max((wires[I[0].id as keyof {}] as string).length, (wires[I[0].id as keyof {}] as string).length) + 1
 			
@@ -152,9 +153,9 @@ export function ADDER({id, I, pos, onClick, setPos}: {id: string, I: input[], po
 			newWires[`${id}.-Y`] = Y.slice(-(overflowLength-1)); //force cut off overflow bit to keep the bitsizes the same for input and output
 			
 			if(Y.length >= overflowLength) { //seperately return overflow
-				newWires[`${id}.-Z`] = Y[0];
+				newWires[`${id}.-R`] = Y[0];
 			} else {
-				newWires[`${id}.-Z`] = 0;
+				newWires[`${id}.-R`] = 0;
 			}
 
 			if(JSON.stringify(newWires) !== JSON.stringify(wires)) {
@@ -169,14 +170,18 @@ export function ADDER({id, I, pos, onClick, setPos}: {id: string, I: input[], po
 			<div style={{userSelect: "none", width: "90px", height: "170px", border: "0px solid white"}}>
 
 				<img src={ADDER_PNG} onDragStart={(e) => {e.preventDefault()}}/>
-				<Inputs inputCount={2} heights={[40, 130]} labelInputs componentID={id} onClick={(id) => onClick(id)}/>
+				<Inputs inputCount={2} heights={[40, 120]} labelInputs componentID={id} onClick={(id) => onClick(id)}/>
 
-				<div id={`${id}.-Y`} className="field" style={{right: "0%", top: `65px`, position: "absolute", transform: "translate(0%, -50%)"}}>
+				<div id={`${id}.-Y`} className="field" style={{right: "0%", top: `85px`, position: "absolute", transform: "translate(0%, -50%)"}}>
 					<button onClick={(e) => onClick(`${id}.-Y`)} style={{marginRight: ".3em", display: display}}>Y</button>Y{'\u00A0'}
 				</div>
 
-				<div id={`${id}.-Z`} className="field" style={{right: "0%", top: `100px`, position: "absolute", transform: "translate(0%, -50%)"}}>
-					<button onClick={(e) => onClick(`${id}.-Z`)} style={{marginRight: ".3em", display: display}}>Z</button>Z{'\u00A0'}
+				<div id={`${id}.-R`} className="field" style={{right: "50%", bottom: `20px`, position: "absolute", transform: "translate(50%, -50%)"}}>
+					<button onClick={(e) => onClick(`${id}.-R`)} style={{marginRight: ".3em", display: display}}>C</button>{display==="none"?"Cout":""}{'\u00A0'}
+				</div>
+
+				<div id={`${id}.+S`} className="field" style={{right: "50%", top: `31px`, position: "absolute", transform: "translate(50%, -50%)"}}>
+					<button onClick={(e) => onClick(`${id}.+S`)} style={{marginRight: ".3em", display: display}}>C</button>{display==="none"?"Cin":""}{'\u00A0'}
 				</div>
 			</div>
 		</Component>
