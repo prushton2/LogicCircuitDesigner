@@ -216,9 +216,6 @@ export function SPLITTER({id, I, pos, onClick, setPos}: {id: string, I: input[],
 	useEffect(() => {
 		let newWires = structuredClone(wires);
 		let input = newWires[I[0].id];
-
-		console.log(input)
-
 		try {
 			for(let i = 0; i<outputs; i++) {
 				let indices = inputValues[i];
@@ -228,7 +225,7 @@ export function SPLITTER({id, I, pos, onClick, setPos}: {id: string, I: input[],
 				newWires[`${id}.-${alphabet[i]}`] = input.substring(input.length-left, input.length-right-1);
 			}
 
-		} catch (e) { console.log(e) }
+		} catch (e) { }
 		if(JSON.stringify(newWires) !== JSON.stringify(wires)) {
 			setWires(newWires);
 		}
