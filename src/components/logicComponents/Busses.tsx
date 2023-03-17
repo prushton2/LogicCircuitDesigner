@@ -194,25 +194,25 @@ export function SPLITTER({id, I, pos, onClick, setPos}: {id: string, I: input[],
 	const [outputs, setOutputs] = useState(1);
 
 	const [inputHTML, setInputHTML] = useState<JSX.Element[]>([]);
-	const [inputValues, setInputValues] = useState<string[]>([]);
+	const [inputValues, setInputValues] = useState<string[]>(["","","","","","","",""]);
 
 	const heights = [30, 60, 90, 120, 150, 180, 210, 240];
 
-	function setValue(id: number, text: string) {
-		let newInputValues = structuredClone(inputValues);
-		newInputValues[id] = text;
+	const setValue = (id: number, text: string) => {
+		let newInputValues = inputValues.map((v, i) => {if(i === id) {return text} return v});
+		console.log(newInputValues);
 		setInputValues(newInputValues);
 	}
 
 	useEffect(() => {
 		setHeight((outputs+1)*30);
 		setOutputs(Math.max(1, Math.min(outputs, 8)));
-		
-		let newInputHTML = []
+
+		let newHTML = []
 		for(let i = 0; i<outputs; i++) {
-			newInputHTML.push(<input defaultValue={inputValues[i]} style={{position: "absolute", width:"50px", top: heights[i]-10, right: "3em"}} onChange={(e) => setValue(i, e.target.value.toString())} />)
+			newHTML[i] = <input key={i} defaultValue={inputValues[i]} style={{position: "absolute", width:"50px", top: heights[i]-10, right: "3em"}} onChange={(e) => setValue(i, e.target.value.toString())} />
 		}
-		setInputHTML(newInputHTML);
+		setInputHTML(newHTML);
 	}, [outputs])
 
 	useEffect(() => {
@@ -227,7 +227,7 @@ export function SPLITTER({id, I, pos, onClick, setPos}: {id: string, I: input[],
 				newWires[`${id}.-${alphabet[i]}`] = input.substring(input.length-left, input.length-right-1);
 			}
 
-		} catch (e) { }
+		} catch (e) {}
 		if(JSON.stringify(newWires) !== JSON.stringify(wires)) {
 			setWires(newWires);
 		}
@@ -241,8 +241,8 @@ export function SPLITTER({id, I, pos, onClick, setPos}: {id: string, I: input[],
 	}, [outputs, inputValues]);
 
 	useEffect(() => {
+		setInputValues(componentData[id as keyof {}]["inputValues"] as string[] || ["","","","","","","",""]);
 		setOutputs(componentData[id as keyof {}]["outputs"] as number || 1);
-		setInputValues(componentData[id as keyof {}]["inputValues"] as string[] || []);
 	}, []);
 
 	return (
@@ -251,8 +251,9 @@ export function SPLITTER({id, I, pos, onClick, setPos}: {id: string, I: input[],
 
 				<Inputs inputCount={1} heights={[height/2]} labelInputs componentID={id} onClick={(id) => onClick(id)}/>
 				<Outputs outputCount={outputs} heights={heights} labelOutputs componentID={id} onClick={(id) => onClick(id)}/>
+				
 				{inputHTML}
-
+				
 				<div className="field" style={{right: "0%", top: `0px`, position: "absolute", transform: "translate(0%, 0%)"}}>
 					{'\u00A0'}<button onClick={(e) => {setOutputs(outputs+1)}} style={{marginRight: ".3em", display: display}}>+</button>
 					{'\u00A0'}<button onClick={(e) => {setOutputs(outputs-1)}} style={{marginRight: ".3em", display: display}}>-</button>
