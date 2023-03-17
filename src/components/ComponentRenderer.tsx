@@ -7,7 +7,7 @@ import { component } from "../models/component";
 
 import { Gate } from "./logicComponents/Gate";
 import { SW,  SWBUS, LED } from "./logicComponents/IO";
-import { BUS, MUX, ADDER } from "./logicComponents/Busses"
+import { BUS, MUX, ADDER, SPLITTER } from "./logicComponents/Busses"
 import { REG } from "./logicComponents/Memory";
 
 const ComponentRenderer = React.forwardRef(({connect, setPos}: {connect: (side: string, id: string) => void, setPos: (pos: pos, id: string) => void}, ref: any) => {
@@ -112,6 +112,9 @@ const ComponentRenderer = React.forwardRef(({connect, setPos}: {connect: (side: 
 					break;
 				case "ADDER":
 					newhtml[i] = <ADDER  key={i} pos={pos} id={i} I={c.inputs} onClick={(e) => connect(portToConnect(e), e)} setPos={(pos, id) => {setPos(pos, id)}}/>
+					break;
+				case "SPLITTER":
+					newhtml[i] = <SPLITTER  key={i} pos={pos} id={i} I={c.inputs} onClick={(e) => connect(portToConnect(e), e)} setPos={(pos, id) => {setPos(pos, id)}}/>
 					break;
 				case "REG":
 					newhtml[i] = <REG   key={i} pos={pos} id={i} I={c.inputs} onClick={(e) => connect(portToConnect(e), e)} setPos={(pos, id) => {setPos(pos, id)}}/>
