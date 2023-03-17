@@ -190,7 +190,7 @@ export function SPLITTER({id, I, pos, onClick, setPos}: {id: string, I: input[],
 
 	const [display, setDisplay] = useState("inline");
 	const [height, setHeight] = useState(90);
-	const [outputs, setOutputs] = useState(8);
+	const [outputs, setOutputs] = useState(1);
 
 	const [inputHTML, setInputHTML] = useState<JSX.Element[]>([]);
 	const [inputValues, setInputValues] = useState<string[]>([]);
@@ -205,6 +205,7 @@ export function SPLITTER({id, I, pos, onClick, setPos}: {id: string, I: input[],
 
 	useEffect(() => {
 		setHeight((outputs+1)*30);
+		setOutputs(Math.max(1, Math.min(outputs, 8)));
 		
 		let newInputHTML = []
 		for(let i = 0; i<outputs; i++) {
@@ -215,8 +216,8 @@ export function SPLITTER({id, I, pos, onClick, setPos}: {id: string, I: input[],
 
 	useEffect(() => {
 		let newWires = structuredClone(wires);
-		let input = newWires[I[0].id];
 		try {
+			let input = newWires[I[0].id];
 			for(let i = 0; i<outputs; i++) {
 				let indices = inputValues[i];
 				if(indices === undefined || indices === "") {continue;}
@@ -231,6 +232,10 @@ export function SPLITTER({id, I, pos, onClick, setPos}: {id: string, I: input[],
 		}
 	}, [wires, inputValues])
 
+	useEffect(() => {
+
+	}, [outputs, inputValues]);
+
 	return (
 		<Component id={id} defaultPos={pos} newPos={(pos) => setPos(pos, id)} setDisplay={(h,d) => setDisplay(d)}>
 			<div style={{userSelect: "none", width: `130px`, height: `${height}px`, border: "5px solid white"}}>
@@ -238,6 +243,11 @@ export function SPLITTER({id, I, pos, onClick, setPos}: {id: string, I: input[],
 				<Inputs inputCount={1} heights={[height/2]} labelInputs componentID={id} onClick={(id) => onClick(id)}/>
 				<Outputs outputCount={outputs} heights={heights} labelOutputs componentID={id} onClick={(id) => onClick(id)}/>
 				{inputHTML}
+
+				<div className="field" style={{right: "0%", top: `0px`, position: "absolute", transform: "translate(0%, 0%)"}}>
+					{'\u00A0'}<button onClick={(e) => {setOutputs(outputs+1)}} style={{marginRight: ".3em", display: display}}>+</button>
+					{'\u00A0'}<button onClick={(e) => {setOutputs(outputs-1)}} style={{marginRight: ".3em", display: display}}>-</button>
+				</div>
 			</div>
 		</Component>
 	)
