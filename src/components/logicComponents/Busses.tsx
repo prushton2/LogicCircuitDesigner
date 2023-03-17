@@ -205,7 +205,6 @@ export function SPLITTER({id, I, pos, onClick, setPos}: {id: string, I: input[],
 
 	const setValue = (id: number, text: string) => {
 		let newInputValues = inputValues.map((v, i) => {if(i === id) {return text} return v});
-		console.log(newInputValues);
 		setInputValues(newInputValues);
 	}
 
@@ -227,8 +226,9 @@ export function SPLITTER({id, I, pos, onClick, setPos}: {id: string, I: input[],
 			for(let i = 0; i<outputs; i++) {
 				let indices = inputValues[i];
 				if(indices === undefined || indices === "") {continue;}
-				let left = parseInt(indices.split(":")[0]);
-				let right = parseInt(indices.split(":")[1]) || left;
+				let left = parseInt(indices.split(":")[1]);
+				let right = parseInt(indices.split(":")[0]);
+				if(!left && left !== 0) {left = right;}
 				newWires[`${id}.-${alphabet[i]}`] = input.substring(input.length-left, input.length-right-1);
 			}
 
