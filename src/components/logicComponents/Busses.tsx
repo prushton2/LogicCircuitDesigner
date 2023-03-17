@@ -1,6 +1,6 @@
 import { useContext, useEffect, useState } from "react";
 
-import { Component, Inputs } from "./Component";
+import { Component, Inputs, Outputs } from "./Component";
 import { ComponentDataContext, WireContext } from "../Context";
 import { pos } from "../../models/pos";
 import { input } from "../../models/component";
@@ -181,4 +181,68 @@ export function ADDER({id, I, pos, onClick, setPos}: {id: string, I: input[], po
 			</div>
 		</Component>
 	)
+}
+
+export function SPLITTER({id, I, pos, onClick, setPos}: {id: string, I: input[], pos: pos, onClick: (id: string) => void, setPos: (pos: pos, id: string) => void}) {
+
+	const alphabet = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
+	const {wires, setWires} = useContext(WireContext);
+
+	const [display, setDisplay] = useState("inline");
+	const [height, setHeight] = useState(90);
+	const [outputs, setOutputs] = useState(8);
+
+	const [inputHTML, setInputHTML] = useState<JSX.Element[]>([]);
+	const [inputValues, setInputValues] = useState<string[]>([]);
+
+	const heights = [30, 60, 90, 120, 150, 180, 210, 240];
+
+	function setValue(id: number, text: string) {
+		let newInputValues = structuredClone(inputValues);
+		newInputValues[id] = text;
+		setInputValues(newInputValues);
+	}
+
+	useEffect(() => {
+		setHeight((outputs+1)*30);
+		
+		let newInputHTML = []
+		for(let i = 0; i<outputs; i++) {
+			newInputHTML.push(<input style={{position: "absolute", width:"50px", top: heights[i]-10, right: "3em"}} onChange={(e) => setValue(i, e.target.value.toString())} />)
+		}
+		setInputHTML(newInputHTML);
+	}, [outputs])
+
+	useEffect(() => {
+		let newWires = structuredClone(wires);
+		let input = newWires[I[0].id];
+
+		console.log(input)
+
+		try {
+			for(let i = 0; i<outputs; i++) {
+				let indices = inputValues[i];
+				if(indices === undefined || indices === "") {continue;}
+				let left = parseInt(indices.split(":")[0]);
+				let right = parseInt(indices.split(":")[1]) || left;
+				newWires[`${id}.-${alphabet[i]}`] = input.substring(input.length-left, input.length-right-1);
+			}
+
+		} catch (e) { console.log(e) }
+		if(JSON.stringify(newWires) !== JSON.stringify(wires)) {
+			setWires(newWires);
+		}
+	}, [wires, inputValues])
+
+	return (
+		<Component id={id} defaultPos={pos} newPos={(pos) => setPos(pos, id)} setDisplay={(h,d) => setDisplay(d)}>
+			<div style={{userSelect: "none", width: `130px`, height: `${height}px`, border: "5px solid white"}}>
+
+				<Inputs inputCount={1} heights={[height/2]} labelInputs componentID={id} onClick={(id) => onClick(id)}/>
+				<Outputs outputCount={outputs} heights={heights} labelOutputs componentID={id} onClick={(id) => onClick(id)}/>
+				{inputHTML}
+			</div>
+		</Component>
+	)
+
 }
