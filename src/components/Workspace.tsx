@@ -166,6 +166,10 @@ function Workspace() {
 				<td><button className="interactBtn" onClick={(e) => {componentRendererRef.current?.create("ADDER")}}>ADDER</button></td>
 			</tr>
 			<tr>
+				<td />
+				<td><button className="interactBtn" onClick={(e) => {componentRendererRef.current?.create("SPLITTER")}}>SPLITTER</button></td>
+			</tr>
+			<tr>
 				<td>Memory</td>
 				<td><button className="interactBtn" onClick={(e) => {componentRendererRef.current?.create("REG")}}>REG</button></td>
 
