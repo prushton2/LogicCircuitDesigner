@@ -9,7 +9,7 @@
 
 .nametag {
 	height: 20px;
-	width: 20px;
+	width: 91%;
 }
 
 .SWbtn {
@@ -35,7 +35,7 @@
 
 .LEDoutput {
 	border: 3px solid #1b1a23;
-	width: 100%;
+	width: 76%;
 	position: absolute;
 	top: 35px;
 	left: 20px;

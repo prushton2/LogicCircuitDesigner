@@ -172,7 +172,7 @@ export function ADDER({id, I, pos, onClick, setPos}: {id: string, I: input[], po
 				<img src={ADDER_PNG} onDragStart={(e) => {e.preventDefault()}}/>
 				<Inputs inputCount={2} heights={[40, 120]} labelInputs componentID={id} onClick={(id) => onClick(id)}/>
 
-				<div id={`${id}.-Y`} className="field" style={{right: "0%", top: `85px`, position: "absolute", transform: "translate(0%, -50%)"}}>
+				<div id={`${id}.-Y`} className="field" style={{right: "0%", top: `65px`, position: "absolute", transform: "translate(0%, -50%)"}}>
 					<button onClick={(e) => onClick(`${id}.-Y`)} style={{marginRight: ".3em", display: display}}>Y</button>Y{'\u00A0'}
 				</div>
 
