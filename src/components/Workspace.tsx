@@ -34,7 +34,8 @@ function Workspace() {
 				{'\u00A0'}{'\u00A0'}{'\u00A0'}{'\u00A0'}{'\u00A0'}{'\u00A0'}{'\u00A0'}{'\u00A0'}
 				{components[config["selectedComponent"]].type}{'\u00A0'}
 				(ID {config["selectedComponent"]}){'\u00A0'}
-				<button className="interactBtn" onClick={(e) => {componentRendererRef.current?.remove(config["selectedComponent"])}}>Delete</button>{'\u00A0'}
+				<button className="interactBtn" style={{width: "fit-content"}} onClick={(e) => {componentRendererRef.current?.remove(config["selectedComponent"])}     }>Delete</button>{'\u00A0'}
+				<button className="interactBtn" style={{width: "fit-content"}} onClick={(e) => {componentRendererRef.current?.clearInputs(config["selectedComponent"])}}>Clear Inputs</button>{'\u00A0'}
 			</a>
 		)
 	}, [config])
@@ -164,6 +165,10 @@ function Workspace() {
 				<td><button className="interactBtn" onClick={(e) => {componentRendererRef.current?.create("BUS")}}>BUS</button></td>
 				<td><button className="interactBtn" onClick={(e) => {componentRendererRef.current?.create("MUX")}}>MUX</button></td>
 				<td><button className="interactBtn" onClick={(e) => {componentRendererRef.current?.create("ADDER")}}>ADDER</button></td>
+			</tr>
+			<tr>
+				<td />
+				<td><button className="interactBtn" onClick={(e) => {componentRendererRef.current?.create("SPLITTER")}}>SPLITTER</button></td>
 			</tr>
 			<tr>
 				<td>Memory</td>
