@@ -225,11 +225,25 @@ export function SPLITTER({id, I, pos, onClick, setPos}: {id: string, I: input[],
 			let input = newWires[I[0].id];
 			for(let i = 0; i<outputs; i++) {
 				let indices = inputValues[i];
+
 				if(indices === undefined || indices === "") {continue;}
-				let left = parseInt(indices.split(":")[1]);
-				let right = parseInt(indices.split(":")[0]);
-				if(!left && left !== 0) {left = right;}
-				newWires[`${id}.-${alphabet[i]}`] = input.substring(input.length-left, input.length-right-1);
+
+				let lowBit = parseInt(indices.split(":")[1]);
+				let highBit = parseInt(indices.split(":")[0]);
+
+				if(lowBit !== 0 && !lowBit) {lowBit = highBit;}
+
+				newWires[`${id}.-${alphabet[i]}`] = input.substring(input.length-lowBit, input.length-highBit-1);
+				
+				// console.log(`${i}------------------------------`);
+				// console.log(lowBit, highBit);
+
+				// let newLeft  = input.length-lowBit;
+				// let newRight = input.length-highBit-1;
+
+				
+				// console.log(newLeft, newRight);
+				// console.log(input.substring(newLeft, newRight));
 			}
 
 		} catch (e) {}
