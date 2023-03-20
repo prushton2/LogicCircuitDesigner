@@ -218,13 +218,16 @@ export function SPLITTER({id, I, pos, onClick, setPos}: {id: string, I: input[],
 	const [outputs, setOutputs] = useState(1);
 
 	const [inputHTML, setInputHTML] = useState<JSX.Element[]>([]);
-	let inputValues: (string | undefined)[] = [];
+	const [indices, setIndices] = useState<string>("");
 
 	const heights = [30, 60, 90, 120, 150, 180, 210, 240];
 
 	const setValue = (id: number, text: string) => {
-		inputValues[id] = text;
-		console.log(inputValues);
+		let indicesArray = indices.split(";");
+		indicesArray[id] = text;
+		let newIndices = indicesArray.join(";");
+		console.log(newIndices);
+		setIndices(newIndices);
 	}
 
 	useEffect(() => {
@@ -233,25 +236,25 @@ export function SPLITTER({id, I, pos, onClick, setPos}: {id: string, I: input[],
 
 		let newHTML = []
 		for(let i = 0; i<outputs; i++) {
-			newHTML[i] = <input id={`${id}.input.${i}`} key={i} defaultValue={inputValues[i]} style={{position: "absolute", width:"50px", top: heights[i]-10, right: "3em"}} onChange={(e) => setValue(i, e.target.value.toString())} />
+			newHTML[i] = <input id={`${id}.input.${i}`} key={i} defaultValue={indices.split(";")[i]} style={{position: "absolute", width:"50px", top: heights[i]-10, right: "3em"}} onChange={(e) => setValue(i, e.target.value.toString())} />
 		}
 		setInputHTML(newHTML);
 	}, [outputs])
 
 	useEffect(() => {
 		let newWires = structuredClone(wires);
-		console.log(inputValues);
+		console.log(indices.split(";"));
 		try {
 			let input = newWires[I[0].id];
 			for(let i = 0; i<outputs; i++) {
-				let indices = inputValues[i];
+				let index = indices.split(";")[i];
 
-				if(indices === undefined || indices === "") {
+				if(index === undefined || index === "") {
 					continue;
 				}
 
-				let lowBit = parseInt(indices.split(":")[1]);
-				let highBit = parseInt(indices.split(":")[0]);
+				let lowBit = parseInt(index.split(":")[1]);
+				let highBit = parseInt(index.split(":")[0]);
 
 				if(lowBit !== 0 && !lowBit) {lowBit = highBit;}
 				newWires[`${id}.-${alphabet[i]}`] = input.substring(input.length-lowBit, input.length-highBit-1);
@@ -266,7 +269,7 @@ export function SPLITTER({id, I, pos, onClick, setPos}: {id: string, I: input[],
 	useEffect(() => {
 		let newComponentData = structuredClone(componentData);
 		newComponentData[id]["outputs"] = outputs;
-		newComponentData[id]["inputValues"] = inputValues;
+		newComponentData[id]["inputValues"] = indices.split(";");
 		setComponentData(newComponentData);
 	}, [outputs]);
 
