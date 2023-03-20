@@ -20,9 +20,8 @@ export const REG = ({id, pos, I, setPos, onClick}: {id: string, pos: pos, I: inp
 	}, [inputs])
 
 	useEffect(() => {
-		try {
-			let newWires = structuredClone(wires)
-		
+		let newWires = structuredClone(wires)
+		try {		
 			if(wires[I[18].id as keyof {}][0] === "1") {
 				for(let i = 0; i<inputs; i++) {
 					let letter = alphabet[i];
@@ -37,11 +36,11 @@ export const REG = ({id, pos, I, setPos, onClick}: {id: string, pos: pos, I: inp
 				}
 			}
 
-			if(JSON.stringify(newWires) !== JSON.stringify(wires)) {
-				setWires(newWires);
-			}
-
-		} catch {return;}
+			
+		} catch (e) {}
+		if(JSON.stringify(newWires) !== JSON.stringify(wires)) {
+			setWires(newWires);
+		}
 	}, [wires])
 
 
