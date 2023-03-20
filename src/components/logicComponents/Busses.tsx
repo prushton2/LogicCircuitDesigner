@@ -12,13 +12,15 @@ import MUX_BOT_PNG from "../../images/mux_bot.png"
 export function BUS({id, pos, I, onClick, setPos}: {id: string, pos: pos, I: input[], onClick: (id: string) => void, setPos: (pos: pos, id: string) => void}) {
 
 	const {wires, setWires} = useContext(WireContext);
+	const {componentData, setComponentData} = useContext(ComponentDataContext);
 
+	const [inputs, setInputs] = useState(4);
 	const [display, setDisplay] = useState("inline"); //for hiding the gate configuration	
 	
 	useEffect(() => {
 		let bus = "";
 
-		for(let i = 0; i<8; i++) {
+		for(let i = 8; i>=0; i--) {
 			try {
 				if(I[i].id === -1) {
 					continue;
@@ -37,15 +39,32 @@ export function BUS({id, pos, I, onClick, setPos}: {id: string, pos: pos, I: inp
 		}
 	}, [wires])
 
+	useEffect(() => {
+		setInputs(componentData[id as keyof {}]["inputs"] || 8);
+	}, [])
+
+	useEffect(() => {
+		setInputs(Math.min(8, Math.max(0, inputs)));
+
+		let newComponentData = structuredClone(componentData);
+		newComponentData[id]["inputs"] = inputs;
+		setComponentData(newComponentData)
+	}, [inputs])
+
 	return (
 		<div>
 			<Component id={id} defaultPos={pos} newPos={(pos) => setPos(pos, id)} setDisplay={(v, d) => setDisplay(d)}>
-				<div style={{width: "90px", height: "205px", border: "5px solid white"}}>
+				<div style={{width: "90px", height: `${(inputs)*30}px`, border: "5px solid white"}}>
 					
-					<Inputs inputCount={8} heights={[15,40,65,90,115,140,165,190]} labelInputs componentID={id} onClick={(id) => onClick(id)}/>
+					<Inputs inputCount={inputs} heights={[20, 50, 80, 110, 140, 170, 200, 230, 260]} labelInputs componentID={id} onClick={(id) => onClick(id)}/>
 					
-					<div id={`${id}.-Y`} className="field" style={{right: "0%", top: "95px", position: "absolute", transform: "translate(0%, -50%)"}}>
+					<div id={`${id}.-Y`} className="field" style={{right: "0%", top: `${(inputs)*30/2}px`, position: "absolute", transform: "translate(0%, -50%)"}}>
 						<button onClick={(e) => onClick(`${id}.-Y`)} style={{marginRight: ".3em", display: display}}>Y</button>Y{'\u00A0'}
+					</div>
+
+					<div className="field" style={{right: "0%", top: `0px`, position: "absolute", transform: "translate(0%, 0%)"}}>
+						{'\u00A0'}<button onClick={(e) => {setInputs(inputs+1)}} style={{marginRight: ".3em", display: display}}>+</button>
+						{'\u00A0'}<button onClick={(e) => {setInputs(inputs-1)}} style={{marginRight: ".3em", display: display}}>-</button>
 					</div>
 
 				</div>
@@ -199,13 +218,13 @@ export function SPLITTER({id, I, pos, onClick, setPos}: {id: string, I: input[],
 	const [outputs, setOutputs] = useState(1);
 
 	const [inputHTML, setInputHTML] = useState<JSX.Element[]>([]);
-	const [inputValues, setInputValues] = useState<string[]>(["","","","","","","",""]);
+	let inputValues: (string | undefined)[] = [];
 
 	const heights = [30, 60, 90, 120, 150, 180, 210, 240];
 
 	const setValue = (id: number, text: string) => {
-		let newInputValues = inputValues.map((v, i) => {if(i === id) {return text} return v});
-		setInputValues(newInputValues);
+		inputValues[id] = text;
+		console.log(inputValues);
 	}
 
 	useEffect(() => {
@@ -214,53 +233,45 @@ export function SPLITTER({id, I, pos, onClick, setPos}: {id: string, I: input[],
 
 		let newHTML = []
 		for(let i = 0; i<outputs; i++) {
-			newHTML[i] = <input key={i} defaultValue={inputValues[i]} style={{position: "absolute", width:"50px", top: heights[i]-10, right: "3em"}} onChange={(e) => setValue(i, e.target.value.toString())} />
+			newHTML[i] = <input id={`${id}.input.${i}`} key={i} defaultValue={inputValues[i]} style={{position: "absolute", width:"50px", top: heights[i]-10, right: "3em"}} onChange={(e) => setValue(i, e.target.value.toString())} />
 		}
 		setInputHTML(newHTML);
 	}, [outputs])
 
 	useEffect(() => {
 		let newWires = structuredClone(wires);
+		console.log(inputValues);
 		try {
 			let input = newWires[I[0].id];
 			for(let i = 0; i<outputs; i++) {
 				let indices = inputValues[i];
 
-				if(indices === undefined || indices === "") {continue;}
+				if(indices === undefined || indices === "") {
+					continue;
+				}
 
 				let lowBit = parseInt(indices.split(":")[1]);
 				let highBit = parseInt(indices.split(":")[0]);
 
 				if(lowBit !== 0 && !lowBit) {lowBit = highBit;}
-
 				newWires[`${id}.-${alphabet[i]}`] = input.substring(input.length-lowBit, input.length-highBit-1);
-				
-				// console.log(`${i}------------------------------`);
-				// console.log(lowBit, highBit);
-
-				// let newLeft  = input.length-lowBit;
-				// let newRight = input.length-highBit-1;
-
-				
-				// console.log(newLeft, newRight);
-				// console.log(input.substring(newLeft, newRight));
 			}
 
 		} catch (e) {}
 		if(JSON.stringify(newWires) !== JSON.stringify(wires)) {
 			setWires(newWires);
 		}
-	}, [wires, inputValues])
+	}, [wires])
 
 	useEffect(() => {
 		let newComponentData = structuredClone(componentData);
 		newComponentData[id]["outputs"] = outputs;
 		newComponentData[id]["inputValues"] = inputValues;
 		setComponentData(newComponentData);
-	}, [outputs, inputValues]);
+	}, [outputs]);
 
 	useEffect(() => {
-		setInputValues(componentData[id as keyof {}]["inputValues"] as string[] || ["","","","","","","",""]);
+		// setInputValues(componentData[id as keyof {}]["inputValues"] as string[] || ["","","","","","","",""]);
 		setOutputs(componentData[id as keyof {}]["outputs"] as number || 1);
 	}, []);
 
