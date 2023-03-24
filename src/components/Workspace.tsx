@@ -1,7 +1,7 @@
 import "./Workspace.css"
 
 import { useEffect, useState, useRef } from "react";
-import { WireContext, WireContent, ConfigContext, ConfigContent, ComponentDataContent, ComponentDataContext, ComponentContext, ComponentContent } from "./Context";
+import { ComponentRefContext, ComponentRefContent, ConfigContext, ConfigContent, ComponentDataContent, ComponentDataContext, ComponentContext, ComponentContent } from "./Context";
 
 import { Xwrapper } from "react-xarrows";
 
@@ -52,6 +52,7 @@ function Workspace() {
 				let newConfig = structuredClone(config);
 				newConfig["selectedComponent"] = -1;
 				setConfig(newConfig);
+				console.log(componentRendererRef);
 			}
 		};
 		document.addEventListener('keydown', handleKeyDown);
@@ -191,7 +192,7 @@ function Workspace() {
 
 		<Xwrapper>
 			<ConfigContext.Provider value={{config, setConfig} as ConfigContent}>
-			<WireContext.Provider value={{wires, setWires} as WireContent}>
+			<ComponentRefContext.Provider value={{refs: wires, setRefs: setWires} as ComponentRefContent}>
 			<ComponentDataContext.Provider value={{componentData, setComponentData} as ComponentDataContent}>
 			<ComponentContext.Provider value={{components, setComponents} as ComponentContent}>
 
@@ -201,7 +202,7 @@ function Workspace() {
 
 			</ComponentContext.Provider>
 			</ComponentDataContext.Provider>
-			</WireContext.Provider>
+			</ComponentRefContext.Provider>
 			</ConfigContext.Provider>
 		</Xwrapper>
 	</div> )

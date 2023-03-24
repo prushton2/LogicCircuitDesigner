@@ -1,21 +1,21 @@
 import React, { useContext, useEffect, useImperativeHandle, useState } from "react";
 import { useXarrow } from "react-xarrows";
 
-import { ComponentContext, ComponentDataContext, ConfigContext } from "./Context";
+import { ComponentContext, ComponentDataContext, ConfigContext, ComponentRefContext } from "./Context";
 import { pos } from "../models/pos";
 import { component } from "../models/component";
 
 import { Gate } from "./logicComponents/Gate";
 import { SW,  SWBUS, LED } from "./logicComponents/IO";
-import { BUS, MUX, ADDER, SPLITTER } from "./logicComponents/Busses"
-import { REG } from "./logicComponents/Memory";
+// import { BUS, MUX, ADDER, SPLITTER } from "./logicComponents/Busses"
+// import { REG } from "./logicComponents/Memory";
 
 const ComponentRenderer = React.forwardRef(({connect, setPos}: {connect: (side: string, id: string) => void, setPos: (pos: pos, id: string) => void}, ref: any) => {
 
 	const {components, setComponents} = useContext(ComponentContext);
 	const {componentData, setComponentData} = useContext(ComponentDataContext);
 	const {config, setConfig} = useContext(ConfigContext);
-	
+	const {refs, setRefs} = useContext(ComponentRefContext);
 	
 	const [componentHTML, setComponentHTML] = useState<JSX.Element[]>([]);
 
@@ -80,6 +80,7 @@ const ComponentRenderer = React.forwardRef(({connect, setPos}: {connect: (side: 
 
 	useEffect(() => {
 		let newhtml: JSX.Element[] = [];
+		let newrefs = structuredClone(refs);
 		let newComponents: component[] = structuredClone(components);
 		
 		for(let i in newComponents) {
@@ -110,21 +111,21 @@ const ComponentRenderer = React.forwardRef(({connect, setPos}: {connect: (side: 
 					newhtml[i] = <Gate key={i} pos={pos} id={i} I={c.inputs} type={c.type} onClick={(e) => connect(portToConnect(e), e)} setPos={(pos, id) => {setPos(pos, id)}}/>
 					break;
 				
-				case "BUS":
-					newhtml[i] = <BUS  key={i} pos={pos} id={i} I={c.inputs} onClick={(e) => connect(portToConnect(e), e)} setPos={(pos, id) => {setPos(pos, id)}}/>
-					break;
-				case "MUX":
-					newhtml[i] = <MUX  key={i} pos={pos} id={i} I={c.inputs} onClick={(e) => connect(portToConnect(e), e)} setPos={(pos, id) => {setPos(pos, id)}}/>
-					break;
-				case "ADDER":
-					newhtml[i] = <ADDER  key={i} pos={pos} id={i} I={c.inputs} onClick={(e) => connect(portToConnect(e), e)} setPos={(pos, id) => {setPos(pos, id)}}/>
-					break;
-				case "SPLITTER":
-					newhtml[i] = <SPLITTER  key={i} pos={pos} id={i} I={c.inputs} onClick={(e) => connect(portToConnect(e), e)} setPos={(pos, id) => {setPos(pos, id)}}/>
-					break;
-				case "REG":
-					newhtml[i] = <REG   key={i} pos={pos} id={i} I={c.inputs} onClick={(e) => connect(portToConnect(e), e)} setPos={(pos, id) => {setPos(pos, id)}}/>
-					break;
+				// case "BUS":
+				// 	newhtml[i] = <BUS  key={i} pos={pos} id={i} I={c.inputs} onClick={(e) => connect(portToConnect(e), e)} setPos={(pos, id) => {setPos(pos, id)}}/>
+				// 	break;
+				// case "MUX":
+				// 	newhtml[i] = <MUX  key={i} pos={pos} id={i} I={c.inputs} onClick={(e) => connect(portToConnect(e), e)} setPos={(pos, id) => {setPos(pos, id)}}/>
+				// 	break;
+				// case "ADDER":
+				// 	newhtml[i] = <ADDER  key={i} pos={pos} id={i} I={c.inputs} onClick={(e) => connect(portToConnect(e), e)} setPos={(pos, id) => {setPos(pos, id)}}/>
+				// 	break;
+				// case "SPLITTER":
+				// 	newhtml[i] = <SPLITTER  key={i} pos={pos} id={i} I={c.inputs} onClick={(e) => connect(portToConnect(e), e)} setPos={(pos, id) => {setPos(pos, id)}}/>
+				// 	break;
+				// case "REG":
+				// 	newhtml[i] = <REG   key={i} pos={pos} id={i} I={c.inputs} onClick={(e) => connect(portToConnect(e), e)} setPos={(pos, id) => {setPos(pos, id)}}/>
+				// 	break;
 			}
 		}
 		setComponentHTML(newhtml)

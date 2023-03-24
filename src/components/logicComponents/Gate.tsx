@@ -3,7 +3,7 @@ import React, { useContext, useEffect, useState } from "react";
 
 import { Component, Inputs } from "./Component"
 import { connection } from "../../models/component";
-import { WireContext } from "../Context";
+import { ComponentRefContext } from "../Context";
 import { pos } from "../../models/pos";
 
 import AND_png from "../../images/AND.png"
@@ -27,7 +27,7 @@ const BaseGate = ({I, pos, comp, label, image, style, id, onClick, setPos}: { //
 	onClick: (id: string) => void,
 	setPos: (pos: pos, id: string) => void}) => {
 	
-	const {wires, setWires} = useContext(WireContext);
+	const {refs, setRefs} = useContext(ComponentRefContext);
 		
 	const [display, setDisplay] = useState("inline"); //for hiding the gate configuration
 
@@ -36,26 +36,26 @@ const BaseGate = ({I, pos, comp, label, image, style, id, onClick, setPos}: { //
 		try {
 
 			if(I.length === 1) {
-				newValue = (wires[I[0].id as keyof {}] as string).split("").map((v, i) => {
-					return comp(wires[I[0].id as keyof {}][i]==="1" ? true : false, false) ? "1":"0"
-				}).join("")
+				// newValue = (wires[I[0].id as keyof {}] as string).split("").map((v, i) => {
+				// 	return comp(wires[I[0].id as keyof {}][i]==="1" ? true : false, false) ? "1":"0"
+				// }).join("")
 			}
 
-			newValue = (wires[I[0].id as keyof {}] as string).split("").map((v, i) => {
-				return comp(wires[I[0].id as keyof {}][i]==="1" ? true : false, wires[I[1].id as keyof {}][i]==="1" ? true : false) ? "1":"0"
-			}).join("")
+			// newValue = (wires[I[0].id as keyof {}] as string).split("").map((v, i) => {
+			// 	return comp(wires[I[0].id as keyof {}][i]==="1" ? true : false, wires[I[1].id as keyof {}][i]==="1" ? true : false) ? "1":"0"
+			// }).join("")
 		} catch {}
 		
-		if(wires[id as keyof {}] == newValue) {
-			return;
-		}
+		// if(wires[id as keyof {}] == newValue) {
+		// 	return;
+		// }
 
-		let newWires = structuredClone(wires);
-		newWires[`${id}.-Y`] = newValue;
-		if(JSON.stringify(wires) !== JSON.stringify(newWires)) {
-			setWires(newWires);
-		}
-	}, [wires])
+		// let newWires = structuredClone(wires);
+		// newWires[`${id}.-Y`] = newValue;
+		// if(JSON.stringify(wires) !== JSON.stringify(newWires)) {
+		// 	setWires(newWires);
+		// }
+	}, [])
 
 
 	return (

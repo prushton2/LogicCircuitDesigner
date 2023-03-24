@@ -1,24 +1,27 @@
 import "../../App.css"
 import "./IO.css"
 
-import React, { useState, useEffect, useContext } from "react";
+import React, { useState, useEffect, useContext, useImperativeHandle } from "react";
 
 import { Component } from "./Component";
-import { WireContext, ComponentDataContext } from "../Context";
+import { ComponentRefContext, ComponentDataContext } from "../Context";
 import { connection } from "../../models/component";
 import { pos } from "../../models/pos";
 
-export const SW = ({id, pos, onClick, setPos}: {id: any, pos: pos, onClick: (id: string) => void, setPos: (pos: pos, id: string) => void}) => {
+export const SW = React.forwardRef(({id, pos, onClick, setPos}: {id: any, pos: pos, onClick: (id: string) => void, setPos: (pos: pos, id: string) => void}, ref: any) => {
 
 	const [value, setValue] = useState(false);
 	const {componentData, setComponentData} = useContext(ComponentDataContext);
 	
 	const [display, setDisplay] = useState("inline"); //for hiding the gate configuration
 	const [name, setName] = useState(id);
-
-	useEffect(() => {
-	}, [value])
 	
+	useImperativeHandle(ref, () => ({
+		getValue: () => {
+			return value;
+		}
+	}))
+
 	useEffect(() => {
 		let newComponentData = structuredClone(componentData);
 
@@ -56,22 +59,22 @@ export const SW = ({id, pos, onClick, setPos}: {id: any, pos: pos, onClick: (id:
 		</Component>
 
 	)
-}
+})
 
 export const SWBUS = ({id, pos, onClick, setPos}: {id: any, pos: pos, onClick: (id: string) => void, setPos: (pos: pos, id: string) => void}) => {
 
 	const [value, setValue] = useState<string>("0");
 	const {componentData, setComponentData} = useContext(ComponentDataContext);
-	const {wires, setWires} = useContext(WireContext);
+	// const {wires, setWires} = useContext(WireContext);
 	
 	const [display, setDisplay] = useState("inline"); //for hiding the gate configuration
 	const [name, setName] = useState(id);
 
-	useEffect(() => {
-		let newWires = structuredClone(wires);
-		newWires[`${id}.-Y`] = value;
-		setWires(newWires);
-	}, [value])
+	// useEffect(() => {
+	// 	let newWires = structuredClone(wires);
+	// 	newWires[`${id}.-Y`] = value;
+	// 	setWires(newWires);
+	// }, [value])
 
 
 	useEffect(() => {
@@ -114,20 +117,20 @@ export const SWBUS = ({id, pos, onClick, setPos}: {id: any, pos: pos, onClick: (
 
 export const LED = ({I, id, pos, onClick, setPos}: {I: connection[], id: string, pos: pos ,onClick: (id: string) => void, setPos: (pos: pos, id: string) => void}) => {
     
-	const {wires, setWires} = useContext(WireContext);
+	// const {wires, setWires} = useContext(WireContext);
 	const {componentData, setComponentData} = useContext(ComponentDataContext);
 
 	const [display, setDisplay] = useState("inline"); //for hiding the gate configuration
 	const [name, setName] = useState(id);
 	const [value, setValue] = useState("0");
 
-	useEffect(() => {
-		try {
-			setValue(wires[I[0].id as keyof {}] as string) 
-		} catch {
-			setValue("Z");
-		}
-	}, [wires])
+	// useEffect(() => {
+	// 	try {
+	// 		setValue(wires[I[0].id as keyof {}] as string) 
+	// 	} catch {
+	// 		setValue("Z");
+	// 	}
+	// }, [wires])
 
 	useEffect(() => {
 		let newComponentData = structuredClone(componentData);
