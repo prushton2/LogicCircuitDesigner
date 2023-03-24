@@ -3,9 +3,10 @@ import { pos } from "./pos"
 export interface component {
 	type: string,
 	init_pos: pos,
-	inputs: input[]
+	inputs: connection[],
+	outputs: connection[]
 }
 
-export interface input {
+export interface connection {
 	id: keyof {}
 }

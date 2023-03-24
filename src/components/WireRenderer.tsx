@@ -2,7 +2,7 @@ import React, { useContext, useEffect, useImperativeHandle, useState } from "rea
 
 import Wire from "./Wire";
 
-import { component, input } from "../models/component";
+import { component, connection } from "../models/component";
 import { ComponentContext } from "./Context";
 
 const WireRenderer = React.forwardRef(({}, ref) => {
@@ -69,10 +69,10 @@ const WireRenderer = React.forwardRef(({}, ref) => {
 				if (newComponents[outputid].inputs[outputPort].id === input) {
 					newComponents[outputid].inputs[outputPort].id = -1;
 				} else {
-					newComponents[outputid].inputs[outputPort] = {id: input} as input;
+					newComponents[outputid].inputs[outputPort] = {id: input} as connection;
 				}
 			} catch {
-				newComponents[outputid].inputs[outputPort] = {id: input} as input;
+				newComponents[outputid].inputs[outputPort] = {id: input} as connection;
 			}
 			setComponents(newComponents);
 			

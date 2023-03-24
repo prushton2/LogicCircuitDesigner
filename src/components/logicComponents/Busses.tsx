@@ -3,13 +3,13 @@ import { useContext, useEffect, useState } from "react";
 import { Component, Inputs, Outputs } from "./Component";
 import { ComponentDataContext, WireContext } from "../Context";
 import { pos } from "../../models/pos";
-import { input } from "../../models/component";
+import { connection } from "../../models/component";
 
 import ADDER_PNG from "../../images/adder.png"
 import MUX_TOP_PNG from "../../images/mux_top.png"
 import MUX_BOT_PNG from "../../images/mux_bot.png"
 
-export function BUS({id, pos, I, onClick, setPos}: {id: string, pos: pos, I: input[], onClick: (id: string) => void, setPos: (pos: pos, id: string) => void}) {
+export function BUS({id, pos, I, onClick, setPos}: {id: string, pos: pos, I: connection[], onClick: (id: string) => void, setPos: (pos: pos, id: string) => void}) {
 
 	const {wires, setWires} = useContext(WireContext);
 	const {componentData, setComponentData} = useContext(ComponentDataContext);
@@ -73,7 +73,7 @@ export function BUS({id, pos, I, onClick, setPos}: {id: string, pos: pos, I: inp
 	);
 }
 
-export function MUX({id, pos, I, onClick, setPos}: {id: string, pos: pos, I: input[], onClick: (id: string) => void, setPos: (pos: pos, id: string) => void}) {
+export function MUX({id, pos, I, onClick, setPos}: {id: string, pos: pos, I: connection[], onClick: (id: string) => void, setPos: (pos: pos, id: string) => void}) {
 
 	const {wires, setWires} = useContext(WireContext);
 	const {componentData, setComponentData} = useContext(ComponentDataContext);
@@ -153,7 +153,7 @@ export function MUX({id, pos, I, onClick, setPos}: {id: string, pos: pos, I: inp
 	)
 }
 
-export function ADDER({id, I, pos, onClick, setPos}: {id: string, I: input[], pos: pos, onClick: (id: string) => void, setPos: (pos: pos, id: string) => void}) {
+export function ADDER({id, I, pos, onClick, setPos}: {id: string, I: connection[], pos: pos, onClick: (id: string) => void, setPos: (pos: pos, id: string) => void}) {
 	
 	const [display, setDisplay] = useState("inline");
 	const {wires, setWires} = useContext(WireContext);
@@ -207,7 +207,7 @@ export function ADDER({id, I, pos, onClick, setPos}: {id: string, I: input[], po
 	)
 }
 
-export function SPLITTER({id, I, pos, onClick, setPos}: {id: string, I: input[], pos: pos, onClick: (id: string) => void, setPos: (pos: pos, id: string) => void}) {
+export function SPLITTER({id, I, pos, onClick, setPos}: {id: string, I: connection[], pos: pos, onClick: (id: string) => void, setPos: (pos: pos, id: string) => void}) {
 
 	const alphabet = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
 	const {wires, setWires} = useContext(WireContext);

@@ -2,7 +2,7 @@ import "./Gate.css"
 import React, { useContext, useEffect, useState } from "react";
 
 import { Component, Inputs } from "./Component"
-import { input } from "../../models/component";
+import { connection } from "../../models/component";
 import { WireContext } from "../Context";
 import { pos } from "../../models/pos";
 
@@ -21,7 +21,7 @@ interface buttonOffset {
 }
 
 const BaseGate = ({I, pos, comp, label, image, style, id, onClick, setPos}: { //the skeleton for a logic gate. Everything minus the image and logic.
-	I: input[], pos: pos, label: string, image: string, style: buttonOffset, id: string,
+	I: connection[], pos: pos, label: string, image: string, style: buttonOffset, id: string,
 
 	comp: (A: boolean, B: boolean) => boolean,
 	onClick: (id: string) => void,
@@ -79,7 +79,7 @@ const BaseGate = ({I, pos, comp, label, image, style, id, onClick, setPos}: { //
 	)
 }
 
-export const Gate = ({I, id, pos, type, onClick, setPos}: {I: input[], pos: pos, id: string, type: string, onClick: (id: string) => void, setPos: (pos: pos, id: string) => void}) => {
+export const Gate = ({I, id, pos, type, onClick, setPos}: {I: connection[], pos: pos, id: string, type: string, onClick: (id: string) => void, setPos: (pos: pos, id: string) => void}) => {
 	let style = {} as buttonOffset;
 	let image = OR_png;
 	let compare = (A: boolean, B: boolean) => {return A && B}

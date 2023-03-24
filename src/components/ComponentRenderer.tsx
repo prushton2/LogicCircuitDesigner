@@ -33,7 +33,8 @@ const ComponentRenderer = React.forwardRef(({connect, setPos}: {connect: (side: 
 			newcomps.push({
 				type: type,
 				init_pos: {x:0,y:0} as pos,
-				inputs: []
+				inputs: [],
+				outputs: []
 			} as component)
 			newComponentData.push({});
 	
@@ -88,7 +89,7 @@ const ComponentRenderer = React.forwardRef(({connect, setPos}: {connect: (side: 
 			if(c === null) { continue; }
 			switch(c.type) {
 				case "SW":
-					newhtml[i] = <SW  key={i} pos={pos} id={i}              onClick={(id) => {connect("in", id)}} setPos={(pos, id) => {setPos(pos, id)}}/>
+					newhtml[i] = <SW  key={i} pos={pos} id={i}  	        onClick={(id) => {connect("in", id)}} setPos={(pos, id) => {setPos(pos, id)}}/>
 					break;
 
 				case "SWBUS":

@@ -4,9 +4,9 @@ import { useContext, useEffect, useState } from "react";
 import { Component, Inputs, Outputs } from "./Component";
 import { ComponentDataContext, WireContext } from "../Context";
 import { pos } from "../../models/pos";
-import { input } from "../../models/component";
+import { connection } from "../../models/component";
 
-export const REG = ({id, pos, I, setPos, onClick}: {id: string, pos: pos, I: input[], setPos: (pos: pos, id: string) => void, onClick: (id: string) => void}) => {
+export const REG = ({id, pos, I, setPos, onClick}: {id: string, pos: pos, I: connection[], setPos: (pos: pos, id: string) => void, onClick: (id: string) => void}) => {
 
 	let alphabet = "ABCDEFGHIJKLMNOPQRSTUVQXYZ";
 	const {wires, setWires} = useContext(WireContext)

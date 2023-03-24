@@ -5,22 +5,18 @@ import React, { useState, useEffect, useContext } from "react";
 
 import { Component } from "./Component";
 import { WireContext, ComponentDataContext } from "../Context";
-import { input } from "../../models/component";
+import { connection } from "../../models/component";
 import { pos } from "../../models/pos";
 
 export const SW = ({id, pos, onClick, setPos}: {id: any, pos: pos, onClick: (id: string) => void, setPos: (pos: pos, id: string) => void}) => {
 
 	const [value, setValue] = useState(false);
-	const {wires, setWires} = useContext(WireContext);
 	const {componentData, setComponentData} = useContext(ComponentDataContext);
 	
 	const [display, setDisplay] = useState("inline"); //for hiding the gate configuration
 	const [name, setName] = useState(id);
 
 	useEffect(() => {
-		let newWires = structuredClone(wires);
-		newWires[`${id}.-Y`] = value ? "1":"0";
-		setWires(newWires);
 	}, [value])
 	
 	useEffect(() => {
@@ -116,7 +112,7 @@ export const SWBUS = ({id, pos, onClick, setPos}: {id: any, pos: pos, onClick: (
 	)
 }
 
-export const LED = ({I, id, pos, onClick, setPos}: {I: input[], id: string, pos: pos ,onClick: (id: string) => void, setPos: (pos: pos, id: string) => void}) => {
+export const LED = ({I, id, pos, onClick, setPos}: {I: connection[], id: string, pos: pos ,onClick: (id: string) => void, setPos: (pos: pos, id: string) => void}) => {
     
 	const {wires, setWires} = useContext(WireContext);
 	const {componentData, setComponentData} = useContext(ComponentDataContext);
