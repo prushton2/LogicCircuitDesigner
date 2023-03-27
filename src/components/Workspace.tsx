@@ -3,7 +3,7 @@ import "./Workspace.css"
 import { useEffect, useState, useRef } from "react";
 import { ComponentRefContext, ComponentRefContent, ConfigContext, ConfigContent, ComponentDataContent, ComponentDataContext, ComponentContext, ComponentContent } from "./Context";
 
-import { Xwrapper } from "react-xarrows";
+import { refType, Xwrapper } from "react-xarrows";
 
 import MouseFollower from "./MouseFollower";
 import WireRenderer from "./WireRenderer";
@@ -23,6 +23,8 @@ function Workspace() {
 	const [wires, setWires] = useState(JSON.parse("{}"));
 	const [components, setComponents] = useState<component[]>([]);
 	const [componentData, setComponentData] = useState([]);
+	const [refs, setRefs] = useState<refType>();
+
 	const [selectedComponentHTML, setSelectedComponentHTML] = useState(<label>Right click a component to select</label>)
 
 	useEffect(() => {
@@ -192,7 +194,7 @@ function Workspace() {
 
 		<Xwrapper>
 			<ConfigContext.Provider value={{config, setConfig} as ConfigContent}>
-			<ComponentRefContext.Provider value={{refs: wires, setRefs: setWires} as ComponentRefContent}>
+			<ComponentRefContext.Provider value={{refs, setRefs} as ComponentRefContent}>
 			<ComponentDataContext.Provider value={{componentData, setComponentData} as ComponentDataContent}>
 			<ComponentContext.Provider value={{components, setComponents} as ComponentContent}>
 

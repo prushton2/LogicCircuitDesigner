@@ -3,25 +3,10 @@ import Xarrow, { anchorType, useXarrow, Xwrapper } from "react-xarrows";
 
 const Wire = React.forwardRef(({start, end}: {start: string, end: string}, ref: any) => {
 	
-
-	// const {config, setConfig} = useContext(ConfigContext);
 	const [sides, setSides] = useState<string[]>(["right", "left"]);
 	const [color, setColor] = useState("white");
 
 	useEffect(() => {
-		// if(config["hideWireStates" as keyof object] || start === "mouse") {
-		// 	setColor("white");
-		// } else {
-		// 	try {
-		// 		let binary: string = value[start as keyof {}]
-				
-		// 		setColor(binary.charAt(0) === "1" ? "red" : "white")
-		// 	} catch {
-		// 		setColor("white");
-		// 	}
-		// }
-
-		//ew
 		if("+S".indexOf(end.split(".")[1]) !== -1) {
 			setSides([sides[0],"top"])
 		}

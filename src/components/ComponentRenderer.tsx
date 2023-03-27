@@ -5,8 +5,8 @@ import { ComponentContext, ComponentDataContext, ConfigContext, ComponentRefCont
 import { pos } from "../models/pos";
 import { component } from "../models/component";
 
-import { Gate } from "./logicComponents/Gate";
 import { SW,  SWBUS, LED } from "./logicComponents/IO";
+// import { Gate } from "./logicComponents/Gate";
 // import { BUS, MUX, ADDER, SPLITTER } from "./logicComponents/Busses"
 // import { REG } from "./logicComponents/Memory";
 
@@ -80,7 +80,7 @@ const ComponentRenderer = React.forwardRef(({connect, setPos}: {connect: (side: 
 
 	useEffect(() => {
 		let newhtml: JSX.Element[] = [];
-		let newrefs = structuredClone(refs);
+		let newRefs = structuredClone(refs);
 		let newComponents: component[] = structuredClone(components);
 		
 		for(let i in newComponents) {
@@ -90,26 +90,30 @@ const ComponentRenderer = React.forwardRef(({connect, setPos}: {connect: (side: 
 			if(c === null) { continue; }
 			switch(c.type) {
 				case "SW":
-					newhtml[i] = <SW  key={i} pos={pos} id={i}  	        onClick={(id) => {connect("in", id)}} setPos={(pos, id) => {setPos(pos, id)}}/>
+					newhtml[i] = <SW  
+									ref={newRefs[i]} key={i} pos={pos} id={i}  	        onClick={(id) => {connect("in", id)}} setPos={(pos, id) => {setPos(pos, id)}}/>
 					break;
 
 				case "SWBUS":
-					newhtml[i] = <SWBUS  key={i} pos={pos} id={i}           onClick={(id) => {connect("in", id)}} setPos={(pos, id) => {setPos(pos, id)}}/>
+					newhtml[i] = <SWBUS 
+									ref={newRefs[i]} key={i} pos={pos} id={i}           onClick={(id) => {connect("in", id)}} setPos={(pos, id) => {setPos(pos, id)}}/>
 					break;
 				
 				case "LED":
-					newhtml[i] = <LED key={i} pos={pos} id={i} I={c.inputs} onClick={(id) => {connect("out", id)}} setPos={(pos, id) => {setPos(pos, id)}}/>
+					newhtml[i] = <LED 
+									ref={newRefs[i]} key={i} pos={pos} id={i} I={c.inputs} onClick={(id) => {connect("out", id)}} setPos={(pos, id) => {setPos(pos, id)}}/>
 					break;
 				
-				case "AND":
-				case "OR":
-				case "XOR":
-				case "NAND":
-				case "NOR":
-				case "XNOR":
-				case "NOT":
-					newhtml[i] = <Gate key={i} pos={pos} id={i} I={c.inputs} type={c.type} onClick={(e) => connect(portToConnect(e), e)} setPos={(pos, id) => {setPos(pos, id)}}/>
-					break;
+				// case "AND":
+				// case "OR":
+				// case "XOR":
+				// case "NAND":
+				// case "NOR":
+				// case "XNOR":
+				// case "NOT":
+				// 	newhtml[i] = <Gate 
+				// 					ref={newRefs[i]} key={i} pos={pos} id={i} I={c.inputs} type={c.type} onClick={(e) => connect(portToConnect(e), e)} setPos={(pos, id) => {setPos(pos, id)}}/>
+				// 	break;
 				
 				// case "BUS":
 				// 	newhtml[i] = <BUS  key={i} pos={pos} id={i} I={c.inputs} onClick={(e) => connect(portToConnect(e), e)} setPos={(pos, id) => {setPos(pos, id)}}/>
@@ -129,6 +133,7 @@ const ComponentRenderer = React.forwardRef(({connect, setPos}: {connect: (side: 
 			}
 		}
 		setComponentHTML(newhtml)
+		setRefs(newRefs);
 
 	}, [components])
 

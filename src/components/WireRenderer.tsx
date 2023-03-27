@@ -2,7 +2,8 @@ import React, { useContext, useEffect, useImperativeHandle, useState } from "rea
 
 import Wire from "./Wire";
 
-import { component, connection } from "../models/component";
+import { component } from "../models/component";
+import { connection } from "../models/connection";
 import { ComponentContext } from "./Context";
 
 const WireRenderer = React.forwardRef(({}, ref) => {
@@ -51,7 +52,7 @@ const WireRenderer = React.forwardRef(({}, ref) => {
 				if(c.inputs[j] === null) { continue; }
 				if(c.inputs[j].id === -1) { continue; }
 
-				newhtml.push(<Wire key={`${i}_${j}`} start={`${c.inputs[j].id}`} end={`${i}.+${alphabet[j]}`}/>)
+				newhtml.push(<Wire key={`${i}_${j}`} start={`${c.inputs[j].id}.${c.inputs[j].port}`} end={`${i}.+${alphabet[j]}`}/>)
 			}
 		}
 		setWireHTML(newhtml);
@@ -66,13 +67,13 @@ const WireRenderer = React.forwardRef(({}, ref) => {
 
 			let newComponents = structuredClone(components);
 			try {
-				if (newComponents[outputid].inputs[outputPort].id === input) {
+				if (JSON.stringify(newComponents[outputid].inputs[outputPort]) === JSON.stringify({id: parseInt(input.split(".")[0]), port: input.split(".")[1]})) {
 					newComponents[outputid].inputs[outputPort].id = -1;
 				} else {
-					newComponents[outputid].inputs[outputPort] = {id: input} as connection;
+					newComponents[outputid].inputs[outputPort] = {id: parseInt(input.split(".")[0]), port: input.split(".")[1]} as connection;
 				}
 			} catch {
-				newComponents[outputid].inputs[outputPort] = {id: input} as connection;
+				newComponents[outputid].inputs[outputPort] = {id: parseInt(input.split(".")[0]), port: input.split(".")[1]} as connection;
 			}
 			setComponents(newComponents);
 			

@@ -5,7 +5,7 @@ import React, { useState, useEffect, useContext, useImperativeHandle } from "rea
 
 import { Component } from "./Component";
 import { ComponentRefContext, ComponentDataContext } from "../Context";
-import { connection } from "../../models/component";
+import { connection } from "../../models/connection";
 import { pos } from "../../models/pos";
 
 export const SW = React.forwardRef(({id, pos, onClick, setPos}: {id: any, pos: pos, onClick: (id: string) => void, setPos: (pos: pos, id: string) => void}, ref: any) => {
@@ -61,7 +61,7 @@ export const SW = React.forwardRef(({id, pos, onClick, setPos}: {id: any, pos: p
 	)
 })
 
-export const SWBUS = ({id, pos, onClick, setPos}: {id: any, pos: pos, onClick: (id: string) => void, setPos: (pos: pos, id: string) => void}) => {
+export const SWBUS = React.forwardRef(({id, pos, onClick, setPos}: {id: any, pos: pos, onClick: (id: string) => void, setPos: (pos: pos, id: string) => void}, ref: any) => {
 
 	const [value, setValue] = useState<string>("0");
 	const {componentData, setComponentData} = useContext(ComponentDataContext);
@@ -113,24 +113,20 @@ export const SWBUS = ({id, pos, onClick, setPos}: {id: any, pos: pos, onClick: (
 		</Component>
 
 	)
-}
+})
 
-export const LED = ({I, id, pos, onClick, setPos}: {I: connection[], id: string, pos: pos ,onClick: (id: string) => void, setPos: (pos: pos, id: string) => void}) => {
+export const LED = React.forwardRef(({I, id, pos, onClick, setPos}: {I: connection[], id: string, pos: pos ,onClick: (id: string) => void, setPos: (pos: pos, id: string) => void}, ref: any) => {
     
-	// const {wires, setWires} = useContext(WireContext);
 	const {componentData, setComponentData} = useContext(ComponentDataContext);
+	const {refs, setRefs} = useContext(ComponentRefContext);
 
 	const [display, setDisplay] = useState("inline"); //for hiding the gate configuration
 	const [name, setName] = useState(id);
 	const [value, setValue] = useState("0");
 
-	// useEffect(() => {
-	// 	try {
-	// 		setValue(wires[I[0].id as keyof {}] as string) 
-	// 	} catch {
-	// 		setValue("Z");
-	// 	}
-	// }, [wires])
+	useEffect(() => {
+		console.log(refs)
+	}, [refs])
 
 	useEffect(() => {
 		let newComponentData = structuredClone(componentData);
@@ -164,4 +160,4 @@ export const LED = ({I, id, pos, onClick, setPos}: {I: connection[], id: string,
 			</div>
 		</Component>
 	)
-}
+})
