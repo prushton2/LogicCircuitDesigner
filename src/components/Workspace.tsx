@@ -23,7 +23,7 @@ function Workspace() {
 	const [wires, setWires] = useState(JSON.parse("{}"));
 	const [components, setComponents] = useState<component[]>([]);
 	const [componentData, setComponentData] = useState([]);
-	const [refs, setRefs] = useState<refType>();
+	const [refs, setRefs] = useState<refType[]>([]);
 
 	const [selectedComponentHTML, setSelectedComponentHTML] = useState(<label>Right click a component to select</label>)
 
@@ -54,7 +54,8 @@ function Workspace() {
 				let newConfig = structuredClone(config);
 				newConfig["selectedComponent"] = -1;
 				setConfig(newConfig);
-				console.log(componentRendererRef);
+				console.log("refs");
+				console.log(refs);
 			}
 		};
 		document.addEventListener('keydown', handleKeyDown);
