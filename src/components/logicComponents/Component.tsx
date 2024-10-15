@@ -4,8 +4,9 @@ import { useEffect, useState, useContext, useSyncExternalStore, useDebugValue } 
 import Draggable, {DraggableCore, DraggableData, DraggableEvent} from 'react-draggable'; 
 import { useXarrow } from "react-xarrows";
 
-import { ConfigContext } from "../Context";
+import { ConfigContext, WireContent } from "../Context";
 import { pos } from "../../models/pos";
+import { input } from "../../models/component";
 
 
 export const Component = ({children, id, defaultPos, newPos, setDisplay}: {children: JSX.Element, id: string, defaultPos: pos, newPos: (pos: pos) => void, setDisplay: (hideDetails: boolean, display: string) => void}) => {
@@ -129,4 +130,8 @@ export const Outputs = ({outputCount, heights, labelOutputs, componentID, onClic
 			{outputHTML}
 		</>
 	)
+}
+
+export function inputsHaveChanged(I: input[], wires: WireContent) {
+
 }
